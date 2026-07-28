@@ -68,8 +68,8 @@ def test_stamp_rejects_unknown_version():
 
 def test_stamp_allows_deliberately_unmigrated_version():
     """'not migrated' is a different case from 'mistyped'."""
-    record = provenance.stamp('python/fake.py', version='splashback')
-    assert record['sim_version'] == 'splashback'
+    record = provenance.stamp('python/fake.py', version='Geha')
+    assert record['sim_version'] == 'Geha'
     assert record['h5_file'] is None
 
 

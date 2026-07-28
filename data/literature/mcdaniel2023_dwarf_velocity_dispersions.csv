@@ -1,0 +1,36 @@
+lvdb_name,sigma_los_km_s,sigma_upper_km_s,sigma_lower_km_s,Source_of_uncertainty,McDaniel_footnote,Notes
+Aquarius II,4.7,1.8,1.2,Bruce et al. 2023 (arXiv:2302.03708) Table 2,a,
+Bootes II,2.9,1.6,1.2,Bruce et al. 2023 (arXiv:2302.03708) Table 2,a,
+Canes Venatici I,7.6,0.5,0.4,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Canes Venatici II,4.7,1.2,1.0,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Carina,6.4,0.2,0.2,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Carina II,3.4,1.2,0.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Carina III,5.6,4.3,2.1,Li et al. 2018 (arXiv:1802.06810) Table 2,f,Only 4 member stars; McDaniel uses kinematic scaling relation J-factor for this object
+Coma Berenices,4.7,0.9,0.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Draco,9.1,0.3,0.3,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Eridanus II,7.1,1.2,0.9,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Hercules,3.9,1.3,1.0,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Horologium I,5.9,3.3,1.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1 (Koposov+ params),(default ref [103]),
+Hydrus I,2.7,0.5,0.5,Koposov et al. 2018 (arXiv:1804.06430),b,
+Leo I,9.0,0.4,0.4,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Leo II,7.4,0.4,0.4,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Leo IV,3.4,2.0,1.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Posterior has large tail to zero
+Leo V,4.9,3.0,1.9,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Posterior has small tail to zero
+Pegasus III,7.9,4.4,3.1,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Posterior has small tail to zero
+Pisces II,4.8,3.3,2.0,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Posterior has small tail to zero
+Reticulum II,3.4,0.7,0.6,Pace & Strigari 2019 (arXiv:1802.06811) Table A1 (Koposov+ params),(default ref [103]),
+Segue 1,3.1,0.9,0.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Sextans,7.1,0.3,0.3,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Tucana II,7.3,2.6,1.7,Pace & Strigari 2019 (arXiv:1802.06811) Table A1 (Koposov+ params),(default ref [103]),
+Tucana IV,4.3,1.7,1.0,Simon et al. 2020 (arXiv:1911.08493),e,
+Ursa Major I,7.3,1.2,1.0,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Ursa Major II,7.2,1.8,1.4,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Ursa Minor,9.3,0.4,0.4,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),
+Centaurus I,,,,No sigma in McDaniel Table I; J-factor estimated from photometric scaling relation,—,No spectroscopic kinematics; J-factor uncertainty assumed 0.6 dex
+Grus I,4.5,5.0,2.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Posterior has large tail to zero
+Tucana V,,,,No sigma in McDaniel Table I; J-factor estimated from photometric scaling relation,—,No spectroscopic kinematics; J-factor uncertainty assumed 0.6 dex
+Willman 1,4.5,1.0,0.8,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Special case: tidal/non-equilibrium dynamics
+Bootes III,,,,No sigma in McDaniel Table I; J-factor estimated from photometric scaling relation,—,Special case: tidal/non-equilibrium; J-factor uncertainty assumed 0.6 dex
+Bootes I,4.9,0.7,0.6,Pace & Strigari 2019 (arXiv:1802.06811) Table A1,(default ref [103]),Special case: blazar-vicinity flag
+Antlia II,5.7,1.1,1.1,Torrealba et al. 2019 (arXiv:1811.04082),g,Special case: blazar-vicinity flag
+Crater II,2.7,0.3,0.3,Caldwell et al. 2017 (arXiv:1612.06398),h,Special case: blazar-vicinity flag; uncertainty from Caldwell+17 propagated through Evans+22

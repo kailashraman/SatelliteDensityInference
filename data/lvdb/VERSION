@@ -1,0 +1,25 @@
+# Local Volume Database -- pinned release
+#
+# Source: https://github.com/apace7/local_volume_database
+# Release: v1.0.5
+# Files:   dwarf_all.csv, gc_ambiguous.csv
+# Fetched: 2026-07-28
+#
+# SatGen_Dwarf's Jdata.py read these two files over HTTPS at import time. That
+# made every script network-dependent, and -- worse -- meant the dwarf sample
+# could change underneath a published result if the release were re-tagged.
+# The sample is not incidental: dwarf_names and five parallel arrays
+# (abbreviations, fermi_names, fermi_names_update, n_stars, ps18_names) are
+# positionally keyed to the order this file produces, and every `dsph_idx` CLI
+# argument in the pipeline indexes it.
+#
+# Committed deliberately, despite being data: this is the provenance-critical
+# layer, where a silent catalog swap changes every downstream number.
+#
+# To re-pin, bump LVDB_VERSION in python/config.py, re-fetch both files, and
+# expect tests/test_dwarf_sample.py to fail until the recorded name list and
+# hashes are updated -- that failure is the point.
+
+version = v1.0.5
+dwarf_all.csv    sha256 = d2be933c34d346cface43a9211c2ac769c3168bb057a0c9cec6a11feef89be53
+gc_ambiguous.csv sha256 = 7f9a470967f8fdc6a3f4a6b7f9eb2f154206dfa16b029a0090d3ca6b7171ad2f

@@ -32,11 +32,26 @@ def pytest_configure(config):
     config.addinivalue_line('markers', 'slow: long-running calibration test')
 
 
+def _satgen_available():
+    """Whether the J_calc environment's heavy dependencies are importable."""
+    from importlib.util import find_spec
+    try:
+        return all(find_spec(name) for name in ('astropy', 'SatGen', 'colossus'))
+    except (ImportError, ValueError):
+        return False
+
+
 def pytest_collection_modifyitems(config, items):
     skip_data = pytest.mark.skip(reason='needs --rundata')
     skip_slow = pytest.mark.skip(reason='needs --runslow')
+    # Marker-driven, so a needs_satgen test skips for a stated reason rather
+    # than relying on an importorskip somewhere in the module.
+    skip_satgen = pytest.mark.skip(reason='needs the J_calc environment')
+    have_satgen = _satgen_available()
     for item in items:
         if 'needs_data' in item.keywords and not config.getoption('--rundata'):
             item.add_marker(skip_data)
         if 'slow' in item.keywords and not config.getoption('--runslow'):
             item.add_marker(skip_slow)
+        if 'needs_satgen' in item.keywords and not have_satgen:
+            item.add_marker(skip_satgen)

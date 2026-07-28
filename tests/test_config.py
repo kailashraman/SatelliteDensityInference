@@ -50,8 +50,8 @@ def test_h5_path_not_migrated_version_says_so():
     """The message must give the reason, not just fail -- so a reader can tell
     'we chose not to migrate this' from 'you mistyped a version'."""
     with pytest.raises(KeyError, match='not usable') as excinfo:
-        config.h5_path('splashback')
-    assert 'superseded by Diemer' in str(excinfo.value)
+        config.h5_path('Geha')
+    assert 'unresolved' in str(excinfo.value)
 
 
 def test_reweighting_aliases_share_a_catalog():
@@ -63,6 +63,31 @@ def test_reweighting_aliases_share_a_catalog():
     for alias in ['lmc', 'lmc_50', 'lvdb', 'mcdaniel', 'mhalf_scatter']:
         assert config.sim_version(alias) == 'Diemer'
         assert config.h5_path(alias) == config.h5_path('Diemer')
+
+
+def test_resolve_alias_false_refuses_reweighting_variants():
+    """halo_weights.get_h5 must not resolve aliases.
+
+    ResampleMstar reads mhalf/<version>/ with the raw version string, so
+    resolving in get_h5 but not there would make ResampleMstar('lmc')
+    constructible with the Diemer catalog paired to mhalf/lmc/ -- a
+    mixed-version object the pre-migration code refused to build.
+    """
+    assert config.h5_path('lmc', resolve_alias=True) == config.h5_path('Diemer')
+    with pytest.raises(KeyError):
+        config.h5_path('lmc', resolve_alias=False)
+    # Non-alias versions behave identically either way.
+    assert (config.h5_path('Diemer', resolve_alias=False)
+            == config.h5_path('Diemer'))
+
+
+def test_splashback_is_migrated():
+    """It is a live branch upstream: tidal_stripping.pdf's f_disrupted panel
+    reads the '_all' catalog, which retains disrupted halos. Diemer has them
+    masked out, so substituting it would yield a plausible but wrong panel."""
+    path = config.h5_path('splashback')
+    assert path.name == 'm12res8_10k_Diemer+scatter_sim_all.h5'
+    assert 'splashback' not in config.NOT_MIGRATED
 
 
 def test_geha_is_not_an_alias():

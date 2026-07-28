@@ -99,8 +99,10 @@ H5_REGISTRY = {
     'mass_floor_7': '26-02-Diemer_mass_floor_7_updated.h5',
     'Symphony': 'SymphonyMilkyWay.h5',
     'MWest': 'MWest.h5',
-    # 3.4 GB, and no figure in either draft consumes it.
-    'splashback': None,
+    # The '_all' catalog, which retains disrupted/splashback halos rather than
+    # masking them out. Required by tidal_stripping.pdf: its lower panel is
+    # f_disrupted, which is identically ~0 in the Diemer catalog.
+    'splashback': 'm12res8_10k_Diemer+scatter_sim_all.h5',
     # Artifacts exist upstream but the code that produced them does not.
     'Geha': None,
 }
@@ -130,7 +132,6 @@ SIM_VERSION_ALIASES = {
 # h5_path(). Naming them beats a bare KeyError: it distinguishes "we chose not
 # to migrate this" from "you mistyped a version".
 NOT_MIGRATED = {
-    'splashback': 'superseded by Diemer for every draft figure (3.4 GB)',
     'Geha': (
         'unresolved: its Geha->Diemer branch is commented out in both '
         'compute_weights.py and compute_quantiles.py, and the disabled code '
@@ -146,14 +147,20 @@ def sim_version(version):
     return SIM_VERSION_ALIASES.get(version, version)
 
 
-def h5_path(version):
+def h5_path(version, resolve_alias=True):
     """Absolute path to the SatGen halo catalog for `version`.
 
     Raises KeyError listing the valid keys on an unknown version. The migrated
     `halo_weights.get_h5` had no else-branch, so an unknown version raised
     UnboundLocalError from inside the function instead.
+
+    `resolve_alias=False` refuses a reweighting-only version string instead of
+    silently mapping it to the underlying catalog. Callers that pair the
+    catalog with a version-keyed directory need that: `ResampleMstar` reads
+    `mhalf/<version>/` with the raw string, so resolving here but not there
+    would build an object whose halo catalog and mass table disagree.
     """
-    key = sim_version(version)
+    key = sim_version(version) if resolve_alias else version
     if key not in H5_REGISTRY:
         raise KeyError(
             f'unknown SatGen version {version!r}; '
