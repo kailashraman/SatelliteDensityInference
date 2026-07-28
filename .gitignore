@@ -1,0 +1,32 @@
+# Derived intermediates. Large, rebuildable from data/ + the SatGen trees via
+# a driver in scripts/. Kept locally so the repo is self-contained on this
+# machine; GitHub carries the recipe, not the bytes.
+results/
+
+# Large binary data anywhere in the tree. Small text inputs under data/
+# (catalogs, kinematics, published limit curves) are committed and are the
+# provenance-critical layer; force-add one of these only if it is genuinely
+# small and genuinely an input:  git add -f data/<source>/<file>
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.fits
+*.pkl
+
+# Job logs. scripts/<name>.sh writes stdout to scripts/<name>_out/.
+scripts/*_out/
+slurm-*.out
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+*~
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
