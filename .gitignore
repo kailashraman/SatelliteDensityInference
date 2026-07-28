@@ -8,6 +8,10 @@ results/
 # provenance-critical layer; force-add one of these only if it is genuinely
 # small and genuinely an input:  git add -f data/<source>/<file>
 *.npz
+# Exception: the Symphony / Milky-Way-est per-host reductions (1.2 MB total).
+# They are the *input* to `make_h5.py sims`, not a derived product, and without
+# them a fresh clone cannot rebuild those two catalogs at all.
+!data/symphony/**/*.npz
 *.npy
 *.h5
 *.hdf5

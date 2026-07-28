@@ -42,6 +42,12 @@ VCIRC_SCATTER_DIR = RESULTS_DIR / 'vcirc_scatter_300pc'
 WEIGHTS_DIR = ADDITIONAL_DIR / 'weights_gc'
 MHALF_DIR = ADDITIONAL_DIR / 'mhalf'
 
+# Per-host reductions of the Symphony and Milky-Way-est N-body suites, used by
+# multipanel_systematics.pdf and the distance/mass number functions. Upstream
+# these were read from ../Symphony/results/, an undeclared third external
+# dependency; at ~1.2 MB they belong in the repository instead.
+SYMPHONY_DIR = DATA_DIR / 'symphony'
+
 # --------------------------------------------------------------------------
 # Upstream dependency 1: SatGen trees and satellite catalogs (dfolsom).
 # --------------------------------------------------------------------------

@@ -78,5 +78,12 @@ def test_paths_keep_their_trailing_separator(name):
 @pytest.mark.parametrize('name', PATH_CONSTANTS)
 def test_paths_exist_once_the_data_is_migrated(name):
     """A path constant with no test that its target exists is how the original
-    bug survived. Runs only with --rundata, since it needs the copied tree."""
+    bug survived.
+
+    Skips until the Fermi tree is migrated (plan step 7) rather than sitting
+    red -- but only on the root being absent, so a constant pointing at a
+    missing subdirectory of a migrated tree still fails.
+    """
+    if not (config.DATA_DIR / 'fermi_legacy').is_dir():
+        pytest.skip('Fermi legacy data not migrated yet (plan step 7)')
     assert Path(getattr(fermi_funcs, name)).exists()
