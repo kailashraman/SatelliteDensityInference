@@ -165,6 +165,36 @@ def test_published_concatenations_match_their_catalog_lengths():
         assert found == 43, f'{version}: found {found} products, expected 43'
 
 
+@pytest.mark.needs_data
+def test_halo_position_is_version_scoped_and_matches_its_catalog():
+    """Jhalopos writes paper_Js/halo_position/<version>/, not the unversioned
+    path upstream used -- where a second version's run would overwrite the
+    first. It supplies the SatGen curve of Jfactors_all.pdf."""
+    root = config.PAPER_JS_DIR / 'halo_position'
+    if not root.is_dir():
+        pytest.skip('halo_position not migrated')
+    import h5py
+
+    versions = [p.name for p in root.iterdir() if p.is_dir()]
+    assert versions, 'halo_position holds no version subdirectory'
+    for version in versions:
+        with h5py.File(config.h5_path(version), 'r') as f:
+            n_halos = f['virial_mass'].shape[0]
+        with np.load(root / version / 'halo_Js.npz') as data:
+            assert data['green_Js'].shape[0] == n_halos
+            # Jhalopos writes only green_Js -- no theta95, no full_Js.
+            assert [k for k in data.files
+                    if k != provenance.PROVENANCE_KEY] == ['green_Js']
+
+
+@pytest.mark.needs_data
+def test_diemer_backup_is_not_reintroduced():
+    """It was bit-identical to Diemer on all 43 dwarfs and merely lacked
+    full_Js. plot_number_functions must read Diemer/."""
+    assert not (config.PAPER_JS_DIR / 'Diemer_backup').exists(), \
+        'Diemer_backup is stale; read paper_Js/Diemer instead'
+
+
 # --------------------------------------------------------------------------
 # Jdwarf's partition arithmetic. Not imported from Jdwarf.py: that module runs
 # its whole pipeline at import (it is a script, not a library), so the formula
