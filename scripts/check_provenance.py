@@ -16,6 +16,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'python'))
 import config
 import provenance
 
+# Per-task fragments written by an array job, e.g.
+# results/paper_Js/<version>/<dwarf>/halo_Js/halo_Js-7.npz. They are inputs to
+# an aggregation step, not products in their own right, and the aggregate's
+# stamp records each of them by path. Counted and reported, not required to
+# carry their own sidecar -- there can be tens of thousands.
+SHARD_PARENTS = {'halo_Js', 'massProfile'}
+
+
+def is_shard(path):
+    return path.parent.name in SHARD_PARENTS and path.stem != path.parent.name
+
 
 def main(argv):
     # data/additional is included by default: the h5 catalogs are the root of
@@ -26,6 +37,7 @@ def main(argv):
     unstamped = []
     by_version = defaultdict(list)
     migrated = []
+    shards = 0
 
     for root in roots:
         if not root.exists():
@@ -35,6 +47,9 @@ def main(argv):
                           for p in root.rglob(pattern))
         for path in products:
             if path.name.endswith(provenance.SIDECAR_SUFFIX):
+                continue
+            if is_shard(path):
+                shards += 1
                 continue
             record = provenance.read(path)
             if record is None:
@@ -51,6 +66,8 @@ def main(argv):
         print(f'  {version or "<no version>"}: {len(paths)}')
     if migrated:
         print(f'  ({len(migrated)} copied in from SatGen_Dwarf, not recomputed here)')
+    if shards:
+        print(f'  ({shards} array-task fragments, covered by their aggregate)')
 
     if unstamped:
         print(f'\n{len(unstamped)} unstamped product(s):')
