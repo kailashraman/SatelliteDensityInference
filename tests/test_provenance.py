@@ -183,11 +183,36 @@ def test_assert_single_version_checks_expected(tmp_path):
         provenance.assert_single_version(paths, expected='Zhao')
 
 
+def test_assert_single_version_catches_mismatched_alias(tmp_path):
+    """lmc and lmc_50 both resolve to the Diemer catalog, so grouping by the
+    resolved sim_version alone cannot tell them apart -- lmc weights placed in
+    the lmc_50 slot must still raise. Fails against the pre-fix code, which
+    only compared the resolved catalog name."""
+    paths = [_write(tmp_path, 'a.npz', 'lmc')]
+    with pytest.raises(ValueError, match="built as SatGen version 'lmc'"):
+        provenance.assert_single_version(paths, expected='lmc_50')
+
+
 def test_assert_single_version_rejects_empty_when_expecting():
     """A glob that matched nothing must not read as success."""
     with pytest.raises(ValueError, match='no inputs'):
         provenance.assert_single_version([], expected='Diemer')
     assert provenance.assert_single_version([]) is None
+
+
+def test_assert_single_version_catches_alias_mixing_with_no_expected(tmp_path):
+    """lmc and lmc_50 both resolve to sim_version='Diemer', so the primary
+    check (grouped by resolved sim_version) sees one version and passes them
+    -- a bare call with no `expected` must still catch the mix via the raw
+    satgen_version. This is the gap `test_assert_single_version_catches_
+    mismatched_alias` above does not cover: that test only exercises the
+    `expected`-supplied branch, via a single-file `paths` list. Fails against
+    the pre-fix code, where the raw-satgen_version comparison sat entirely
+    inside `if expected is not None`."""
+    paths = [_write(tmp_path, 'a.npz', 'lmc'),
+             _write(tmp_path, 'b.npz', 'lmc_50')]
+    with pytest.raises(ValueError, match='mix aliased SatGen variants'):
+        provenance.assert_single_version(paths)
 
 
 def test_stamp_existing_for_files_we_cannot_rewrite(tmp_path):
@@ -201,6 +226,31 @@ def test_stamp_existing_for_files_we_cannot_rewrite(tmp_path):
     back = provenance.read(path)
     assert back['migrated_from'] == '/old/tree/catalog.h5'
     assert back['sim_version'] == 'Diemer'
+
+
+def test_stamp_existing_refuses_over_disagreeing_inband_record(tmp_path):
+    """savez() writes both an in-band _provenance key and a sidecar. Calling
+    stamp_existing() over that product -- as a migration sweep would, since
+    it never writes in-band -- would overlay a possibly-false sidecar (e.g.
+    'copied from SatGen_Dwarf') on top of a truthful in-band record of a
+    genuine local run. Fails against the pre-fix code, which wrote the
+    sidecar unconditionally."""
+    path = _write(tmp_path, 'local.npz', 'Diemer')  # in-band + sidecar, via savez
+    migrated_record = provenance.stamp('scripts/stamp_migrated.py', version='Diemer',
+                                       migrated_from='/old/tree/local.npz')
+    with pytest.raises(ValueError, match='already carries an in-band'):
+        provenance.stamp_existing(path, migrated_record)
+
+
+def test_stamp_existing_allows_products_with_no_inband_record(tmp_path):
+    """The normal case: an .h5 or a migrated .npz that only ever gets a
+    sidecar (never went through savez) is not blocked by the guard above."""
+    path = tmp_path / 'catalog.h5'
+    path.write_bytes(b'not really hdf5')
+    record = provenance.stamp('scripts/migrate.sh', version='Diemer',
+                              migrated_from='/old/tree/catalog.h5')
+    provenance.stamp_existing(path, record)  # must not raise
+    assert provenance.read(path)['migrated_from'] == '/old/tree/catalog.h5'
 
 
 def test_figure_manifest(tmp_path):

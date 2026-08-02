@@ -218,7 +218,28 @@ def stamp_existing(path, record):
     """Attach a sidecar to a product we cannot or should not rewrite.
 
     Used for .h5 files and for intermediates copied in from SatGen_Dwarf.
+
+    Refuses when the target `.npz` already carries an in-band `_provenance`
+    key (only `savez()` writes that) that disagrees with `record`: `savez`
+    writes both layers, so an in-band record means the file was produced
+    locally by this repository, not copied in. Writing a sidecar over it --
+    e.g. a migration sweep's 'copied from SatGen_Dwarf' claim -- would overlay
+    a false story on top of a truthful in-band one, with nothing left to
+    compare them afterwards.
     """
+    path = Path(path)
+    if path.suffix == '.npz' and path.exists():
+        with np.load(path, allow_pickle=False) as data:
+            if PROVENANCE_KEY in data.files:
+                inband = json.loads(str(data[PROVENANCE_KEY]))
+                if inband != record:
+                    raise ValueError(
+                        f'{path} already carries an in-band _provenance '
+                        'record that disagrees with the sidecar being '
+                        'written -- refusing. This product was produced '
+                        'locally (savez writes both layers); stamping a '
+                        'different record over it would falsify the '
+                        'provenance chain.')
     return _write_sidecar(path, record)
 
 
@@ -229,6 +250,22 @@ def assert_single_version(paths, expected=None):
     combining products built from different realizations. Unstamped inputs are
     an error too -- an unstamped file is one whose version is unknown, not one
     known to be consistent.
+
+    `sim_version` is the RESOLVED catalog (aliases like `lmc`/`lmc_50`/`lvdb`/
+    `mhalf_scatter` all resolve to `Diemer`), so the primary check above groups
+    by that key and cannot by itself distinguish those variants from one
+    another. A second pass compares the raw `satgen_version` across every
+    input that actually carries an alias (`satgen_version != sim_version`) and
+    raises on more than one distinct raw variant, regardless of whether
+    `expected` was passed -- a bare call with no `expected` still catches
+    `lmc` mixed with `lmc_50`.
+
+    This second pass is asymmetric by construction: a plain, non-aliased file
+    (e.g. a `Diemer` product with `satgen_version == sim_version`) dropped
+    into an `lmc` slot has `raw == sim_version` for that record and is
+    skipped by this check, since it never enters `aliased`. Catching that
+    case needs a check keyed on the *directory* the file was found in, not on
+    its own stamp, and is out of scope here.
     """
     paths = list(paths)
     if not paths:
@@ -239,14 +276,19 @@ def assert_single_version(paths, expected=None):
                 f'no inputs to check against expected version {expected!r}')
         return None
 
+    records = [read(path) for path in paths]
+
     seen = {}
+    aliased = {}
     unstamped = []
-    for path in paths:
-        record = read(path)
+    for path, record in zip(paths, records):
         if record is None or record.get('sim_version') is None:
             unstamped.append(str(path))
             continue
         seen.setdefault(record['sim_version'], []).append(str(path))
+        raw = record.get('satgen_version')
+        if raw is not None and raw != record.get('sim_version'):
+            aliased.setdefault(raw, []).append(str(path))
 
     if unstamped:
         raise ValueError(
@@ -257,12 +299,26 @@ def assert_single_version(paths, expected=None):
             f'  {version}: {len(files)} file(s), e.g. {files[0]}'
             for version, files in sorted(seen.items()))
         raise ValueError(f'inputs mix SatGen versions:\n{detail}')
+    if len(aliased) > 1:
+        detail = '\n'.join(
+            f'  {raw}: {len(files)} file(s), e.g. {files[0]}'
+            for raw, files in sorted(aliased.items()))
+        raise ValueError(f'inputs mix aliased SatGen variants:\n{detail}')
     if expected is not None and seen:
         found = next(iter(seen))
         resolved = config.sim_version(expected)
         if found != resolved:
             raise ValueError(
                 f'inputs are SatGen version {found!r}, expected {resolved!r}')
+        # Additional constraint on top of the alias-mixing check above: every
+        # aliased input must also match `expected` itself, not merely agree
+        # with each other.
+        for path, record in zip(paths, records):
+            raw = record.get('satgen_version')
+            if raw is not None and raw != record.get('sim_version') and raw != expected:
+                raise ValueError(
+                    f'{path} was built as SatGen version {raw!r}, '
+                    f'expected {expected!r}')
     return next(iter(seen)) if seen else None
 
 
