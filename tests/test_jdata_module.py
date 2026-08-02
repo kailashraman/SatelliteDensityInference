@@ -76,3 +76,16 @@ def test_kd_names_stay_keyed_to_the_kinematics_table():
 
 def test_mc_names_and_dispersions_are_both_csv_derived():
     assert len(jdata.mc_names) == len(jdata.mc_dispersion) == 32
+
+
+def test_ursa_major_iii_still_constructs():
+    """Ursa Major III is not in dwarf_names (excluded from the 39-dwarf sample),
+    but `Dwarf.__init__` has a dedicated branch for it, read from
+    `gc_ambiguous.csv` rather than `dwarf_all.csv`. Notebook cell 74 calls
+    `obs.Dwarf('Ursa Major III')` to place the UMa3/U1 point on
+    dispersion_limit_contours.pdf -- a future cleanup must not remove this
+    branch as dead code."""
+    import numpy as np
+    dwarf = jdata.Dwarf('Ursa Major III')
+    assert np.isfinite(dwarf.rhalf.value)
+    assert np.all(np.isfinite(dwarf.rhalf_err.value))

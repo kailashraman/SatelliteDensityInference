@@ -74,9 +74,6 @@ for dwarf in dwarf_mw[dwarf_mw['vlos_sigma'] > 0]:
 for dwarf in dwarf_lmc[dwarf_lmc['vlos_sigma'] > 0]:
     dwarf_names.append(dwarf['name'])
 dwarf_names.append('Leo V')
-# add ursa major III - not including anymore
-# dwarf_names.append('Ursa Major III')
-# dwarf_names.append('Ursa Major III extreme')
 
 dwarf_names = np.array(dwarf_names)
 
@@ -91,9 +88,6 @@ for dwarf in dwarf_lmc:
 
 temp = []
 for i in range(len(dwarf_names)):
-    # if dwarf_names[i] == 'Ursa Major III' or dwarf_names[i] == 'Ursa Major III extreme':
-    #     table_row = gc_ambiguous[gc_ambiguous['name'] == 'Ursa Major III'][0]
-    # else:
     table_row = dwarf_all[dwarf_all['name'] == dwarf_names[i]][0]
     temp.append((dwarf_names[i], table_row['ra'], table_row['dec'], 
                 table_row['distance_modulus'], table_row['distance_modulus_em'], table_row['distance_modulus_ep'],
@@ -135,8 +129,6 @@ uma3_info = np.array(uma3_info, dtype=[('name', '<U32'), ('ra', '<f8'), ('decl',
 crater2_idx = np.where(dwarf_names == 'Crater II')[0]
 peg4_idx = np.where(dwarf_names == 'Pegasus IV')[0]
 smc_idx = np.where(dwarf_names == 'SMC')[0]
-# uma3_idx = np.where(dwarf_names == 'Ursa Major III')[0]
-# uma3ex_idx = np.where(dwarf_names == 'Ursa Major III extreme')[0]
 lmc_idx = np.where(dwarf_names == 'LMC')[0]
 
 temp['ellip'][crater2_idx] = 0.18
