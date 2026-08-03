@@ -19,7 +19,14 @@ results/
 *.pkl
 
 # Job logs. scripts/<name>.sh writes stdout to scripts/<name>_out/.
-scripts/*_out/
+# The directories themselves must survive a fresh clone: SLURM resolves
+# #SBATCH --output= against the submission directory at dispatch time, before
+# the script body's mkdir ever runs, so a missing log directory silently drops
+# every array task. Ignore the contents, keep the .gitkeep. (Ignoring the
+# directory itself would not work -- git does not descend into an excluded
+# directory, so a negation for a file inside it never matches.)
+scripts/*_out/*
+!scripts/*_out/.gitkeep
 slurm-*.out
 *.log
 

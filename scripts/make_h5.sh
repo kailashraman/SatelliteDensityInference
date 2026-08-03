@@ -19,7 +19,19 @@
 
 set -euo pipefail
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# SLURM copies this script to a node-local spool directory (/var/spool/slurmd)
+# before executing it, so ${BASH_SOURCE[0]} does NOT point into the repository
+# under sbatch -- it resolves to the spool copy and every repo-relative path
+# below silently becomes wrong. Prefer SLURM_SUBMIT_DIR (these headers already
+# require submission from the repository root); fall back to the script's own
+# location for direct shell invocation. Validate either way and fail loudly
+# rather than resolving to the wrong tree.
+REPO="${SLURM_SUBMIT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+if [[ ! -f "${REPO}/python/config.py" ]]; then
+  echo "ERROR: REPO=${REPO} is not the SatelliteDensityInference root" >&2
+  echo "       (no python/config.py). Submit from the repository root." >&2
+  exit 2
+fi
 
 source ~/.bashrc
 conda deactivate 2>/dev/null || true
