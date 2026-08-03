@@ -275,8 +275,17 @@ for j in range(n_lists):
 
 
 
+# Carry the weights' infall -> z=0 stellar-mass convention forward as a
+# top-level field. It is recorded on the weights record, which lives inside
+# this record's inputs[] -- and provenance._input_record strips inputs[] when
+# embedding, so a figure manifest built from this file would otherwise lose
+# the field entirely and read as "unknown" for a product that is fine.
+mstar_evolution = provenance.read(
+    weights_dir / (dwarf + '.npz')).get('mstar_evolution')
+
 record = provenance.stamp('python/compute_quantiles.py', version=version, argv=sys.argv[1:],
-                          inputs=provenance_inputs, dwarf=dwarf)
+                          inputs=provenance_inputs, dwarf=dwarf,
+                          mstar_evolution=mstar_evolution)
 if has_J:
     provenance.savez(save_dir / dwarf, record, rho150_infall_quantiles=rho150_infall_quantiles, cV_infall_quantiles=cV_infall_quantiles, rho150_quantiles=rho150_quantiles, cV_quantiles=cV_quantiles, J_quantiles=J_quantiles, theta95_quantiles=theta95_quantiles, Mvir_quantiles=Mvir_quantiles, Mpeak_quantiles=Mpeak_quantiles, Mloss_quantiles=Mloss_quantiles, rmax_quantiles=rmax_quantiles, vmax_quantiles=vmax_quantiles, Mhalf_quantiles=Mhalf_quantiles, dispersion_quantiles=dispersion_quantiles)
 else:

@@ -243,6 +243,24 @@ def stamp_existing(path, record):
     return _write_sidecar(path, record)
 
 
+# Stages whose products carry an infall -> z=0 stellar-mass convention, i.e.
+# those downstream of ResampleMstar.evolved_Mstar. Anything else legitimately
+# has no `mstar_evolution` field and is exempt from that comparison.
+#
+# A script belongs here ONLY once it actually stamps the field. Listing one
+# that does not is worse than omitting it: its products stamp as None, and the
+# guard then reports a correct product as predating the fix and carrying the
+# +1.2 dex offset -- a false accusation that would send someone regenerating a
+# whole tree. tests/test_provenance.py asserts the two stay in step.
+#
+# Known omissions, to be added with their stamps, not before:
+#   python/vcirc_scatter_300pc.py -- calls evolved_Mstar, does not yet stamp.
+CONVENTION_BEARING_SCRIPTS = frozenset({
+    'python/compute_weights.py',
+    'python/compute_quantiles.py',
+})
+
+
 def assert_single_version(paths, expected=None):
     """Raise unless every product in `paths` came from one SatGen version.
 
@@ -280,6 +298,7 @@ def assert_single_version(paths, expected=None):
 
     seen = {}
     aliased = {}
+    conventions = {}
     unstamped = []
     for path, record in zip(paths, records):
         if record is None or record.get('sim_version') is None:
@@ -289,6 +308,22 @@ def assert_single_version(paths, expected=None):
         raw = record.get('satgen_version')
         if raw is not None and raw != record.get('sim_version'):
             aliased.setdefault(raw, []).append(str(path))
+        # The infall -> z=0 stellar-mass convention. Products written before
+        # that mapping was fixed carry no field at all, and are numerically
+        # indistinguishable from corrected ones -- which is exactly how a tree
+        # holding mass_floor_7 under the old +1.2 dex constant alongside eight
+        # versions without it reached panel 6 of multipanel_systematics.pdf.
+        # `None` is its own class among these: absence means "unknown,
+        # predates the fix", never "agrees".
+        #
+        # Restricted to products of the stage that applies the mapping. The
+        # catalog h5, the rho150/M30 globals and the mhalf products have no
+        # stellar-mass convention to disagree about, so folding their absent
+        # field into the same comparison would make every quantiles run fail
+        # against its own inputs.
+        if record.get('script') in CONVENTION_BEARING_SCRIPTS:
+            conventions.setdefault(
+                record.get('mstar_evolution'), []).append(str(path))
 
     if unstamped:
         raise ValueError(
@@ -304,6 +339,17 @@ def assert_single_version(paths, expected=None):
             f'  {raw}: {len(files)} file(s), e.g. {files[0]}'
             for raw, files in sorted(aliased.items()))
         raise ValueError(f'inputs mix aliased SatGen variants:\n{detail}')
+    if len(conventions) > 1:
+        detail = '\n'.join(
+            f'  {convention!r}: {len(files)} file(s), e.g. {files[0]}'
+            for convention, files in sorted(
+                conventions.items(), key=lambda kv: str(kv[0])))
+        raise ValueError(
+            'inputs mix infall -> z=0 stellar-mass conventions '
+            f'(mstar_evolution):\n{detail}\n'
+            'Products stamped None predate the per-halo tidal mapping and '
+            'carry a constant +1.2 dex offset. Regenerate the whole tree for '
+            'this version rather than mixing.')
     if expected is not None and seen:
         found = next(iter(seen))
         resolved = config.sim_version(expected)

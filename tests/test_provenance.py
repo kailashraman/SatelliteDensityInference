@@ -1,6 +1,7 @@
 """Provenance round-trip and the version-mixing guard."""
 
 import json
+import pathlib
 
 import numpy as np
 import pytest
@@ -264,3 +265,103 @@ def test_figure_manifest(tmp_path):
     assert record['figure'] == str(figure)
     assert record['dja_snapshot']['prior'] == 'loguniform'
     assert record['inputs'][0]['provenance']['sim_version'] == 'Diemer'
+
+
+def _write_conv(tmp_path, name, version, script, convention=...):
+    """A stamped product from `script`, optionally carrying a convention."""
+    extra = {} if convention is ... else {'mstar_evolution': convention}
+    record = provenance.stamp(script, version=version, argv=['0', version],
+                              **extra)
+    return provenance.savez(tmp_path / name, record, x=np.arange(3))
+
+
+def test_convention_mixing_is_caught(tmp_path):
+    """A half-regenerated weights tree must not validate.
+
+    The +1.2 dex offset and the per-halo tidal mapping produce products that
+    are identical in name, shape, dtype and version -- `mstar_evolution` is
+    the only discriminator, so it has to be checked, not merely recorded.
+    """
+    paths = [_write_conv(tmp_path, 'a.npz', 'Diemer',
+                         'python/compute_weights.py', 'per_halo_tidal'),
+             _write_conv(tmp_path, 'b.npz', 'Diemer',
+                         'python/compute_weights.py')]
+    with pytest.raises(ValueError, match='stellar-mass conventions'):
+        provenance.assert_single_version(paths)
+
+
+def test_absent_convention_is_not_agreement(tmp_path):
+    """Two migrated products agree with each other, not with a regenerated one."""
+    paths = [_write_conv(tmp_path, 'a.npz', 'Diemer',
+                         'python/compute_weights.py'),
+             _write_conv(tmp_path, 'b.npz', 'Diemer',
+                         'python/compute_weights.py')]
+    assert provenance.assert_single_version(paths) == 'Diemer'
+
+
+def test_non_convention_bearing_inputs_are_exempt(tmp_path):
+    """Regression: the guard must not fire on its own legitimate inputs.
+
+    compute_quantiles reads the catalog h5, the rho150/M30 globals and the
+    mhalf products alongside the weights. None of those has a stellar-mass
+    convention to disagree about. A first version of this guard compared the
+    field across every input and so failed every real quantiles run against
+    its own upstream -- 387 tasks, none of them mixing anything.
+    """
+    paths = [_write_conv(tmp_path, 'w.npz', 'Diemer',
+                         'python/compute_weights.py', 'per_halo_tidal'),
+             _write_conv(tmp_path, 'm.npz', 'Diemer',
+                         'python/compute_mhalf.py'),
+             _write_conv(tmp_path, 'j.npz', 'Diemer', 'python/Jdwarf.py')]
+    assert provenance.assert_single_version(paths) == 'Diemer'
+
+
+def test_convention_bearing_scripts_actually_stamp():
+    """Every allowlisted script must pass mstar_evolution= to stamp().
+
+    Listing a script that does not stamp is worse than omitting it: its
+    products carry None, and the guard then reports a correct product as
+    predating the fix and carrying the +1.2 dex offset -- a false accusation
+    that would send someone regenerating a whole tree. vcirc_scatter_300pc.py
+    calls evolved_Mstar but does not yet stamp, which is exactly this trap.
+    """
+    root = pathlib.Path(__file__).resolve().parent.parent
+    for script in sorted(provenance.CONVENTION_BEARING_SCRIPTS):
+        path = root / script
+        if not path.exists():
+            pytest.fail(f'{script} is allowlisted but does not exist')
+        assert 'mstar_evolution=' in path.read_text(), (
+            f'{script} is in CONVENTION_BEARING_SCRIPTS but never passes '
+            'mstar_evolution= to provenance.stamp, so its products stamp as '
+            'None and the guard will falsely accuse them.')
+
+
+@pytest.mark.needs_data
+@pytest.mark.parametrize('tree', ['data/additional/weights_gc',
+                                  'results/paper_quantiles/galactocentric'])
+def test_regenerated_trees_are_convention_uniform(tree):
+    """The check production actually needs, at the level mixing happens.
+
+    assert_single_version runs per dwarf, where at most one convention-bearing
+    input is present, so its disagreement branch is unreachable there. Mixing
+    happens ACROSS dwarfs and versions -- one dwarf regenerated, its neighbour
+    not -- and is only visible to a sweep like this one. That is the shape of
+    the original bug: mass_floor_7 under one convention sitting beside eight
+    versions under another, each individually self-consistent.
+    """
+    root = pathlib.Path(__file__).resolve().parent.parent / tree
+    if not root.is_dir():
+        pytest.skip(f'{tree} not present')
+    conventions = {}
+    for sidecar in root.glob('*/*.npz'):
+        record = provenance.read(sidecar)
+        key = None if record is None else record.get('mstar_evolution')
+        conventions.setdefault(key, []).append(str(sidecar))
+    assert conventions, f'{tree} holds no stamped products'
+    assert len(conventions) == 1, (
+        f'{tree} mixes stellar-mass conventions: '
+        + '; '.join(f'{k!r}: {len(v)} file(s), e.g. {v[0]}'
+                    for k, v in conventions.items()))
+    assert None not in conventions, (
+        f'{tree} is uniformly unstamped -- products predate the per-halo '
+        'tidal mapping and carry the +1.2 dex offset.')

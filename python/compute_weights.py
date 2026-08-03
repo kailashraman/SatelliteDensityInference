@@ -191,8 +191,18 @@ if not version in ['Symphony', 'MWest']:
             'added. mhalf_weights does not draw from the RNG and is '
             'unaffected.'))
 
+# Name the infall -> z=0 stellar-mass convention in the record. Products made
+# under the old constant +1.2 dex offset are numerically indistinguishable from
+# these without it -- that is how a tree carrying two conventions (mass_floor_7
+# offset, the other eight not) survived unnoticed and reached panel 6 of
+# multipanel_systematics.pdf. Migrated products carry no such field, so absence
+# means "unknown, predates the fix", not "agrees".
+mstar_evolution = ('per_halo_tidal' if not version in ['Symphony', 'MWest']
+                   else 'not_applicable')
+
 record = provenance.stamp('python/compute_weights.py', version=version, argv=sys.argv[1:],
-                          inputs=provenance_inputs, dwarf=dwarf, **stochastic_kwargs)
+                          inputs=provenance_inputs, dwarf=dwarf,
+                          mstar_evolution=mstar_evolution, **stochastic_kwargs)
 if version == 'mhalf_scatter':
     provenance.savez(save_dir + dwarf, record, mstar_weights=mstar_weights, joint_weights=joint_weights, mhalf_weights=mhalf_weights, mdyn_errani_weights=mdyn_errani_weights)
 elif version == 'Symphony' or version == 'MWest':
