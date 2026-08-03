@@ -34,6 +34,16 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --time=00:30:00
+# lr7's DefMemPerCPU is 4590M, which this stage exceeds: weights_list holds 22
+# full-catalog float64 arrays (mhalf + 10 mstar + 10 joint + mdyn_errani) while
+# the npz they were sliced from is still resident, plus the catalog columns and
+# green_Js. That is ~2 GB at Diemer's 2.4M halos and ~4 GB at m2e12's 4.8M,
+# before quantile()'s per-column argsort. 12G clears the observed 8.2G
+# high-water mark with headroom; 32G would serialize the 43-task array on
+# shared nodes for no benefit. Every task OOM-killed at the default,
+# pinned to the ceiling at 4689M, which reports as a bare FAILED/OUT_OF_MEMORY
+# with no Python traceback -- the log just stops after the dwarf name.
+#SBATCH --mem=12G
 #SBATCH --array=0-42
 #SBATCH --mail-type=NONE
 #SBATCH --output=scripts/compute_quantiles_out/slurm-%A_%a.out

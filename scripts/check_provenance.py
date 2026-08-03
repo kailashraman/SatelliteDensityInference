@@ -37,6 +37,7 @@ def main(argv):
     unstamped = []
     by_version = defaultdict(list)
     migrated = []
+    unreadable = []
     shards = 0
 
     for root in roots:
@@ -51,7 +52,16 @@ def main(argv):
             if is_shard(path):
                 shards += 1
                 continue
-            record = provenance.read(path)
+            try:
+                record = provenance.read(path)
+            except Exception as exc:
+                # A truncated .npz is exactly what a cancelled or OOM-killed
+                # array task leaves behind, and it is the thing this sweep most
+                # needs to report. Crashing on the first one instead hides
+                # every product after it in the walk -- the sweep stops being
+                # an inventory and becomes an assertion about file zero.
+                unreadable.append((path, exc))
+                continue
             if record is None:
                 unstamped.append(path)
                 continue
@@ -69,12 +79,22 @@ def main(argv):
     if shards:
         print(f'  ({shards} array-task fragments, covered by their aggregate)')
 
+    if unreadable:
+        print(f'\n{len(unreadable)} unreadable product(s) -- truncated or '
+              'corrupt, typically a cancelled or OOM-killed array task:')
+        for path, exc in unreadable[:20]:
+            print(f'  {path}: {type(exc).__name__}: {exc}')
+        if len(unreadable) > 20:
+            print(f'  ... and {len(unreadable) - 20} more')
+
     if unstamped:
         print(f'\n{len(unstamped)} unstamped product(s):')
         for path in unstamped[:20]:
             print(f'  {path}')
         if len(unstamped) > 20:
             print(f'  ... and {len(unstamped) - 20} more')
+
+    if unstamped or unreadable:
         return 1
 
     print('\nall products stamped')
