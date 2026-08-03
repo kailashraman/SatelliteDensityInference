@@ -18,22 +18,32 @@
 #   Diemer's).
 #
 # Regenerating changes mstar_weights and joint_weights relative to the
-# migrated weights_gc/ products, for two independent reasons: (1) the
-# from_logMstar fix that forwards logMhalf_scatter to obs.Dwarf instead of
-# silently dropping it, and (2) this script now seeds the global NumPy RNG
-# (see compute_weights.py's module docstring), so even a rerun with fix (1)
-# alone draws a fresh, seeded SHMR-scatter realization rather than
-# reproducing the migrated one. mhalf_weights is unaffected by either change:
+# migrated weights_gc/ products, dominantly because ResampleMstar.evolved_Mstar
+# now maps each halo's infall stellar mass to z=0 with its own Errani+18 tidal
+# ratio (read off stellar_mass/tpeak_stellar_mass) instead of the old constant
+# +1.2 dex offset -- see halo_weights.py and tests/test_evolved_mstar.py. Two
+# further, second-order reasons compound the change: (1) the from_logMstar fix
+# that forwards logMhalf_scatter to obs.Dwarf instead of silently dropping it,
+# and (2) this script now seeds the global NumPy RNG (see compute_weights.py's
+# module docstring), so even a rerun with fixes (1)/(2) alone draws a fresh,
+# seeded SHMR-scatter realization rather than reproducing the migrated one.
+# mhalf_weights is unaffected by any of this: it never called evolved_Mstar,
 # from_logMhalf already forwarded logMhalf_scatter, and it does not draw from
 # the RNG at all -- it reproduces bit-exact.
 #
 # Downstream of mstar_weights/joint_weights (see docs/migration-notes.md,
 # "SHMR weights are one unseeded realization"): panel 2 of
-# multipanel_systematics.pdf (Fattahi18, Moster18, Kim+24, Danieli+23) and the
+# multipanel_systematics.pdf (Fattahi18, Moster18, Kim+24, Danieli+23), panel 6
+# (the mass-floor panel, where the old constant offset actually differed
+# between migrated versions -- mass_floor_7 carried it, the other eight
+# published versions did not, and nothing distinguished them until
+# mstar_evolution was stamped) with its own Fattahi18/Kim+24 series, and the
 # rho150.pdf inference curves, plus every paper_quantiles/galactocentric
 # product and everything built from it (both parts of the paper series share
 # these upstream intermediates -- check both drafts, not just one, before
-# treating a regeneration as scoped to a single figure).
+# treating a regeneration as scoped to a single figure). Part II's J-factor and
+# Fermi-limit products are downstream of paper_quantiles/galactocentric too, so
+# a regeneration here is not scoped to Part I's figures alone.
 #
 # VERSION=Symphony/MWest is unexercised in this repository: their weights and
 # quantiles were built on a superseded, contaminated Symphony catalog and have

@@ -37,6 +37,29 @@ dja_snapshot      {dir, prior, files[]} -- each DJA file actually read is
                   DwarfJeansAnalysis re-run updates it
 inputs[]          {path, size, mtime, provenance} per input, one hop deep
 migrated_from     set when copied in from SatGen_Dwarf rather than computed here
+stochastic_arrays which array names in this product are RNG draws, e.g.
+                  ('mstar_weights', 'joint_weights')
+stochastic_caveat prose explaining what those draws depend on (the RNG seed)
+                  and which arrays in the same product are unaffected
+mstar_evolution   the infall -> z=0 stellar-mass convention evolved_Mstar used,
+                  e.g. 'per_halo_tidal' (the Errani+18 tidal-track ratio read
+                  per halo from stellar_mass/tpeak_stellar_mass) or
+                  'not_applicable' (Symphony/MWest, which never reach the SHMR
+                  path). Absence means "unknown, predates the fix" -- products
+                  written before evolved_Mstar stopped adding a constant
+                  +1.2 dex are unstamped, and that is NOT equivalent to
+                  agreement with a stamped product. `assert_single_version`
+                  raises if inputs disagree on this field, same as it does for
+                  `sim_version`. compute_quantiles.py re-stamps it as a
+                  top-level field on its own record (read off its weights
+                  input) rather than leaving it to travel only inside
+                  `inputs[]`: `_input_record` strips the `inputs` key when
+                  embedding an upstream record one hop deep, so a quantiles
+                  product's own `mstar_evolution` would otherwise be buried
+                  inside `inputs[weights].provenance.mstar_evolution` and
+                  vanish the next time that quantiles product is itself
+                  embedded as an input -- e.g. in a figure manifest -- because
+                  that embedding strips quantiles' `inputs[]` wholesale.
 ```
 
 `inputs` embeds each input's stamp but not *its* inputs. Part II's aggregation
