@@ -21,7 +21,7 @@ fermi_funcs = pytest.importorskip('fermi_funcs',
 PATH_CONSTANTS = [
     'dSphs_csv_path', 'dSphs_sed_path', 'dSphs_sed_path_update',
     'dSphs_TS_prof_path', 'blank_field_csv_path', 'blank_TS_prof_path',
-    'cirelli_dir',
+    'blank_field_sed_path', 'cirelli_dir',
 ]
 
 
@@ -50,7 +50,8 @@ def test_dSphs_csv_path_shares_the_legacy_root_with_its_siblings():
     """The specific bug: it sat one directory above the rest."""
     legacy_root = config.DATA_DIR / 'fermi_legacy'
     for name in ['dSphs_csv_path', 'dSphs_sed_path', 'dSphs_TS_prof_path',
-                 'blank_field_csv_path', 'blank_TS_prof_path', 'cirelli_dir']:
+                 'blank_field_csv_path', 'blank_TS_prof_path',
+                 'blank_field_sed_path', 'cirelli_dir']:
         assert _is_under(getattr(fermi_funcs, name), legacy_root), name
 
 

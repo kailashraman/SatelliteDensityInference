@@ -132,9 +132,10 @@ def test_array_throttle_suffix_parses_correctly(version_registry, launcher_copy)
     without it -- and must not break LAUNCHER_N_TASKS parsing."""
     n_tasks = len(obs.dwarf_names) * len(vsp.SHMR_NAMES)
     launcher_copy(f'#SBATCH --array=0-{n_tasks - 1}%20')
-    # Proceeds past the array-bound assert into the next stage (unstamped
-    # inputs), proving the %20 suffix was parsed rather than rejected.
-    with pytest.raises(ValueError, match='unstamped'):
+    # Proceeds past the array-bound assert into the next stage (the MASSPROF
+    # input does not exist for this synthetic version), proving the %20
+    # suffix was parsed rather than rejected.
+    with pytest.raises(FileNotFoundError, match='do not exist'):
         _run_script(0, version_registry)
 
 
@@ -142,9 +143,10 @@ def test_task_count_agreement_proceeds_past_the_assert(version_registry):
     """When len(dwarf_names)*N_SHMR == LAUNCHER_N_TASKS (the real, unpatched
     case), the script must NOT raise AssertionError at that check -- it
     should proceed into the next stage, which for this synthetic version
-    fails for an unrelated reason (unstamped inputs), proving execution got
-    past the count check rather than merely not being tested."""
-    with pytest.raises(ValueError, match='unstamped'):
+    fails for an unrelated reason (the MASSPROF input does not exist),
+    proving execution got past the count check rather than merely not being
+    tested."""
+    with pytest.raises(FileNotFoundError, match='do not exist'):
         _run_script(0, version_registry)
 
 

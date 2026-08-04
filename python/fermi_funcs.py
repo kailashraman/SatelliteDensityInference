@@ -29,6 +29,7 @@ dSphs_TS_prof_path = str(_LEGACY / 'dSphs' / 'TS_profiles') + '/'
 
 blank_field_csv_path = str(_LEGACY) + '/'
 blank_TS_prof_path = str(_LEGACY / 'blank_fields' / 'TS_profiles') + '/'
+blank_field_sed_path = str(_LEGACY / 'blank_fields' / 'SEDs') + '/'
 
 cirelli_dir = str(_LEGACY / 'PPPC4DM') + '/'
 
