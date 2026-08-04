@@ -4,11 +4,15 @@
 #
 #   sbatch scripts/plot_rho150_mpeak.sh
 #   sbatch --export=ALL,VERSION=Diemer scripts/plot_rho150_mpeak.sh
+#   sbatch scripts/plot_rho150_mpeak.sh --supplementary                 # all 39 dwarfs, plots/supplementary/rho150_mpeak/
 #
 # Requires scripts/save_contours.sh to have already completed for this
 # version (reads results/paper_contours/rho150_mpeak/<version>/<dwarf>_{
 # unweighted,mhalf,F18,K24}.npz) and scripts/compute_mhalf.sh's pass 2 for
 # this version's rho150 globals (data/additional/<version>_rho150.npz).
+#
+# Extra arguments beyond $VERSION (e.g. --supplementary) are forwarded to
+# python/plot_rho150_mpeak.py verbatim.
 #
 # --output below is resolved by SLURM against the submission directory BEFORE
 # this script body runs, so scripts/plot_rho150_mpeak_out/ must already
@@ -55,4 +59,4 @@ conda activate J_calc
 set -euo pipefail
 cd "${REPO}"
 
-exec python -u "${REPO}/python/plot_rho150_mpeak.py" --version "${VERSION:-mass_floor_7}"
+exec python -u "${REPO}/python/plot_rho150_mpeak.py" --version "${VERSION:-mass_floor_7}" "$@"

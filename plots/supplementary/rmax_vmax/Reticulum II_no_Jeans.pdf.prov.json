@@ -1,0 +1,116 @@
+{
+  "argv": [
+    "--supplementary"
+  ],
+  "dja_snapshot": null,
+  "dwarf": "Reticulum II",
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/supplementary/rmax_vmax/Reticulum II_no_Jeans.pdf",
+  "git_commit": "8f939a1fe628c47858c59c030a31ae28ed604ed3",
+  "git_dirty": true,
+  "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+  "h5_fingerprint": {
+    "mtime": 1785267594,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+    "size": 1376624522
+  },
+  "inputs": [
+    {
+      "mtime": 1785860139,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_unweighted.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Reticulum II",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_unweighted.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "redshift": "z0",
+        "satgen_version": "Diemer",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "Diemer",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:14:35+00:00"
+      },
+      "size": 8427226
+    },
+    {
+      "mtime": 1785860139,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_mhalf.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Reticulum II",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_mhalf.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "redshift": "z0",
+        "satgen_version": "Diemer",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "Diemer",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:14:35+00:00"
+      },
+      "size": 8427194
+    },
+    {
+      "mtime": 1785860131,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_F18.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Reticulum II",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/galactocentric/z0/Diemer/Reticulum II_F18.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "redshift": "z0",
+        "satgen_version": "Diemer",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "Diemer",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:14:34+00:00"
+      },
+      "size": 8427194
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "no_jeans": true,
+  "redshift": "z0",
+  "satgen_version": "Diemer",
+  "script": "python/plot_rmax_vmax.py",
+  "sim_version": "Diemer",
+  "written_utc": "2026-08-04T21:53:16+00:00"
+}

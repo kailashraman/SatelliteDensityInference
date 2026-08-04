@@ -64,6 +64,7 @@ four contour .npz files it reads) are recorded in a
 `<figure>.prov.json` sidecar via `provenance.figure_manifest`.
 """
 import argparse
+import sys
 
 import numpy as np
 from astropy import units as u
@@ -74,6 +75,7 @@ from plot_style import *
 import config
 import provenance
 import Jdata as obs
+import dwarf_categories as dc
 from halo_weights import ResampleMstar
 from nfw import nfw_parameters_from_rho150_mpeak, nfw_mass
 
@@ -130,8 +132,15 @@ def build_solution_grid(logrho150, logMpeak, n_grid=100):
     }
 
 
-def make_figure(dwarf, version, grid, h5_inputs):
-    """Build and save the rho150-Mpeak figure for one dwarf."""
+def make_figure(dwarf, version, grid, h5_inputs, out_dir=None, prefix=True):
+    """Build and save the rho150-Mpeak figure for one dwarf.
+
+    `out_dir`/`prefix` default to the draft location and the
+    `rho150_mpeak_` basename prefix the .tex needs; the supplementary sweep
+    (see main()'s --supplementary) points `out_dir` at
+    plots/supplementary/rho150_mpeak/ and drops the prefix, since those
+    basenames are not a draft contract.
+    """
     contour_dir = config.PAPER_CONTOURS_DIR / 'rho150_mpeak' / version
     Rho150_grid = grid['Rho150_grid']
     Mpeak_grid = grid['Mpeak_grid']
@@ -251,9 +260,10 @@ def make_figure(dwarf, version, grid, h5_inputs):
     )
     plt.tight_layout()
 
-    out_dir = config.PLOTS_DIR / 'rho150_mpeak'
+    out_dir = out_dir if out_dir is not None else config.PLOTS_DIR / 'rho150_mpeak'
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f'rho150_mpeak_{dwarf}.pdf'
+    fname = f'rho150_mpeak_{dwarf}.pdf' if prefix else f'{dwarf}.pdf'
+    out_path = out_dir / fname
     plt.savefig(out_path)
     plt.close(fig)
 
@@ -272,6 +282,13 @@ def main():
                         help=f'SatGen version (default: {DEFAULT_VERSION})')
     parser.add_argument('--dwarves', nargs='+', default=list(DEFAULT_DWARVES),
                         help=f'dwarf names (default: {DEFAULT_DWARVES})')
+    parser.add_argument('--supplementary', action='store_true',
+                        help='Produce the rho150-Mpeak figure for every dwarf in '
+                             'dwarf_categories.idcs (the 39-dwarf paper sample), written to '
+                             'plots/supplementary/rho150_mpeak/<dwarf>.pdf instead of the '
+                             'three draft figures. Ignores --dwarves. A dwarf missing '
+                             'required contour files is reported, not silently skipped, '
+                             'and the process exits non-zero if any are missing.')
     args = parser.parse_args()
 
     version = args.version
@@ -284,6 +301,30 @@ def main():
     h5_inputs = [config.h5_path(version), rho150_path]
 
     grid = build_solution_grid(logrho150, logMpeak)
+
+    if args.supplementary:
+        names = [obs.dwarf_names[i] for i in dc.idcs]
+        contour_dir = config.PAPER_CONTOURS_DIR / 'rho150_mpeak' / version
+        out_dir = config.PLOTS_DIR / 'supplementary' / 'rho150_mpeak'
+        failures = []
+        produced = 0
+        for dwarf in names:
+            paths = [contour_dir / f'{dwarf}_{suf}.npz'
+                     for suf in ('unweighted', 'mhalf', 'F18', 'K24')]
+            if not all(p.exists() for p in paths):
+                failures.append(dwarf)
+                continue
+            print(dwarf)
+            out_path = make_figure(dwarf, version, grid, h5_inputs,
+                                   out_dir=out_dir, prefix=False)
+            print(f'  wrote {out_path}')
+            produced += 1
+        print(f'Produced {produced} supplementary rho150_mpeak figures.')
+        if failures:
+            print(f'FAILED for {len(failures)} dwarf(s) missing required contour files '
+                 f'under {contour_dir}: {failures}')
+            sys.exit(1)
+        return
 
     for dwarf in args.dwarves:
         print(dwarf)

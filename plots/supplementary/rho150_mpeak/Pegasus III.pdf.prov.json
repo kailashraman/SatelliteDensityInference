@@ -1,0 +1,190 @@
+{
+  "argv": null,
+  "dja_snapshot": null,
+  "dwarf": "Pegasus III",
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/supplementary/rho150_mpeak/Pegasus III.pdf",
+  "git_commit": "8f939a1fe628c47858c59c030a31ae28ed604ed3",
+  "git_dirty": true,
+  "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+  "h5_fingerprint": {
+    "mtime": 1772746877,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+    "size": 919665664
+  },
+  "inputs": [
+    {
+      "mtime": 1772746877,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+        "n_inputs": 0,
+        "note": "copied verbatim from SatGen_Dwarf; no script in this repo produced it",
+        "satgen_version": "mass_floor_7",
+        "script": null,
+        "sim_version": "mass_floor_7",
+        "written_utc": "2026-07-28T20:07:38+00:00"
+      },
+      "size": 919665664
+    },
+    {
+      "mtime": 1785678924,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/mass_floor_7_rho150.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/mass_floor_7_rho150.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/compute_mhalf.py (--globals mode)",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "written_utc": "2026-08-02T17:43:53+00:00"
+      },
+      "size": 33141002
+    },
+    {
+      "mtime": 1785860154,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_unweighted.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_unweighted.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:17:12+00:00"
+      },
+      "size": 8427226
+    },
+    {
+      "mtime": 1785860155,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_mhalf.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_mhalf.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:17:12+00:00"
+      },
+      "size": 8427194
+    },
+    {
+      "mtime": 1785860158,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_F18.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_F18.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:17:11+00:00"
+      },
+      "size": 8427194
+    },
+    {
+      "mtime": 1785860158,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_K24.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/results/paper_contours/rho150_mpeak/mass_floor_7/Pegasus III_K24.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/save_contours.py",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "verified_fingerprint": null,
+        "written_utc": "2026-08-04T21:17:11+00:00"
+      },
+      "size": 8427194
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "satgen_version": "mass_floor_7",
+  "script": "python/plot_rho150_mpeak.py",
+  "sim_version": "mass_floor_7",
+  "written_utc": "2026-08-04T21:57:44+00:00"
+}

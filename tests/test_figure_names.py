@@ -53,8 +53,16 @@ def test_table_exists_under_plots_tables(name):
 
 
 def test_no_orphan_pdfs_under_plots():
+    # The draft-basename contract this test enforces covers plots/ EXCLUDING
+    # plots/supplementary/: that subtree holds the full-39-dwarf sweeps of
+    # rmax_vmax and rho150_mpeak (see python/plot_rmax_vmax.py's and
+    # python/plot_rho150_mpeak.py's --supplementary mode), which are
+    # deliberately not draft basenames and were never meant to be registered
+    # here. Skipping it is scoped to this one check -- the FIGURES/REGISTRY
+    # assertions above still run over the whole tree.
     orphans = [p for p in _glob_excluding_checkpoints(config.PLOTS_DIR, '**/*.pdf')
-               if p.name not in FIGURES]
+               if p.name not in FIGURES
+               and 'supplementary' not in p.relative_to(config.PLOTS_DIR).parts]
     assert not orphans, f'PDFs under plots/ with no matching FIGURES entry: {orphans}'
 
 

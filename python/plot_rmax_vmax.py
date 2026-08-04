@@ -55,6 +55,7 @@ from SatGen import profiles as pf
 import config
 import provenance
 import Jdata as obs
+import dwarf_categories as dc
 from plot_style import *  # noqa: F401,F403 -- rcParams side effect, plt, colors
 from contour_plot import sci_fmt_mV, position_on_contour
 
@@ -101,8 +102,16 @@ def _has_all_files(name, no_jeans, version, redshift):
     return all(p.exists() for p in paths)
 
 
-def plot_dwarf(name, no_jeans, version=VERSION, redshift=REDSHIFT, argv=None):
-    """Render and save one dwarf's r_max-v_max figure; write its provenance sidecar."""
+def plot_dwarf(name, no_jeans, version=VERSION, redshift=REDSHIFT, argv=None,
+                out_dir=None, prefix=True):
+    """Render and save one dwarf's r_max-v_max figure; write its provenance sidecar.
+
+    `out_dir`/`prefix` default to the draft location and the `rmax_vmax_`
+    basename prefix the .tex needs; the supplementary sweep (see
+    main()'s --supplementary) points `out_dir` at
+    plots/supplementary/rmax_vmax/ and drops the prefix, since those
+    basenames are not a draft contract.
+    """
     this_idx = int(np.where(obs.dwarf_names == name)[0][0])
     abbr = obs.abbreviations[this_idx]
 
@@ -293,9 +302,10 @@ def plot_dwarf(name, no_jeans, version=VERSION, redshift=REDSHIFT, argv=None):
     axs.add_artist(legend1)
 
     suffix = '_no_Jeans' if no_jeans else '_with_Jeans'
-    out_dir = config.PLOTS_DIR / 'rmax_vmax'
+    out_dir = out_dir if out_dir is not None else config.PLOTS_DIR / 'rmax_vmax'
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f'rmax_vmax_{name}{suffix}.pdf'
+    fname = f'rmax_vmax_{name}{suffix}.pdf' if prefix else f'{name}{suffix}.pdf'
+    out_path = out_dir / fname
     plt.savefig(out_path)
     plt.close(fig)
 
@@ -316,7 +326,36 @@ def main():
                              ".npz files; saves '..._no_Jeans.pdf' instead of '..._with_Jeans.pdf'.")
     parser.add_argument('--version', default=VERSION)
     parser.add_argument('--redshift', default=REDSHIFT, choices=('z0', 'infall'))
+    parser.add_argument('--supplementary', action='store_true',
+                        help='Produce BOTH the no_Jeans and with_Jeans variants for every '
+                             'dwarf in dwarf_categories.idcs (the 39-dwarf paper sample), '
+                             "written to plots/supplementary/rmax_vmax/<dwarf>_{no,with}_"
+                             'Jeans.pdf instead of the four draft figures. Ignores any '
+                             'positional dwarf args and --no-jeans. A dwarf missing required '
+                             'contour files is reported, not silently skipped, and the '
+                             'process exits non-zero if any are missing.')
     args = parser.parse_args()
+
+    if args.supplementary:
+        names = [obs.dwarf_names[i] for i in dc.idcs]
+        out_dir = config.PLOTS_DIR / 'supplementary' / 'rmax_vmax'
+        failures = []
+        produced = 0
+        for name in names:
+            for no_jeans in (False, True):
+                if not _has_all_files(name, no_jeans, args.version, args.redshift):
+                    failures.append((name, no_jeans))
+                    continue
+                print(name, 'no_jeans' if no_jeans else 'with_jeans')
+                plot_dwarf(name, no_jeans, version=args.version, redshift=args.redshift,
+                          argv=sys.argv[1:], out_dir=out_dir, prefix=False)
+                produced += 1
+        print(f'Produced {produced} supplementary rmax_vmax figures.')
+        if failures:
+            print(f'FAILED for {len(failures)} (dwarf, no_jeans) combination(s) missing '
+                 f'required contour files: {failures}')
+            sys.exit(1)
+        return
 
     if args.dwarf:
         names = args.dwarf

@@ -7,9 +7,10 @@
 #   sbatch scripts/plot_rmax_vmax.sh "Ursa Major II" --no-jeans
 #   sbatch scripts/plot_rmax_vmax.sh "Segue 1" "Antlia II" "Crater II"
 #   sbatch scripts/plot_rmax_vmax.sh                                   # every dwarf with complete data
+#   sbatch scripts/plot_rmax_vmax.sh --supplementary                   # both variants, all 39 dwarfs, plots/supplementary/rmax_vmax/
 #
 # Every argument is forwarded to python/plot_rmax_vmax.py -- dwarf names
-# (quoted; several contain spaces) plus --no-jeans/--version/--redshift.
+# (quoted; several contain spaces) plus --no-jeans/--version/--redshift/--supplementary.
 # Requires scripts/save_contours.sh to have already produced the
 # galactocentric (and, for the with-Jeans variant, Jeans_loguniform /
 # Jeans_satgen_shmr_fattahi18) contour trees for the requested dwarfs.
