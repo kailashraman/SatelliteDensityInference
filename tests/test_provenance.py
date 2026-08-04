@@ -1,7 +1,11 @@
 """Provenance round-trip and the version-mixing guard."""
 
+import glob
 import json
+import os
 import pathlib
+import stat
+import tempfile
 
 import numpy as np
 import pytest
@@ -30,6 +34,22 @@ def test_savez_roundtrip_preserves_arrays_and_stamp(tmp_path):
     assert record['written_utc'].endswith('+00:00')
 
 
+def test_savez_products_are_group_readable(tmp_path):
+    """savez() writes both the .npz and its sidecar through mkstemp() +
+    os.replace(). mkstemp() creates its temp file at mode 0600 by design, and
+    os.replace() preserves the SOURCE file's mode across the rename -- so
+    without an explicit chmod, both artifacts land 0600 regardless of umask,
+    unreadable by collaborators on this shared group tree. Fails against the
+    pre-fix code, which never re-applied the umask-derived mode after
+    mkstemp."""
+    path = _write(tmp_path, 'a.npz', 'Diemer')
+    sidecar = path.with_name(path.name + provenance.SIDECAR_SUFFIX)
+
+    expected_mode = provenance._default_file_mode()
+    assert stat.S_IMODE(path.stat().st_mode) == expected_mode
+    assert stat.S_IMODE(sidecar.stat().st_mode) == expected_mode
+
+
 def test_sidecar_matches_inband(tmp_path):
     path = _write(tmp_path, 'a.npz', 'Diemer')
     sidecar = path.with_name(path.name + provenance.SIDECAR_SUFFIX)
@@ -47,6 +67,66 @@ def test_provenance_key_is_reserved(tmp_path):
     with pytest.raises(ValueError, match='reserved'):
         provenance.savez(tmp_path / 'a.npz', record,
                          **{provenance.PROVENANCE_KEY: np.arange(3)})
+
+
+def test_savez_reflects_new_record_when_sidecar_write_fails(tmp_path, monkeypatch):
+    """The unlink-first ordering exists so `path` and read() always describe
+    the same run, even across a killed rerun. Write once, then rerun with a
+    DIFFERENT record and make the sidecar write fail: the fresh .npz (with
+    the new in-band key) must land regardless, the stale sidecar must be
+    gone, and read() -- via the in-band fallback -- must therefore return the
+    NEW record, not the old sidecar's. Fails against the pre-fix ordering
+    (sidecar written before the old one was removed / .npz not replaced
+    atomically first), which would leave read() returning the old record."""
+    path = _write(tmp_path, 'a.npz', 'Diemer', x=np.arange(3))
+    old_record = provenance.read(path)
+    assert old_record['satgen_version'] == 'Diemer'
+
+    new_record = provenance.stamp('python/fake.py', version='Zhao', argv=['1', 'Zhao'])
+
+    def boom(*args, **kwargs):
+        raise RuntimeError('sidecar write failed')
+    monkeypatch.setattr(provenance, '_write_sidecar', boom)
+
+    with pytest.raises(RuntimeError, match='sidecar write failed'):
+        provenance.savez(path, new_record, x=np.arange(5))
+
+    sidecar = path.with_name(path.name + provenance.SIDECAR_SUFFIX)
+    assert not sidecar.exists()
+    assert provenance.read(path)['satgen_version'] == 'Zhao'
+
+
+def test_savez_cleans_up_temp_and_preserves_product_on_write_failure(tmp_path, monkeypatch):
+    """A failure inside np.savez_compressed must not leave a temp file behind
+    (dotfile-prefixed or otherwise) and must not touch the pre-existing
+    product at `path`."""
+    path = _write(tmp_path, 'a.npz', 'Diemer', x=np.arange(3))
+    before = path.read_bytes()
+
+    def boom(*args, **kwargs):
+        raise RuntimeError('savez_compressed failed')
+    monkeypatch.setattr(np, 'savez_compressed', boom)
+
+    new_record = provenance.stamp('python/fake.py', version='Zhao', argv=['1', 'Zhao'])
+    with pytest.raises(RuntimeError, match='savez_compressed failed'):
+        provenance.savez(path, new_record, x=np.arange(5))
+
+    leftover = [p for p in tmp_path.iterdir()
+               if p.name.startswith('.') and '.tmp' in p.name]
+    leftover += list(tmp_path.glob('*.tmp*'))
+    assert not leftover
+    assert path.read_bytes() == before
+
+
+def test_leftover_temp_file_is_not_matched_by_product_glob(tmp_path):
+    """Regression for the guaranteed-orphan bug: a temp file left in a
+    fragment directory (e.g. by a SIGKILL/OOM/timeout that skips the
+    `except BaseException` cleanup) must not match the glob a concat script
+    uses to find its fragments, e.g. 'massProfile-*.npz'."""
+    fd, name = tempfile.mkstemp(suffix='.npz', prefix='.massProfile-1.tmp', dir=tmp_path)
+    os.close(fd)
+    assert glob.glob(str(tmp_path / 'massProfile-*.npz')) == []
+    assert list(tmp_path.glob('massProfile-*.npz')) == []
 
 
 def test_savez_without_npz_suffix_keeps_sidecar_adjacent(tmp_path):
@@ -322,8 +402,7 @@ def test_convention_bearing_scripts_actually_stamp():
     Listing a script that does not stamp is worse than omitting it: its
     products carry None, and the guard then reports a correct product as
     predating the fix and carrying the +1.2 dex offset -- a false accusation
-    that would send someone regenerating a whole tree. vcirc_scatter_300pc.py
-    calls evolved_Mstar but does not yet stamp, which is exactly this trap.
+    that would send someone regenerating a whole tree.
     """
     root = pathlib.Path(__file__).resolve().parent.parent
     for script in sorted(provenance.CONVENTION_BEARING_SCRIPTS):
@@ -337,9 +416,15 @@ def test_convention_bearing_scripts_actually_stamp():
 
 
 @pytest.mark.needs_data
-@pytest.mark.parametrize('tree', ['data/additional/weights_gc',
-                                  'results/paper_quantiles/galactocentric'])
-def test_regenerated_trees_are_convention_uniform(tree):
+@pytest.mark.parametrize('tree,glob_pattern', [
+    ('data/additional/weights_gc', '*/*.npz'),
+    ('results/paper_quantiles/galactocentric', '*/*.npz'),
+    # vcirc_scatter_300pc.py's per-dwarf rows: <version>/<shmr>/per_dwarf/
+    # row_<idx>.csv, each with its own .prov.json sidecar rather than an
+    # in-band npz key -- provenance.read() finds either.
+    ('results/vcirc_scatter_300pc', '*/*/per_dwarf/row_*.csv'),
+])
+def test_regenerated_trees_are_convention_uniform(tree, glob_pattern):
     """The check production actually needs, at the level mixing happens.
 
     assert_single_version runs per dwarf, where at most one convention-bearing
@@ -353,7 +438,7 @@ def test_regenerated_trees_are_convention_uniform(tree):
     if not root.is_dir():
         pytest.skip(f'{tree} not present')
     conventions = {}
-    for sidecar in root.glob('*/*.npz'):
+    for sidecar in root.glob(glob_pattern):
         record = provenance.read(sidecar)
         key = None if record is None else record.get('mstar_evolution')
         conventions.setdefault(key, []).append(str(sidecar))

@@ -6,6 +6,7 @@
     python scripts/stamp_migrated.py mhalf
     python scripts/stamp_migrated.py globals
     python scripts/stamp_migrated.py paper_quantiles
+    python scripts/stamp_migrated.py massProfile
 
 Exists as a tracked script rather than an ad-hoc snippet because the stamps it
 writes are the provenance record: a sidecar produced by something not in the
@@ -57,6 +58,17 @@ stamp before that guard can be turned on for the scripts that read it.
 
 `paper_quantiles` covers `results/paper_quantiles/galactocentric/<version>/
 <dwarf>.npz` (compute_quantiles.py), copied in the same way.
+
+`massProfile` covers `results/paper_massProfile/<version>/massProfile/
+massProfile-<g>.npz`, the per-group fragments produced upstream by
+massProfile.py. It does NOT cover two neighbours under the same
+`paper_massProfile` root that this script must leave alone: `<version>/
+massProfile.npz`, the concatenation produced locally by
+python/concat_massProfile.py (already carries its own in-band provenance,
+never a migrated_from), and `<version>/massProfile_reference.npz`, which this
+script has no mandate to touch. The glob is scoped to the `massProfile/`
+subdirectory rather than every `*.npz` under the version directory so it
+cannot walk into either of those.
 
 None of these trees carry every version that exists upstream: `Symphony`,
 `MWest`, `mcdaniel`, and `Geha` were deliberately not copied into this
@@ -409,10 +421,47 @@ def _stamp_globals(verified, counts, restamp_paths):
             counts['verified'] += int(is_verified)
 
 
+def _stamp_massProfile(verified, counts, restamp_paths):
+    """Stamp `<version>/massProfile/massProfile-<g>.npz`, keyed like the
+    per-dwarf trees by '<version>/massProfile-<g>' in --verified.
+
+    Globs `*/massProfile/massProfile-*.npz` rather than `root.rglob('*.npz')`
+    (as _stamp_per_dwarf_tree does): `paper_massProfile/<version>/` also
+    holds `massProfile.npz` (concat_massProfile.py, produced locally) and
+    `massProfile_reference.npz`, neither of which this tree covers.
+    """
+    root = config.PAPER_MASSPROFILE_DIR
+    producer = 'python/massProfile.py'
+    for product in sorted(root.glob('*/massProfile/massProfile-*.npz')):
+        rel = product.relative_to(root)
+        version = rel.parts[0]
+        if _unknown_version(version, product, counts):
+            continue
+        key = f'{version}/{product.stem}'
+
+        migrated_from = str(UPSTREAM / 'results' / 'paper_massProfile' / rel)
+        if _target_missing(migrated_from, product, counts):
+            continue
+        if _producer_conflict(product, restamp_paths, counts):
+            continue
+
+        is_verified, note, verified_fp = _verification_status(
+            product, key in verified)
+
+        record = provenance.stamp(
+            'scripts/stamp_migrated.py', version=version,
+            migrated_from=migrated_from,
+            produced_by=producer, verified=is_verified, note=note,
+            verified_fingerprint=verified_fp)
+        provenance.stamp_existing(product, record)
+        counts['stamped'] += 1
+        counts['verified'] += int(is_verified)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('tree', choices=['paper_Js', 'weights_gc', 'mhalf', 'globals',
-                                         'paper_quantiles'])
+                                         'paper_quantiles', 'massProfile'])
     parser.add_argument('--verified', action='append', default=[],
                         help='relative path of a product diffed against '
                              'upstream, e.g. "Diemer/Antlia II"')
@@ -456,6 +505,8 @@ def main(argv=None):
             'python/compute_quantiles.py', verified, counts, restamp_paths,
             check_dwarf_names=True, stochastic_caveat=QUANTILES_STOCHASTIC_CAVEAT,
             stochastic_arrays='from_file')
+    elif args.tree == 'massProfile':
+        _stamp_massProfile(verified, counts, restamp_paths)
 
     print(f"stamped {counts['stamped']} products "
           f"({counts['verified']} verified against upstream, "

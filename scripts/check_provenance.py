@@ -28,6 +28,14 @@ def is_shard(path):
     return path.parent.name in SHARD_PARENTS and path.stem != path.parent.name
 
 
+def is_leftover_temp(path):
+    """A dotfile mkstemp() orphan from a killed provenance.savez()/sidecar
+    write (SIGKILL/OOM and default SIGTERM cannot run the cleanup
+    `except BaseException` in provenance.py) -- evidence of a killed run,
+    reported so a person sees it. Never deleted here."""
+    return path.name.startswith('.') and '.tmp' in path.name
+
+
 def main(argv):
     # data/additional is included by default: the h5 catalogs are the root of
     # the DAG, and an unstamped one is invisible in every product below it.
@@ -39,15 +47,26 @@ def main(argv):
     migrated = []
     unreadable = []
     shards = 0
+    leftover_temps = []
 
     for root in roots:
         if not root.exists():
             print(f'skipping {root} (does not exist)')
             continue
+        # Unlike glob.glob() (what the concat scripts use to find fragments),
+        # pathlib's rglob('*.npz') does NOT skip dotfiles -- so a leftover
+        # temp (named with a leading dot, see provenance.py) still shows up
+        # in the products walk below and must be filtered out explicitly,
+        # rather than falling out of the pattern the way it would for
+        # glob.glob().
+        leftover_temps.extend(sorted(
+            p for p in root.rglob('.*') if p.is_file() and is_leftover_temp(p)))
         products = sorted(p for pattern in ('*.npz', '*.h5')
                           for p in root.rglob(pattern))
         for path in products:
             if path.name.endswith(provenance.SIDECAR_SUFFIX):
+                continue
+            if is_leftover_temp(path):
                 continue
             if is_shard(path):
                 shards += 1
@@ -93,6 +112,16 @@ def main(argv):
             print(f'  {path}')
         if len(unstamped) > 20:
             print(f'  ... and {len(unstamped) - 20} more')
+
+    if leftover_temps:
+        print(f'\n{len(leftover_temps)} leftover temp file(s) -- orphaned '
+              'mkstemp() output from a killed run (SIGKILL/OOM or default '
+              'SIGTERM skip the cleanup handler); safe to inspect, not '
+              'deleted by this sweep:')
+        for path in leftover_temps[:20]:
+            print(f'  {path}')
+        if len(leftover_temps) > 20:
+            print(f'  ... and {len(leftover_temps) - 20} more')
 
     if unstamped or unreadable:
         return 1

@@ -24,6 +24,7 @@ The guard that actually catches mixing is `assert_single_version()`.
 import json
 import os
 import subprocess
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -33,6 +34,28 @@ import config
 
 PROVENANCE_KEY = '_provenance'
 SIDECAR_SUFFIX = '.prov.json'
+
+
+def _default_file_mode():
+    """The mode a plain, umask-respecting `open(..., 'w')` would have produced.
+
+    `tempfile.mkstemp()` always creates its file at mode 0600 -- by design,
+    for security, since the whole point of mkstemp is a private scratch file
+    -- and `os.replace()` preserves the SOURCE file's mode across the rename,
+    so a temp-file-then-replace write silently drops the umask-derived mode a
+    direct `open()` would have gotten. On this repo's shared group tree
+    (pc_heptheory) every product under results/ must stay group-readable, so
+    every mkstemp-based write here re-applies this mode before or after the
+    replace.
+
+    Reading the umask requires setting it (there is no read-only query), so
+    this sets 0 and immediately restores the previous value. That is a
+    process-wide, non-atomic change and therefore not thread-safe -- fine
+    here since every caller is a single-threaded script.
+    """
+    umask = os.umask(0)
+    os.umask(umask)
+    return 0o666 & ~umask
 
 
 def _git(*args):
@@ -185,11 +208,28 @@ def _dja_snapshot(prior, files=()):
 
 
 def _write_sidecar(path, record):
+    """Write `<path>.prov.json`, atomically (temp file + os.replace).
+
+    A plain `open(sidecar, 'w')` can leave a truncated, unparseable sidecar
+    behind if the process is killed mid-write; writing to a temp name first
+    and replacing means the sidecar at its final path is always either the
+    previous complete one or the new complete one, never a partial write.
+    """
     path = Path(path)
     sidecar = path.with_name(path.name + SIDECAR_SUFFIX)
     sidecar.parent.mkdir(parents=True, exist_ok=True)
-    with open(sidecar, 'w') as handle:
-        json.dump(record, handle, indent=2, sort_keys=True)
+    tmp_fd, tmp_name = tempfile.mkstemp(
+        suffix=SIDECAR_SUFFIX, prefix='.' + path.name + '.tmp', dir=sidecar.parent)
+    os.close(tmp_fd)
+    tmp_path = Path(tmp_name)
+    try:
+        with open(tmp_path, 'w') as handle:
+            json.dump(record, handle, indent=2, sort_keys=True)
+        os.chmod(tmp_path, _default_file_mode())
+        os.replace(tmp_path, sidecar)
+    except BaseException:
+        tmp_path.unlink(missing_ok=True)
+        raise
     return sidecar
 
 
@@ -209,7 +249,46 @@ def savez(path, record, **arrays):
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = dict(arrays)
     payload[PROVENANCE_KEY] = np.array(json.dumps(record, sort_keys=True))
-    np.savez_compressed(path, **payload)
+
+    # savez writes two separate artifacts -- the .npz and its sidecar -- and
+    # read() prefers the sidecar over the in-band key, but falls back to the
+    # in-band key when the sidecar is absent. Every product this function
+    # writes carries an in-band key, so that fallback means "no sidecar" does
+    # NOT mean "unstamped": a kill between "the .npz is written" and "the
+    # sidecar is written" leaves a fresh .npz whose in-band key read() will
+    # happily return. The ordering below is not about producing an unstamped
+    # file on interruption -- it can't, given the fallback -- it is about
+    # which RUN'S record `path` and read() agree on:
+    #   1. the existing sidecar is removed FIRST, before the .npz is touched;
+    #   2. the .npz itself is written to a temp name and only os.replace()-d
+    #      into place once complete.
+    # Without (1), a kill in the window between os.replace() below and the
+    # final _write_sidecar() call would leave a FRESH .npz sitting next to
+    # the PREVIOUS run's still-valid sidecar, which read() would prefer over
+    # the fresh in-band key -- the file and the record it stamps would
+    # describe different bytes. With this ordering, the file at `path` and
+    # the record read() returns always describe the same bytes: either both
+    # are the previous run's (interrupted before os.replace) or both are this
+    # run's (interrupted after, no sidecar yet, in-band fallback matches the
+    # file that's actually there). A killed rerun with an unchanged record is
+    # therefore invisible here -- it leaves a stale-but-self-consistent
+    # product, not an unstamped one. Detecting "did the rerun actually
+    # happen" needs a run-scoped token (e.g. array_job_id), not this
+    # ordering.
+    sidecar = path.with_name(path.name + SIDECAR_SUFFIX)
+    sidecar.unlink(missing_ok=True)
+
+    tmp_fd, tmp_name = tempfile.mkstemp(
+        suffix='.npz', prefix='.' + path.stem + '.tmp', dir=path.parent)
+    os.close(tmp_fd)
+    tmp_path = Path(tmp_name)
+    try:
+        np.savez_compressed(tmp_path, **payload)
+        os.chmod(tmp_path, _default_file_mode())
+        os.replace(tmp_path, path)
+    except BaseException:
+        tmp_path.unlink(missing_ok=True)
+        raise
     _write_sidecar(path, record)
     return path
 
@@ -253,11 +332,10 @@ def stamp_existing(path, record):
 # +1.2 dex offset -- a false accusation that would send someone regenerating a
 # whole tree. tests/test_provenance.py asserts the two stay in step.
 #
-# Known omissions, to be added with their stamps, not before:
-#   python/vcirc_scatter_300pc.py -- calls evolved_Mstar, does not yet stamp.
 CONVENTION_BEARING_SCRIPTS = frozenset({
     'python/compute_weights.py',
     'python/compute_quantiles.py',
+    'python/vcirc_scatter_300pc.py',
 })
 
 
