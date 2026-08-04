@@ -377,10 +377,14 @@ def assert_single_version(paths, expected=None):
     seen = {}
     aliased = {}
     conventions = {}
+    missing = []
     unstamped = []
     for path, record in zip(paths, records):
         if record is None or record.get('sim_version') is None:
-            unstamped.append(str(path))
+            if not Path(path).exists():
+                missing.append(str(path))
+            else:
+                unstamped.append(str(path))
             continue
         seen.setdefault(record['sim_version'], []).append(str(path))
         raw = record.get('satgen_version')
@@ -403,9 +407,14 @@ def assert_single_version(paths, expected=None):
             conventions.setdefault(
                 record.get('mstar_evolution'), []).append(str(path))
 
+    if missing:
+        raise FileNotFoundError(
+            'cannot verify SatGen version, these inputs do not exist:\n  '
+            + '\n  '.join(missing))
     if unstamped:
         raise ValueError(
-            'cannot verify SatGen version, these inputs are unstamped:\n  '
+            'cannot verify SatGen version, these inputs are unstamped '
+            '(present on disk but carry no provenance record):\n  '
             + '\n  '.join(unstamped))
     if len(seen) > 1:
         detail = '\n'.join(

@@ -23,7 +23,35 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 DATA_DIR = REPO_ROOT / 'data'
-RESULTS_DIR = REPO_ROOT / 'results'
+
+# RESULTS_DIR is overridable so a single-task parity check can be pointed at a
+# scratch tree instead of writing where the stage normally writes. Without that,
+# verifying a ported stage against the migrated products REPLACES the very
+# baseline being verified -- a stage run typically writes several products (one
+# per weighting variant, sometimes into more than one tree), so backing up "the
+# file I meant to diff" is not enough. This has happened twice during the
+# migration. See the review-checklist entry on verification runs overwriting
+# their own reference.
+#
+# SCOPE, and it is narrower than it looks: this redirects products under
+# RESULTS_DIR ONLY. compute_weights.py and compute_mhalf.py write under
+# ADDITIONAL_DIR (data/additional/{weights_gc,mhalf}), which this does NOT
+# move -- and those are the products that cannot be recovered if overwritten,
+# since mstar_weights/joint_weights are unseeded single realizations. Before a
+# parity rerun of either stage, copy those subtrees by hand; the override will
+# not protect them.
+#
+# Empty and relative values are rejected rather than accepted: `export
+# SDI_RESULTS_DIR=` or `sbatch --export=ALL,SDI_RESULTS_DIR=` yields '', and
+# Path('') is '.', which would silently root every derived tree at the cwd --
+# under a scheduler, whatever directory the task happened to start in.
+_results_override = os.environ.get('SDI_RESULTS_DIR')
+if _results_override is not None and not _results_override.strip():
+    raise ValueError(
+        'SDI_RESULTS_DIR is set but empty; unset it to use the default '
+        f'{REPO_ROOT / "results"}, or set it to an absolute path')
+RESULTS_DIR = (Path(_results_override).expanduser().resolve()
+               if _results_override else REPO_ROOT / 'results')
 PLOTS_DIR = REPO_ROOT / 'plots'
 DOCS_DIR = REPO_ROOT / 'docs'
 DRAFTS_DIR = REPO_ROOT / 'drafts_temp'
@@ -36,6 +64,12 @@ PAPER_QUANTILES_DIR = RESULTS_DIR / 'paper_quantiles'
 PAPER_CONTOURS_DIR = RESULTS_DIR / 'paper_contours'
 PAPER_MASSPROFILE_DIR = RESULTS_DIR / 'paper_massProfile'
 FERMI_REWEIGHTING_DIR = RESULTS_DIR / 'fermi_reweighting'
+# The 'update' variant reweights against data/fermi_legacy_update/ SEDs
+# (Circiello:2026inp, cited throughout the drafts) rather than
+# data/fermi_legacy/; see fermi_funcs.py's _LEGACY / _LEGACY_UPDATE split.
+# python/fermi_reweighting.py's --legacy-version flag selects between the two
+# result trees explicitly -- neither is a silent default.
+FERMI_REWEIGHTING_UPDATE_DIR = RESULTS_DIR / 'fermi_reweighting_update'
 FERMI_EXPECTED_LIMITS_DIR = RESULTS_DIR / 'fermi_expected_limits'
 VCIRC_SCATTER_DIR = RESULTS_DIR / 'vcirc_scatter_300pc'
 
