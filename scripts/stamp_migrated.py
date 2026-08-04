@@ -7,6 +7,7 @@
     python scripts/stamp_migrated.py globals
     python scripts/stamp_migrated.py paper_quantiles
     python scripts/stamp_migrated.py massProfile
+    python scripts/stamp_migrated.py paper_contours
 
 Exists as a tracked script rather than an ad-hoc snippet because the stamps it
 writes are the provenance record: a sidecar produced by something not in the
@@ -69,6 +70,50 @@ never a migrated_from), and `<version>/massProfile_reference.npz`, which this
 script has no mandate to touch. The glob is scoped to the `massProfile/`
 subdirectory rather than every `*.npz` under the version directory so it
 cannot walk into either of those.
+
+`paper_contours` covers `results/paper_contours/`, copied in wholesale like
+every other tree above and carrying no stamps of its own. Three subtrees,
+each stamped by its own loop because their path shapes and producer stories
+differ:
+
+* `galactocentric/z0/<version>/<dwarf>_<suffix>.npz` (V_circ-r_max contours;
+  `<suffix>` in mhalf/RP17/F18/M18/K24/joint_RP17/joint_F18/joint_M18/
+  joint_K24/unweighted) and `rho150_mpeak/<version>/<dwarf>_<suffix>.npz`
+  (rho150-Mpeak contours; same suffixes minus the four joint_* -- that tree
+  has no joint-weighted output). Both are produced by
+  python/save_contours.py, keyed like the other per-dwarf trees by
+  '<group>/<version>/<dwarf>_<suffix>' in --verified. Only `z0` exists in
+  this repository's tree (upstream also has `infall`, not migrated here); the
+  glob is scoped to `galactocentric/z0/` rather than all of `galactocentric/`
+  so an `infall/` subtree, if ever added, is not silently swept in without a
+  matching --verified convention having been decided.
+* `Jeans_<prior>/<dwarf>_jeans.npz`, keyed by 'Jeans_<prior>/<dwarf>_jeans' in
+  --verified. `save_contours.py`'s current `jeans_priors` list -- loguniform,
+  satgen, satgen_box, and the four satgen_shmr_<SHMR> variants -- names seven
+  directories that ARE this script's Jeans_<prior> branch's output, stamped
+  with `produced_by='python/save_contours.py (Jeans_<prior> branch)'` and
+  `version=None` (that branch reads no SatGen h5/weights, only a
+  DwarfJeansAnalysis derived.npz per dwarf/prior; see save_contours.py's
+  docstring). Two more directories exist in both this repository's tree AND
+  upstream's -- `Jeans_Pace/` and `Jeans_local/` -- naming priors that are in
+  neither `jeans_priors` nor `config.DJA_PRIORS`. No script anywhere in this
+  repository or in SatGen_Dwarf's `save_contours.py` produces a prior by
+  either name; they predate the current jeans_priors list and their producer
+  is genuinely unknown, so they are stamped `produced_by=None` with a note
+  saying so explicitly, rather than attributed to save_contours.py. Also
+  unlike every other prior, `Jeans_Pace/` additionally holds one bare
+  `<dwarf>.npz` per dwarf (an undocumented `paths` array, no `_jeans` suffix)
+  that no current jeans_priors branch writes at all -- stamped the same way,
+  keyed by 'Jeans_Pace/<dwarf>' in --verified.
+
+None of these three groups gets a `dwarf` name check against
+`Jdata.dwarf_names` the way the other per-dwarf trees do: a dwarf dropped
+from the current sample would leave an orphaned CONTOUR file with the same
+"stray file from a sample change" story as `weights_gc`/`mhalf`, but this
+script has no mandate here to decide whether that is in fact what happened
+for a name it does not recognise -- reported as `dwarf` in every stamp
+instead, so a future check can be added deliberately rather than guessed at
+now.
 
 None of these trees carry every version that exists upstream: `Symphony`,
 `MWest`, `mcdaniel`, and `Geha` were deliberately not copied into this
@@ -170,6 +215,32 @@ HALO_POSITION_CAVEAT = (
     'green_Js is one draw of an unseeded vegas Monte Carlo integral '
     '(python/Jhalopos.py, NOT migrated); a rerun differs within Monte Carlo '
     'error. Not a reproducible function of the catalog.')
+
+# paper_contours/{galactocentric/z0,rho150_mpeak}/<version>/<dwarf>_<suffix>.npz
+# suffixes, longest-first so '_joint_F18' is matched before the '_F18' it
+# also ends with. rho150_mpeak has no joint_* output (see save_contours.py).
+GALACTOCENTRIC_SUFFIXES = ('_joint_RP17', '_joint_F18', '_joint_M18', '_joint_K24',
+                           '_mhalf', '_RP17', '_F18', '_M18', '_K24', '_unweighted')
+RHO150_MPEAK_SUFFIXES = ('_mhalf', '_RP17', '_F18', '_M18', '_K24', '_unweighted')
+
+# Jeans_<prior> directories that ARE save_contours.py's current Jeans_<prior>
+# branch output -- exactly its `jeans_priors` list (see that module's
+# docstring; 'jeffreys', the eighth member of config.DJA_PRIORS, is
+# deliberately absent there too).
+JEANS_REPRODUCIBLE_PRIORS = ('loguniform', 'satgen', 'satgen_box',
+                             'satgen_shmr_danieli23_const', 'satgen_shmr_fattahi18',
+                             'satgen_shmr_kim24', 'satgen_shmr_moster18')
+JEANS_PRODUCER = 'python/save_contours.py (Jeans_<prior> branch)'
+# 'Pace' and 'local' -- present in both this repo's and upstream's tree, but
+# absent from JEANS_REPRODUCIBLE_PRIORS and from config.DJA_PRIORS. No script
+# in this repository or in SatGen_Dwarf's save_contours.py is known to
+# produce either; recorded as such rather than attributed to save_contours.py.
+JEANS_UNKNOWN_PRODUCER_NOTE = (
+    "prior {prior!r} is not in save_contours.py's jeans_priors list "
+    '(loguniform, satgen, satgen_box, and the four satgen_shmr_<SHMR> '
+    'variants) nor in config.DJA_PRIORS -- this tree predates the current '
+    'script, its producer is not known, and it is copied in wholesale, not '
+    'reproducible by anything currently in this repository')
 
 
 def _target_missing(migrated_from, product, counts):
@@ -458,10 +529,114 @@ def _stamp_massProfile(verified, counts, restamp_paths):
         counts['verified'] += int(is_verified)
 
 
+def _strip_contour_suffix(stem, suffixes):
+    """(dwarf_name, suffix) for a `<dwarf>_<suffix>.npz` contour stem, or
+    (None, None) if `stem` does not end in any suffix in `suffixes` (which
+    must be ordered longest-first, so e.g. '_joint_F18' is tried before
+    '_F18', which it would also match)."""
+    for suffix in suffixes:
+        if stem.endswith(suffix):
+            return stem[:-len(suffix)], suffix
+    return None, None
+
+
+def _stamp_paper_contours(verified, counts, restamp_paths):
+    """Stamp `results/paper_contours/`: galactocentric/z0, rho150_mpeak, and
+    Jeans_<prior>. See this script's module docstring for the shape of each
+    and which Jeans_<prior> directories have a known producer.
+    """
+    root = config.PAPER_CONTOURS_DIR
+
+    # -- galactocentric/z0/<version> and rho150_mpeak/<version> -----------
+    groups = (
+        ('galactocentric', root / 'galactocentric' / 'z0', GALACTOCENTRIC_SUFFIXES,
+         lambda version, rel: UPSTREAM / 'results' / 'paper_contours'
+         / 'galactocentric' / 'z0' / rel,
+         {'redshift': 'z0'}),
+        ('rho150_mpeak', root / 'rho150_mpeak', RHO150_MPEAK_SUFFIXES,
+         lambda version, rel: UPSTREAM / 'results' / 'paper_contours'
+         / 'rho150_mpeak' / rel,
+         {}),
+    )
+    for group_name, group_root, suffixes, migrated_from_fn, extra_fields in groups:
+        for product in sorted(group_root.rglob('*.npz')):
+            rel = product.relative_to(group_root)
+            version = rel.parts[0]
+            if _unknown_version(version, product, counts):
+                continue
+            dwarf, suffix = _strip_contour_suffix(product.stem, suffixes)
+            if dwarf is None:
+                print(f'SKIP {product}: stem does not end in a known '
+                      f'{group_name} suffix -- stray file?')
+                counts['skipped'] += 1
+                continue
+            key = f'{group_name}/{version}/{product.stem}'
+
+            migrated_from = str(migrated_from_fn(version, rel))
+            if _target_missing(migrated_from, product, counts):
+                continue
+            if _producer_conflict(product, restamp_paths, counts):
+                continue
+
+            is_verified, note, verified_fp = _verification_status(
+                product, key in verified)
+
+            record = provenance.stamp(
+                'scripts/stamp_migrated.py', version=version,
+                migrated_from=migrated_from,
+                produced_by='python/save_contours.py', verified=is_verified,
+                note=note, verified_fingerprint=verified_fp,
+                dwarf=dwarf, **extra_fields)
+            provenance.stamp_existing(product, record)
+            counts['stamped'] += 1
+            counts['verified'] += int(is_verified)
+
+    # -- Jeans_<prior> ------------------------------------------------------
+    for prior_dir in sorted(p for p in root.glob('Jeans_*') if p.is_dir()):
+        prior = prior_dir.name[len('Jeans_'):]
+        reproducible = prior in JEANS_REPRODUCIBLE_PRIORS
+        for product in sorted(prior_dir.glob('*.npz')):
+            if product.stem.endswith('_jeans'):
+                dwarf = product.stem[:-len('_jeans')]
+            else:
+                # Only Jeans_Pace holds these: a bare '<dwarf>.npz' with no
+                # analog in save_contours.py's Jeans_<prior> branch (which
+                # only ever writes '<dwarf>_jeans.npz').
+                dwarf = product.stem
+            key = f'{prior_dir.name}/{product.stem}'
+
+            migrated_from = str(UPSTREAM / 'results' / 'paper_contours'
+                               / prior_dir.name / product.name)
+            if _target_missing(migrated_from, product, counts):
+                continue
+            if _producer_conflict(product, restamp_paths, counts):
+                continue
+
+            is_verified, note, verified_fp = _verification_status(
+                product, key in verified)
+
+            produced_by = JEANS_PRODUCER if reproducible else None
+            if not reproducible:
+                note = note + '; ' + JEANS_UNKNOWN_PRODUCER_NOTE.format(prior=prior)
+
+            record = provenance.stamp(
+                'scripts/stamp_migrated.py', version=None,
+                migrated_from=migrated_from,
+                produced_by=produced_by,
+                dja_prior=prior if reproducible else None,
+                verified=is_verified,
+                note=note,
+                verified_fingerprint=verified_fp, dwarf=dwarf)
+            provenance.stamp_existing(product, record)
+            counts['stamped'] += 1
+            counts['verified'] += int(is_verified)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('tree', choices=['paper_Js', 'weights_gc', 'mhalf', 'globals',
-                                         'paper_quantiles', 'massProfile'])
+                                         'paper_quantiles', 'massProfile',
+                                         'paper_contours'])
     parser.add_argument('--verified', action='append', default=[],
                         help='relative path of a product diffed against '
                              'upstream, e.g. "Diemer/Antlia II"')
@@ -507,6 +682,8 @@ def main(argv=None):
             stochastic_arrays='from_file')
     elif args.tree == 'massProfile':
         _stamp_massProfile(verified, counts, restamp_paths)
+    elif args.tree == 'paper_contours':
+        _stamp_paper_contours(verified, counts, restamp_paths)
 
     print(f"stamped {counts['stamped']} products "
           f"({counts['verified']} verified against upstream, "
