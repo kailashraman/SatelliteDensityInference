@@ -1,0 +1,117 @@
+{
+  "argv": [
+    "distance_statistics_sims",
+    "Diemer",
+    "0"
+  ],
+  "dja_snapshot": null,
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/number_functions/distance_statistics_sims.pdf",
+  "figure_key": "distance_statistics_sims",
+  "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+  "git_dirty": true,
+  "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+  "h5_fingerprint": {
+    "mtime": 1785267594,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+    "size": 1376624522
+  },
+  "inputs": [
+    {
+      "mtime": 1785267594,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+      "provenance": {
+        "argv": [
+          "build",
+          "Diemer",
+          "--force"
+        ],
+        "dja_snapshot": null,
+        "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "host_virial_radius": 258.92401123046875,
+        "logMhalf_group": "grafted from SatGen_Dwarf; produced by compute_mhalf (plan step 4), not yet ported",
+        "lvdb_version": "v1.0.5",
+        "masked": true,
+        "migrated_from": null,
+        "n_inputs": 1,
+        "n_satellites": 2432159,
+        "n_source": 15152481,
+        "satgen_version": "Diemer",
+        "script": "python/make_h5.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-07-28T19:38:14+00:00"
+      },
+      "size": 1376624522
+    },
+    {
+      "mtime": 1785267149,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/SymphonyMilkyWay.h5",
+      "provenance": {
+        "argv": [
+          "sims",
+          "Symphony"
+        ],
+        "dja_snapshot": null,
+        "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+        "git_dirty": true,
+        "h5_file": "SymphonyMilkyWay.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267149,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/SymphonyMilkyWay.h5",
+          "size": 678112
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "n_halos": 13899,
+        "n_hosts": 45,
+        "n_inputs": 45,
+        "satgen_version": "Symphony",
+        "script": "python/make_h5.py",
+        "sim_version": "Symphony",
+        "written_utc": "2026-07-28T19:32:29+00:00"
+      },
+      "size": 678112
+    },
+    {
+      "mtime": 1785268899,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/MWest.h5",
+      "provenance": {
+        "argv": [
+          "sims",
+          "MWest"
+        ],
+        "dja_snapshot": null,
+        "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+        "git_dirty": true,
+        "h5_file": "MWest.h5",
+        "h5_fingerprint": {
+          "mtime": 1785268899,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/MWest.h5",
+          "size": 351984
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "n_halos": 7113,
+        "n_hosts": 20,
+        "n_inputs": 20,
+        "satgen_version": "MWest",
+        "script": "python/make_h5.py",
+        "sim_version": "MWest",
+        "written_utc": "2026-07-28T20:01:39+00:00"
+      },
+      "size": 351984
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "satgen_version": "Diemer",
+  "script": "python/plot_number_functions.py",
+  "sim_version": "Diemer",
+  "written_utc": "2026-08-04T20:40:53+00:00"
+}

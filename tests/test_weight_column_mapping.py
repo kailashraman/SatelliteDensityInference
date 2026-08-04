@@ -1,6 +1,7 @@
 """Pins the weight-column index mapping that fermi_reweighting.py and
 fermi_expected_limits.py hardcode (``idcs=[0,4,10]``, ``mc_idcs=[4,10]``,
-``sc_idcs=[0,21]``).
+``sc_idcs=[0,21]``), and that plot_multipanel_systematics.py hardcodes for
+columns 5 (Moster18) and 9 (Danieli23_grow).
 
 Neither file derives those indices from anything -- they are literals that
 happen to be correct today because column 0 is ``mhalf_weights``, columns
@@ -53,6 +54,20 @@ def test_fattahi18_lands_in_column_4():
 def test_kim24_lands_in_column_10():
     names = _extract_shmr_names(COMPUTE_QUANTILES)
     assert names.index('Kim24') + 1 == 10
+
+
+def test_moster18_lands_in_column_5():
+    """plot_multipanel_systematics.py's panel 1 (SHMR) reads Diemer[:,5] as
+    Moster18."""
+    names = _extract_shmr_names(COMPUTE_QUANTILES)
+    assert names.index('Moster18') + 1 == 5
+
+
+def test_danieli23_grow_lands_in_column_9():
+    """plot_multipanel_systematics.py's panel 1 (SHMR) reads Diemer[:,9] as
+    Danieli23_grow -- column 8 is the other variant, Danieli23_const."""
+    names = _extract_shmr_names(COMPUTE_QUANTILES)
+    assert names.index('Danieli23_grow') + 1 == 9
 
 
 def test_mdyn_errani_lands_in_column_21():

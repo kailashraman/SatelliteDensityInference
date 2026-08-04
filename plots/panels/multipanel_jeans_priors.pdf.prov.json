@@ -1,0 +1,1397 @@
+{
+  "argv": [
+    "all"
+  ],
+  "dja_snapshot": {
+    "dir": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production",
+    "files": [
+      {
+        "mtime": 1783601876,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/loguniform/derived.npz",
+        "size": 3815570
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen_box/derived.npz",
+        "size": 3627538
+      },
+      {
+        "mtime": 1783601905,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen/derived.npz",
+        "size": 4258194
+      },
+      {
+        "mtime": 1783601990,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 4858770
+      },
+      {
+        "mtime": 1783602019,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen_shmr_kim24/derived.npz",
+        "size": 4178322
+      },
+      {
+        "mtime": 1783601962,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 4695058
+      },
+      {
+        "mtime": 1783602047,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/antlia_2/satgen_shmr_moster18/derived.npz",
+        "size": 5444882
+      },
+      {
+        "mtime": 1783601869,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/loguniform/derived.npz",
+        "size": 1824786
+      },
+      {
+        "mtime": 1783601925,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen_box/derived.npz",
+        "size": 1492498
+      },
+      {
+        "mtime": 1783601897,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen/derived.npz",
+        "size": 1301522
+      },
+      {
+        "mtime": 1783601980,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1315858
+      },
+      {
+        "mtime": 1783602007,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen_shmr_kim24/derived.npz",
+        "size": 1293970
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1286802
+      },
+      {
+        "mtime": 1783602035,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/aquarius_2/satgen_shmr_moster18/derived.npz",
+        "size": 1337106
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/loguniform/derived.npz",
+        "size": 2300690
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen_box/derived.npz",
+        "size": 1966226
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen/derived.npz",
+        "size": 1991186
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2311826
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen_shmr_kim24/derived.npz",
+        "size": 2001298
+      },
+      {
+        "mtime": 1783601990,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2207250
+      },
+      {
+        "mtime": 1783602095,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_1/satgen_shmr_moster18/derived.npz",
+        "size": 2476562
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/loguniform/derived.npz",
+        "size": 1950866
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen_box/derived.npz",
+        "size": 1650450
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen/derived.npz",
+        "size": 1629458
+      },
+      {
+        "mtime": 1783602023,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1736850
+      },
+      {
+        "mtime": 1783602058,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen_shmr_kim24/derived.npz",
+        "size": 1592338
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1608082
+      },
+      {
+        "mtime": 1783602095,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_2/satgen_shmr_moster18/derived.npz",
+        "size": 1721362
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/loguniform/derived.npz",
+        "size": 1837970
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen_box/derived.npz",
+        "size": 1534994
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen/derived.npz",
+        "size": 1405586
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen_shmr_fattahi18/derived.npz",
+        "size": 1469714
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen_shmr_kim24/derived.npz",
+        "size": 1412498
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1424914
+      },
+      {
+        "mtime": 1783602090,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/bootes_3/satgen_shmr_moster18/derived.npz",
+        "size": 1505682
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/loguniform/derived.npz",
+        "size": 2654866
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen_box/derived.npz",
+        "size": 2321810
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen/derived.npz",
+        "size": 2122770
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2083346
+      },
+      {
+        "mtime": 1783602056,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen_shmr_kim24/derived.npz",
+        "size": 2016914
+      },
+      {
+        "mtime": 1783601988,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2094354
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_1/satgen_shmr_moster18/derived.npz",
+        "size": 2291730
+      },
+      {
+        "mtime": 1783601886,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/loguniform/derived.npz",
+        "size": 2145042
+      },
+      {
+        "mtime": 1783601955,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen_box/derived.npz",
+        "size": 1794834
+      },
+      {
+        "mtime": 1783601920,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen/derived.npz",
+        "size": 1714450
+      },
+      {
+        "mtime": 1783602023,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1591186
+      },
+      {
+        "mtime": 1783602058,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen_shmr_kim24/derived.npz",
+        "size": 1738130
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1668370
+      },
+      {
+        "mtime": 1783602092,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/canes_venatici_2/satgen_shmr_moster18/derived.npz",
+        "size": 1575570
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/loguniform/derived.npz",
+        "size": 3086482
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen_box/derived.npz",
+        "size": 2764562
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen/derived.npz",
+        "size": 2455314
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2563346
+      },
+      {
+        "mtime": 1783602056,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen_shmr_kim24/derived.npz",
+        "size": 2481298
+      },
+      {
+        "mtime": 1783601986,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2664210
+      },
+      {
+        "mtime": 1783602090,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_1/satgen_shmr_moster18/derived.npz",
+        "size": 2763282
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/loguniform/derived.npz",
+        "size": 2172306
+      },
+      {
+        "mtime": 1783601955,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen_box/derived.npz",
+        "size": 1838738
+      },
+      {
+        "mtime": 1783601920,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen/derived.npz",
+        "size": 1612690
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1596050
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen_shmr_kim24/derived.npz",
+        "size": 1609490
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1575954
+      },
+      {
+        "mtime": 1783602095,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/centaurus_1/satgen_shmr_moster18/derived.npz",
+        "size": 1650578
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/loguniform/derived.npz",
+        "size": 2244370
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen_box/derived.npz",
+        "size": 1915666
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen/derived.npz",
+        "size": 1687826
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1712914
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen_shmr_kim24/derived.npz",
+        "size": 1687314
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1671698
+      },
+      {
+        "mtime": 1783602094,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/coma_berenices_1/satgen_shmr_moster18/derived.npz",
+        "size": 1739922
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/loguniform/derived.npz",
+        "size": 2702866
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen_box/derived.npz",
+        "size": 3243026
+      },
+      {
+        "mtime": 1783601917,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen/derived.npz",
+        "size": 3817746
+      },
+      {
+        "mtime": 1783602020,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 7170962
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen_shmr_kim24/derived.npz",
+        "size": 4839314
+      },
+      {
+        "mtime": 1783601986,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 6027282
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/crater_2/satgen_shmr_moster18/derived.npz",
+        "size": 5251602
+      },
+      {
+        "mtime": 1783601886,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/loguniform/derived.npz",
+        "size": 3118738
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen_box/derived.npz",
+        "size": 2816914
+      },
+      {
+        "mtime": 1783601920,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen/derived.npz",
+        "size": 2896274
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2595986
+      },
+      {
+        "mtime": 1783602060,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen_shmr_kim24/derived.npz",
+        "size": 2663698
+      },
+      {
+        "mtime": 1783601988,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2486162
+      },
+      {
+        "mtime": 1783602094,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/draco_1/satgen_shmr_moster18/derived.npz",
+        "size": 2426130
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/loguniform/derived.npz",
+        "size": 2047378
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen_box/derived.npz",
+        "size": 1746962
+      },
+      {
+        "mtime": 1783601920,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen/derived.npz",
+        "size": 1572882
+      },
+      {
+        "mtime": 1783602023,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1447058
+      },
+      {
+        "mtime": 1783602058,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen_shmr_kim24/derived.npz",
+        "size": 1513490
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1450386
+      },
+      {
+        "mtime": 1783602092,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_2/satgen_shmr_moster18/derived.npz",
+        "size": 1498130
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/loguniform/derived.npz",
+        "size": 1986322
+      },
+      {
+        "mtime": 1783601951,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen_box/derived.npz",
+        "size": 1666578
+      },
+      {
+        "mtime": 1783601917,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen/derived.npz",
+        "size": 1477010
+      },
+      {
+        "mtime": 1783602018,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen_shmr_fattahi18/derived.npz",
+        "size": 1432722
+      },
+      {
+        "mtime": 1783602052,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen_shmr_kim24/derived.npz",
+        "size": 1508498
+      },
+      {
+        "mtime": 1783601985,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1492242
+      },
+      {
+        "mtime": 1783602086,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/eridanus_4/satgen_shmr_moster18/derived.npz",
+        "size": 1456530
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/loguniform/derived.npz",
+        "size": 1957138
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen_box/derived.npz",
+        "size": 1720594
+      },
+      {
+        "mtime": 1783601918,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen/derived.npz",
+        "size": 1707794
+      },
+      {
+        "mtime": 1783602019,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1887378
+      },
+      {
+        "mtime": 1783602053,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen_shmr_kim24/derived.npz",
+        "size": 1693970
+      },
+      {
+        "mtime": 1783601986,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1726866
+      },
+      {
+        "mtime": 1783602088,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/grus_1/satgen_shmr_moster18/derived.npz",
+        "size": 1889554
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/loguniform/derived.npz",
+        "size": 2110994
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen_box/derived.npz",
+        "size": 1853970
+      },
+      {
+        "mtime": 1783601920,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen/derived.npz",
+        "size": 1885330
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2235282
+      },
+      {
+        "mtime": 1783602057,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen_shmr_kim24/derived.npz",
+        "size": 1916946
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2093842
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hercules_1/satgen_shmr_moster18/derived.npz",
+        "size": 2346386
+      },
+      {
+        "mtime": 1783601886,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/loguniform/derived.npz",
+        "size": 3062290
+      },
+      {
+        "mtime": 1783601955,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen_box/derived.npz",
+        "size": 2733458
+      },
+      {
+        "mtime": 1783601921,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen/derived.npz",
+        "size": 2629394
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2416914
+      },
+      {
+        "mtime": 1783602060,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen_shmr_kim24/derived.npz",
+        "size": 2511634
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2656402
+      },
+      {
+        "mtime": 1783602093,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_1/satgen_shmr_moster18/derived.npz",
+        "size": 2721042
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/loguniform/derived.npz",
+        "size": 2701586
+      },
+      {
+        "mtime": 1783601951,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen_box/derived.npz",
+        "size": 2363410
+      },
+      {
+        "mtime": 1783601917,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen/derived.npz",
+        "size": 2238354
+      },
+      {
+        "mtime": 1783602019,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 2019858
+      },
+      {
+        "mtime": 1783602053,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen_shmr_kim24/derived.npz",
+        "size": 2062098
+      },
+      {
+        "mtime": 1783601985,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2080402
+      },
+      {
+        "mtime": 1783602086,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_2/satgen_shmr_moster18/derived.npz",
+        "size": 2167954
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/loguniform/derived.npz",
+        "size": 2149650
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen_box/derived.npz",
+        "size": 1832594
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen/derived.npz",
+        "size": 1747986
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen_shmr_fattahi18/derived.npz",
+        "size": 1941650
+      },
+      {
+        "mtime": 1783602057,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen_shmr_kim24/derived.npz",
+        "size": 1729938
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1780242
+      },
+      {
+        "mtime": 1783602092,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_4/satgen_shmr_moster18/derived.npz",
+        "size": 1981074
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/loguniform/derived.npz",
+        "size": 1740306
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen_box/derived.npz",
+        "size": 1439762
+      },
+      {
+        "mtime": 1783601918,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen/derived.npz",
+        "size": 1310354
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen_shmr_fattahi18/derived.npz",
+        "size": 1341330
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen_shmr_kim24/derived.npz",
+        "size": 1294738
+      },
+      {
+        "mtime": 1783601986,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1296786
+      },
+      {
+        "mtime": 1783602089,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_6/satgen_shmr_moster18/derived.npz",
+        "size": 1361042
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/loguniform/derived.npz",
+        "size": 1852818
+      },
+      {
+        "mtime": 1783601954,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen_box/derived.npz",
+        "size": 1646866
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen/derived.npz",
+        "size": 1597714
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen_shmr_fattahi18/derived.npz",
+        "size": 1718546
+      },
+      {
+        "mtime": 1783602058,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen_shmr_kim24/derived.npz",
+        "size": 1562130
+      },
+      {
+        "mtime": 1783601988,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1607058
+      },
+      {
+        "mtime": 1783602093,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_3/satgen_shmr_moster18/derived.npz",
+        "size": 1727122
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/loguniform/derived.npz",
+        "size": 1992594
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen_box/derived.npz",
+        "size": 1645330
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen/derived.npz",
+        "size": 1503122
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen_shmr_fattahi18/derived.npz",
+        "size": 1533970
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen_shmr_kim24/derived.npz",
+        "size": 1494290
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1493906
+      },
+      {
+        "mtime": 1783602090,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pegasus_4/satgen_shmr_moster18/derived.npz",
+        "size": 1556498
+      },
+      {
+        "mtime": 1783601883,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/loguniform/derived.npz",
+        "size": 1525010
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen_box/derived.npz",
+        "size": 1238034
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen/derived.npz",
+        "size": 1148690
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1123218
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen_shmr_kim24/derived.npz",
+        "size": 1160210
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1150482
+      },
+      {
+        "mtime": 1783602089,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/pisces_2/satgen_shmr_moster18/derived.npz",
+        "size": 1120914
+      },
+      {
+        "mtime": 1783601902,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/loguniform/derived.npz",
+        "size": 2838930
+      },
+      {
+        "mtime": 1783601965,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen_box/derived.npz",
+        "size": 2495122
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen/derived.npz",
+        "size": 2405778
+      },
+      {
+        "mtime": 1783602028,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2142994
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen_shmr_kim24/derived.npz",
+        "size": 2172690
+      },
+      {
+        "mtime": 1783601997,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2186386
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sculptor_1/satgen_shmr_moster18/derived.npz",
+        "size": 2245010
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/loguniform/derived.npz",
+        "size": 2042770
+      },
+      {
+        "mtime": 1783601965,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen_box/derived.npz",
+        "size": 1710354
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen/derived.npz",
+        "size": 1661714
+      },
+      {
+        "mtime": 1783602028,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1601554
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen_shmr_kim24/derived.npz",
+        "size": 1716882
+      },
+      {
+        "mtime": 1783601997,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1752850
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/segue_1/satgen_shmr_moster18/derived.npz",
+        "size": 1606290
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/loguniform/derived.npz",
+        "size": 2717714
+      },
+      {
+        "mtime": 1783601966,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen_box/derived.npz",
+        "size": 2396818
+      },
+      {
+        "mtime": 1783601934,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen/derived.npz",
+        "size": 2196498
+      },
+      {
+        "mtime": 1783602030,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2127250
+      },
+      {
+        "mtime": 1783602062,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen_shmr_kim24/derived.npz",
+        "size": 2069650
+      },
+      {
+        "mtime": 1783601998,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2151058
+      },
+      {
+        "mtime": 1783602095,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/sextans_1/satgen_shmr_moster18/derived.npz",
+        "size": 2267154
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/loguniform/derived.npz",
+        "size": 2139282
+      },
+      {
+        "mtime": 1783601964,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen_box/derived.npz",
+        "size": 1795090
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen/derived.npz",
+        "size": 1652754
+      },
+      {
+        "mtime": 1783602028,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1782162
+      },
+      {
+        "mtime": 1783602060,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen_shmr_kim24/derived.npz",
+        "size": 1616402
+      },
+      {
+        "mtime": 1783601996,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1624850
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_2/satgen_shmr_moster18/derived.npz",
+        "size": 1789202
+      },
+      {
+        "mtime": 1783601900,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/loguniform/derived.npz",
+        "size": 1841810
+      },
+      {
+        "mtime": 1783601963,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen_box/derived.npz",
+        "size": 1522194
+      },
+      {
+        "mtime": 1783601932,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen/derived.npz",
+        "size": 1356434
+      },
+      {
+        "mtime": 1783602027,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen_shmr_fattahi18/derived.npz",
+        "size": 1333778
+      },
+      {
+        "mtime": 1783602058,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen_shmr_kim24/derived.npz",
+        "size": 1383570
+      },
+      {
+        "mtime": 1783601995,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1364626
+      },
+      {
+        "mtime": 1783602090,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_4/satgen_shmr_moster18/derived.npz",
+        "size": 1325458
+      },
+      {
+        "mtime": 1783601902,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/loguniform/derived.npz",
+        "size": 1527186
+      },
+      {
+        "mtime": 1783601965,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen_box/derived.npz",
+        "size": 1362450
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen/derived.npz",
+        "size": 1266834
+      },
+      {
+        "mtime": 1783602028,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen_shmr_fattahi18/derived.npz",
+        "size": 1266322
+      },
+      {
+        "mtime": 1783602059,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen_shmr_kim24/derived.npz",
+        "size": 1318162
+      },
+      {
+        "mtime": 1783601996,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1327762
+      },
+      {
+        "mtime": 1783602092,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/tucana_5/satgen_shmr_moster18/derived.npz",
+        "size": 1282450
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/loguniform/derived.npz",
+        "size": 2105234
+      },
+      {
+        "mtime": 1783601965,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen_box/derived.npz",
+        "size": 1781906
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen/derived.npz",
+        "size": 1616530
+      },
+      {
+        "mtime": 1783602031,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1486610
+      },
+      {
+        "mtime": 1783602063,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen_shmr_kim24/derived.npz",
+        "size": 1613586
+      },
+      {
+        "mtime": 1783601998,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1546514
+      },
+      {
+        "mtime": 1783602095,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_1/satgen_shmr_moster18/derived.npz",
+        "size": 1513618
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/loguniform/derived.npz",
+        "size": 2149394
+      },
+      {
+        "mtime": 1783601965,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen_box/derived.npz",
+        "size": 1820434
+      },
+      {
+        "mtime": 1783601933,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen/derived.npz",
+        "size": 1672850
+      },
+      {
+        "mtime": 1783602029,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1598866
+      },
+      {
+        "mtime": 1783602060,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen_shmr_kim24/derived.npz",
+        "size": 1738514
+      },
+      {
+        "mtime": 1783601996,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1654290
+      },
+      {
+        "mtime": 1783602093,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/satgen_shmr_moster18/derived.npz",
+        "size": 1572114
+      },
+      {
+        "mtime": 1783601895,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/loguniform/derived.npz",
+        "size": 3279762
+      },
+      {
+        "mtime": 1783601960,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen_box/derived.npz",
+        "size": 2918802
+      },
+      {
+        "mtime": 1783601928,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen/derived.npz",
+        "size": 2805522
+      },
+      {
+        "mtime": 1783602025,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 2619666
+      },
+      {
+        "mtime": 1783602057,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen_shmr_kim24/derived.npz",
+        "size": 2698898
+      },
+      {
+        "mtime": 1783601993,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 2710418
+      },
+      {
+        "mtime": 1783602090,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_minor_1/satgen_shmr_moster18/derived.npz",
+        "size": 2765330
+      },
+      {
+        "mtime": 1783601894,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/loguniform/derived.npz",
+        "size": 2038290
+      },
+      {
+        "mtime": 1783601960,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen_box/derived.npz",
+        "size": 1706642
+      },
+      {
+        "mtime": 1783601928,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen/derived.npz",
+        "size": 1628562
+      },
+      {
+        "mtime": 1783602024,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1542802
+      },
+      {
+        "mtime": 1783602056,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen_shmr_kim24/derived.npz",
+        "size": 1668626
+      },
+      {
+        "mtime": 1783601992,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1664018
+      },
+      {
+        "mtime": 1783602088,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/willman_1/satgen_shmr_moster18/derived.npz",
+        "size": 1561106
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/loguniform/derived.npz",
+        "size": 1885970
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen_box/derived.npz",
+        "size": 1571346
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen/derived.npz",
+        "size": 1414674
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1456274
+      },
+      {
+        "mtime": 1783602056,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen_shmr_kim24/derived.npz",
+        "size": 1400082
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1418386
+      },
+      {
+        "mtime": 1783602089,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_2/satgen_shmr_moster18/derived.npz",
+        "size": 1502226
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/loguniform/derived.npz",
+        "size": 1531794
+      },
+      {
+        "mtime": 1783601952,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen_box/derived.npz",
+        "size": 1275282
+      },
+      {
+        "mtime": 1783601918,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen/derived.npz",
+        "size": 1356178
+      },
+      {
+        "mtime": 1783602021,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen_shmr_fattahi18/derived.npz",
+        "size": 1276946
+      },
+      {
+        "mtime": 1783602055,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen_shmr_kim24/derived.npz",
+        "size": 1406610
+      },
+      {
+        "mtime": 1783601987,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1406994
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/carina_3/satgen_shmr_moster18/derived.npz",
+        "size": 1280530
+      },
+      {
+        "mtime": 1783601885,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/loguniform/derived.npz",
+        "size": 1585810
+      },
+      {
+        "mtime": 1783601953,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen_box/derived.npz",
+        "size": 1309970
+      },
+      {
+        "mtime": 1783601919,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen/derived.npz",
+        "size": 1408146
+      },
+      {
+        "mtime": 1783602022,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1312914
+      },
+      {
+        "mtime": 1783602057,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen_shmr_kim24/derived.npz",
+        "size": 1485586
+      },
+      {
+        "mtime": 1783601989,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1460626
+      },
+      {
+        "mtime": 1783602091,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/horologium_1/satgen_shmr_moster18/derived.npz",
+        "size": 1292562
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/loguniform/derived.npz",
+        "size": 2265234
+      },
+      {
+        "mtime": 1783601951,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen_box/derived.npz",
+        "size": 1945234
+      },
+      {
+        "mtime": 1783601917,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen/derived.npz",
+        "size": 1748754
+      },
+      {
+        "mtime": 1783602019,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen_shmr_fattahi18/derived.npz",
+        "size": 1834514
+      },
+      {
+        "mtime": 1783602053,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen_shmr_kim24/derived.npz",
+        "size": 1727506
+      },
+      {
+        "mtime": 1783601984,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1745298
+      },
+      {
+        "mtime": 1783602086,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/hydrus_1/satgen_shmr_moster18/derived.npz",
+        "size": 1871506
+      },
+      {
+        "mtime": 1783601883,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/loguniform/derived.npz",
+        "size": 1998482
+      },
+      {
+        "mtime": 1783601951,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen_box/derived.npz",
+        "size": 1674130
+      },
+      {
+        "mtime": 1783601917,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen/derived.npz",
+        "size": 1497234
+      },
+      {
+        "mtime": 1783602018,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen_shmr_fattahi18/derived.npz",
+        "size": 1471890
+      },
+      {
+        "mtime": 1783602051,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen_shmr_kim24/derived.npz",
+        "size": 1546002
+      },
+      {
+        "mtime": 1783601984,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1525650
+      },
+      {
+        "mtime": 1783602085,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/reticulum_2/satgen_shmr_moster18/derived.npz",
+        "size": 1474194
+      },
+      {
+        "mtime": 1783601884,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/loguniform/derived.npz",
+        "size": 1933586
+      },
+      {
+        "mtime": 1783601951,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen_box/derived.npz",
+        "size": 1602450
+      },
+      {
+        "mtime": 1783601918,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen/derived.npz",
+        "size": 1493778
+      },
+      {
+        "mtime": 1783602019,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen_shmr_fattahi18/derived.npz",
+        "size": 1513746
+      },
+      {
+        "mtime": 1783602053,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen_shmr_kim24/derived.npz",
+        "size": 1485330
+      },
+      {
+        "mtime": 1783601986,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen_shmr_danieli23_const/derived.npz",
+        "size": 1490194
+      },
+      {
+        "mtime": 1783602086,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/leo_5/satgen_shmr_moster18/derived.npz",
+        "size": 1534994
+      }
+    ],
+    "prior": [
+      "loguniform",
+      "satgen_box",
+      "satgen",
+      "satgen_shmr_fattahi18",
+      "satgen_shmr_kim24",
+      "satgen_shmr_danieli23_const",
+      "satgen_shmr_moster18"
+    ]
+  },
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/panels/multipanel_jeans_priors.pdf",
+  "figure_key": "multipanel_jeans_priors",
+  "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+  "git_dirty": true,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "satgen_version": null,
+  "script": "python/plot_jfactor_panels.py",
+  "sim_version": null,
+  "written_utc": "2026-08-04T20:45:04+00:00"
+}
