@@ -1,0 +1,1502 @@
+{
+  "argv": null,
+  "band_indices": [
+    0,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "dja_snapshot": null,
+  "fermi_version": "update",
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/fermi/fermi_reweighting_prior_envelope.pdf",
+  "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+  "git_dirty": true,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861091,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861102,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861089,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861099,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861092,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861083,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/mhalf.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861089,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861099,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861092,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861083,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen_box.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861091,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861102,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861089,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861099,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861092,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861083,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen_shmr_fattahi18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861091,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861098,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861083,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861102,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen_shmr_kim24.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861091,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861098,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861101,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861083,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861102,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen_shmr_danieli23_const.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861090,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Aquarius II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861085,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Bootes II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861091,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Canes Venatici II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Centaurus I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861081,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Coma Berenices/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Draco/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861093,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Eridanus II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861080,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Grus I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861096,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hercules/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861097,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo IV/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861094,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pegasus III/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Pisces II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861077,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Segue 1/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Sextans/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861078,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861095,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana IV/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Tucana V/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861100,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861082,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Major II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Ursa Minor/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861087,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861102,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Carina III/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861079,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Horologium I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861076,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Hydrus I/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861084,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Reticulum II/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1785861088,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/fermi_reweighting_update/Leo V/Jeans_satgen_shmr_moster18.npz",
+      "provenance": null,
+      "size": 24050
+    },
+    {
+      "mtime": 1777326197,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/literature/Abazajian2015.csv",
+      "provenance": null,
+      "size": 1203
+    },
+    {
+      "mtime": 1777326371,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/literature/Daylan2014.csv",
+      "provenance": null,
+      "size": 377
+    },
+    {
+      "mtime": 1777326776,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/literature/Calore2014.csv",
+      "provenance": null,
+      "size": 713
+    },
+    {
+      "mtime": 1770404925,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/literature/DiMauro.csv",
+      "provenance": null,
+      "size": 206
+    },
+    {
+      "mtime": 1770404901,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/literature/sigma_thermal.csv",
+      "provenance": null,
+      "size": 3208
+    }
+  ],
+  "line_indices": [
+    0,
+    1,
+    8
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "satgen_version": null,
+  "script": "python/plot_fermi_reweighting.py",
+  "sim_version": null,
+  "written_utc": "2026-08-04T21:30:13+00:00"
+}

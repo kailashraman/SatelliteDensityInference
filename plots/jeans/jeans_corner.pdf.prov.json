@@ -1,0 +1,46 @@
+{
+  "argv": null,
+  "dja_git_commit": "f9114b51df4f51c77a6b95958f691c14cc0403e6",
+  "dja_git_dirty": true,
+  "dja_invocation": [
+    "/global/home/users/kraman/.conda/envs/DwarfJeans/bin/python",
+    "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/scripts/plot_posteriors.py",
+    "--lvdb-key",
+    "ursa_major_2",
+    "--prior",
+    "loguniform",
+    "--run-dir",
+    "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/loguniform"
+  ],
+  "dja_repo_root": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis",
+  "dja_snapshot": {
+    "dir": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production",
+    "files": [
+      {
+        "mtime": 1783604574,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/loguniform/posterior_samples.npz",
+        "size": 1150186
+      },
+      {
+        "mtime": 1783601901,
+        "path": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production/ursa_major_2/loguniform/derived.npz",
+        "size": 2149394
+      }
+    ],
+    "prior": "loguniform"
+  },
+  "dja_source_pdf": "/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/plots/ursa_major_2/loguniform/jeans_corner.pdf",
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/jeans/jeans_corner.pdf",
+  "galaxy_key": "ursa_major_2",
+  "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+  "git_dirty": true,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "satgen_version": null,
+  "script": "python/fetch_jeans_corner.py",
+  "sim_version": null,
+  "written_utc": "2026-08-04T20:48:15+00:00"
+}
