@@ -484,6 +484,11 @@ class Dwarf:
                                      'derived.npz')
             if os.path.isfile(candidate):
                 ps_path = candidate
+        # The DwarfJeansAnalysis file actually read for this prior, so a
+        # caller stamping the result can fingerprint the real dependency
+        # (derived.npz under DJA_RESULTS_DIR) rather than the unrelated
+        # SatGen catalog/weights this method never touches.
+        self.jeans_dja_path = ps_path
         if ps_path is not None:
             dwarf_file = np.load(ps_path)
             # NFW chain: equal-weighted samples, uniform weights.
