@@ -1,0 +1,1354 @@
+{
+  "argv": [
+    "all"
+  ],
+  "dja_snapshot": null,
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/scaling_relations/lvdb_kdsa_rho150.pdf",
+  "git_commit": "1e657dde7dd01c6ee78d4bbd61ffef8f1c172c05",
+  "git_dirty": true,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [
+    {
+      "mtime": 1785792705,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Bootes I.npz",
+      "provenance": {
+        "argv": [
+          "2",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:45+00:00"
+      },
+      "size": 11637
+    },
+    {
+      "mtime": 1785792700,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Bootes II.npz",
+      "provenance": {
+        "argv": [
+          "3",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:40+00:00"
+      },
+      "size": 11641
+    },
+    {
+      "mtime": 1785792701,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Bootes III.npz",
+      "provenance": {
+        "argv": [
+          "4",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes III",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:41+00:00"
+      },
+      "size": 11626
+    },
+    {
+      "mtime": 1785792700,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Coma Berenices.npz",
+      "provenance": {
+        "argv": [
+          "9",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Coma Berenices",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:40+00:00"
+      },
+      "size": 11598
+    },
+    {
+      "mtime": 1785792706,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Canes Venatici I.npz",
+      "provenance": {
+        "argv": [
+          "5",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Canes Venatici I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:46+00:00"
+      },
+      "size": 11575
+    },
+    {
+      "mtime": 1785792708,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Canes Venatici II.npz",
+      "provenance": {
+        "argv": [
+          "6",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Canes Venatici II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:48+00:00"
+      },
+      "size": 11645
+    },
+    {
+      "mtime": 1785792706,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Draco.npz",
+      "provenance": {
+        "argv": [
+          "11",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Draco",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:46+00:00"
+      },
+      "size": 11570
+    },
+    {
+      "mtime": 1785792702,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Eridanus IV.npz",
+      "provenance": {
+        "argv": [
+          "13",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Eridanus IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:31:42+00:00"
+      },
+      "size": 11630
+    },
+    {
+      "mtime": 1785792749,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Fornax.npz",
+      "provenance": {
+        "argv": [
+          "14",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Fornax",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:32:29+00:00"
+      },
+      "size": 11582
+    },
+    {
+      "mtime": 1785792767,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Hercules.npz",
+      "provenance": {
+        "argv": [
+          "16",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Hercules",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:32:47+00:00"
+      },
+      "size": 11641
+    },
+    {
+      "mtime": 1785792807,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Leo I.npz",
+      "provenance": {
+        "argv": [
+          "17",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:27+00:00"
+      },
+      "size": 11537
+    },
+    {
+      "mtime": 1785792807,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Leo II.npz",
+      "provenance": {
+        "argv": [
+          "18",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:27+00:00"
+      },
+      "size": 11569
+    },
+    {
+      "mtime": 1785792810,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Leo IV.npz",
+      "provenance": {
+        "argv": [
+          "19",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:30+00:00"
+      },
+      "size": 11610
+    },
+    {
+      "mtime": 1785792809,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Pegasus III.npz",
+      "provenance": {
+        "argv": [
+          "22",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:29+00:00"
+      },
+      "size": 11636
+    },
+    {
+      "mtime": 1785792809,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Pegasus IV.npz",
+      "provenance": {
+        "argv": [
+          "23",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Pegasus IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:29+00:00"
+      },
+      "size": 11635
+    },
+    {
+      "mtime": 1785792811,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Sculptor.npz",
+      "provenance": {
+        "argv": [
+          "26",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sculptor",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:31+00:00"
+      },
+      "size": 11556
+    },
+    {
+      "mtime": 1785792803,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Segue 1.npz",
+      "provenance": {
+        "argv": [
+          "27",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Segue 1",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:23+00:00"
+      },
+      "size": 11637
+    },
+    {
+      "mtime": 1785792802,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Sextans.npz",
+      "provenance": {
+        "argv": [
+          "28",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sextans",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:22+00:00"
+      },
+      "size": 11588
+    },
+    {
+      "mtime": 1785792801,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Sagittarius.npz",
+      "provenance": {
+        "argv": [
+          "25",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sagittarius",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:33:21+00:00"
+      },
+      "size": 11249
+    },
+    {
+      "mtime": 1785792862,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Ursa Major I.npz",
+      "provenance": {
+        "argv": [
+          "32",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Major I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:34:22+00:00"
+      },
+      "size": 11634
+    },
+    {
+      "mtime": 1785792856,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Ursa Major II.npz",
+      "provenance": {
+        "argv": [
+          "33",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Major II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:34:16+00:00"
+      },
+      "size": 11625
+    },
+    {
+      "mtime": 1785792861,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Ursa Minor.npz",
+      "provenance": {
+        "argv": [
+          "34",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Minor",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:34:21+00:00"
+      },
+      "size": 11576
+    },
+    {
+      "mtime": 1785792855,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/Diemer/Willman 1.npz",
+      "provenance": {
+        "argv": [
+          "35",
+          "Diemer"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Willman 1",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "Diemer",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:34:15+00:00"
+      },
+      "size": 11635
+    },
+    {
+      "mtime": 1785793432,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Bootes I.npz",
+      "provenance": {
+        "argv": [
+          "2",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:43:52+00:00"
+      },
+      "size": 11600
+    },
+    {
+      "mtime": 1785793460,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Bootes II.npz",
+      "provenance": {
+        "argv": [
+          "3",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:20+00:00"
+      },
+      "size": 11640
+    },
+    {
+      "mtime": 1785793473,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Bootes III.npz",
+      "provenance": {
+        "argv": [
+          "4",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Bootes III",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:33+00:00"
+      },
+      "size": 11654
+    },
+    {
+      "mtime": 1785793467,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Coma Berenices.npz",
+      "provenance": {
+        "argv": [
+          "9",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Coma Berenices",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:27+00:00"
+      },
+      "size": 11614
+    },
+    {
+      "mtime": 1785793478,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Canes Venatici I.npz",
+      "provenance": {
+        "argv": [
+          "5",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Canes Venatici I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:38+00:00"
+      },
+      "size": 11588
+    },
+    {
+      "mtime": 1785793480,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Canes Venatici II.npz",
+      "provenance": {
+        "argv": [
+          "6",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Canes Venatici II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:40+00:00"
+      },
+      "size": 11612
+    },
+    {
+      "mtime": 1785793474,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Draco.npz",
+      "provenance": {
+        "argv": [
+          "11",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Draco",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:34+00:00"
+      },
+      "size": 11584
+    },
+    {
+      "mtime": 1785793480,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Eridanus IV.npz",
+      "provenance": {
+        "argv": [
+          "13",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Eridanus IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:40+00:00"
+      },
+      "size": 11648
+    },
+    {
+      "mtime": 1785793485,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Fornax.npz",
+      "provenance": {
+        "argv": [
+          "14",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Fornax",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:45+00:00"
+      },
+      "size": 11575
+    },
+    {
+      "mtime": 1785793481,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Hercules.npz",
+      "provenance": {
+        "argv": [
+          "16",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Hercules",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:41+00:00"
+      },
+      "size": 11585
+    },
+    {
+      "mtime": 1785793476,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Leo I.npz",
+      "provenance": {
+        "argv": [
+          "17",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:36+00:00"
+      },
+      "size": 11571
+    },
+    {
+      "mtime": 1785793513,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Leo II.npz",
+      "provenance": {
+        "argv": [
+          "18",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:13+00:00"
+      },
+      "size": 11605
+    },
+    {
+      "mtime": 1785793524,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Leo IV.npz",
+      "provenance": {
+        "argv": [
+          "19",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Leo IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:24+00:00"
+      },
+      "size": 11632
+    },
+    {
+      "mtime": 1785793516,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Pegasus III.npz",
+      "provenance": {
+        "argv": [
+          "22",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Pegasus III",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:16+00:00"
+      },
+      "size": 11635
+    },
+    {
+      "mtime": 1785793517,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Pegasus IV.npz",
+      "provenance": {
+        "argv": [
+          "23",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Pegasus IV",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:17+00:00"
+      },
+      "size": 11645
+    },
+    {
+      "mtime": 1785793509,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Sculptor.npz",
+      "provenance": {
+        "argv": [
+          "26",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sculptor",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:09+00:00"
+      },
+      "size": 11581
+    },
+    {
+      "mtime": 1785793498,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Segue 1.npz",
+      "provenance": {
+        "argv": [
+          "27",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Segue 1",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:44:58+00:00"
+      },
+      "size": 11645
+    },
+    {
+      "mtime": 1785793520,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Sextans.npz",
+      "provenance": {
+        "argv": [
+          "28",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sextans",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:20+00:00"
+      },
+      "size": 11638
+    },
+    {
+      "mtime": 1785793503,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Sagittarius.npz",
+      "provenance": {
+        "argv": [
+          "25",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Sagittarius",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:03+00:00"
+      },
+      "size": 11310
+    },
+    {
+      "mtime": 1785793545,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Ursa Major I.npz",
+      "provenance": {
+        "argv": [
+          "32",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Major I",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:45+00:00"
+      },
+      "size": 11613
+    },
+    {
+      "mtime": 1785793536,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Ursa Major II.npz",
+      "provenance": {
+        "argv": [
+          "33",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Major II",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:36+00:00"
+      },
+      "size": 11641
+    },
+    {
+      "mtime": 1785793542,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Ursa Minor.npz",
+      "provenance": {
+        "argv": [
+          "34",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Ursa Minor",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:42+00:00"
+      },
+      "size": 11602
+    },
+    {
+      "mtime": 1785793535,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_quantiles/galactocentric/lvdb/Willman 1.npz",
+      "provenance": {
+        "argv": [
+          "35",
+          "lvdb"
+        ],
+        "dja_snapshot": null,
+        "dwarf": "Willman 1",
+        "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+        "git_dirty": true,
+        "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+        "h5_fingerprint": {
+          "mtime": 1785267594,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+          "size": 1376624522
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": null,
+        "mstar_evolution": "per_halo_tidal",
+        "n_inputs": 5,
+        "satgen_version": "lvdb",
+        "script": "python/compute_quantiles.py",
+        "sim_version": "Diemer",
+        "written_utc": "2026-08-03T21:45:35+00:00"
+      },
+      "size": 11652
+    }
+  ],
+  "kd_version": "Diemer",
+  "lvdb_version": "lvdb",
+  "migrated_from": null,
+  "satgen_version": null,
+  "script": "python/plot_scaling_relations.py",
+  "sim_version": null,
+  "written_utc": "2026-08-04T20:50:27+00:00"
+}
