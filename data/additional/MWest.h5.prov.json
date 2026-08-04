@@ -1,0 +1,145 @@
+{
+  "argv": [
+    "sims",
+    "MWest"
+  ],
+  "dja_snapshot": null,
+  "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+  "git_dirty": true,
+  "h5_file": "MWest.h5",
+  "h5_fingerprint": {
+    "mtime": 1785268899,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/MWest.h5",
+    "size": 351984
+  },
+  "inputs": [
+    {
+      "mtime": 1773174270,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo004.npz",
+      "provenance": null,
+      "size": 13746
+    },
+    {
+      "mtime": 1773174270,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo113.npz",
+      "provenance": null,
+      "size": 14538
+    },
+    {
+      "mtime": 1773174268,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo169.npz",
+      "provenance": null,
+      "size": 23074
+    },
+    {
+      "mtime": 1773174270,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo170.npz",
+      "provenance": null,
+      "size": 15814
+    },
+    {
+      "mtime": 1773174271,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo222.npz",
+      "provenance": null,
+      "size": 14978
+    },
+    {
+      "mtime": 1773174268,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo229.npz",
+      "provenance": null,
+      "size": 21842
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo282.npz",
+      "provenance": null,
+      "size": 14054
+    },
+    {
+      "mtime": 1773174268,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo327.npz",
+      "provenance": null,
+      "size": 13922
+    },
+    {
+      "mtime": 1773174271,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo349.npz",
+      "provenance": null,
+      "size": 20258
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo407.npz",
+      "provenance": null,
+      "size": 16254
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo453.npz",
+      "provenance": null,
+      "size": 12778
+    },
+    {
+      "mtime": 1773174270,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo476.npz",
+      "provenance": null,
+      "size": 14538
+    },
+    {
+      "mtime": 1773174271,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo659.npz",
+      "provenance": null,
+      "size": 23778
+    },
+    {
+      "mtime": 1773174271,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo666.npz",
+      "provenance": null,
+      "size": 19598
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo719.npz",
+      "provenance": null,
+      "size": 17838
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo747.npz",
+      "provenance": null,
+      "size": 20786
+    },
+    {
+      "mtime": 1773174270,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo756.npz",
+      "provenance": null,
+      "size": 24350
+    },
+    {
+      "mtime": 1773174268,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo788.npz",
+      "provenance": null,
+      "size": 25054
+    },
+    {
+      "mtime": 1773174268,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo975.npz",
+      "provenance": null,
+      "size": 13086
+    },
+    {
+      "mtime": 1773174269,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/MWest/Halo983.npz",
+      "provenance": null,
+      "size": 16166
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "n_halos": 7113,
+  "n_hosts": 20,
+  "satgen_version": "MWest",
+  "script": "python/make_h5.py",
+  "sim_version": "MWest",
+  "written_utc": "2026-07-28T20:01:39+00:00"
+}

@@ -1,0 +1,20 @@
+{
+  "argv": null,
+  "dja_snapshot": null,
+  "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+  "git_dirty": true,
+  "h5_file": "m12res8_z30zhao.h5",
+  "h5_fingerprint": {
+    "mtime": 1762202250,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_z30zhao.h5",
+    "size": 535059766
+  },
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/m12res8_z30zhao.h5",
+  "note": "copied verbatim from SatGen_Dwarf; no script in this repo produced it",
+  "satgen_version": "Zhao",
+  "script": null,
+  "sim_version": "Zhao",
+  "written_utc": "2026-07-28T20:07:38+00:00"
+}

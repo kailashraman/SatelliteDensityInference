@@ -1,0 +1,295 @@
+{
+  "argv": [
+    "sims",
+    "Symphony"
+  ],
+  "dja_snapshot": null,
+  "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+  "git_dirty": true,
+  "h5_file": "SymphonyMilkyWay.h5",
+  "h5_fingerprint": {
+    "mtime": 1785267149,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/SymphonyMilkyWay.h5",
+    "size": 678112
+  },
+  "inputs": [
+    {
+      "mtime": 1773174653,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo023.npz",
+      "provenance": null,
+      "size": 13394
+    },
+    {
+      "mtime": 1773174661,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo088.npz",
+      "provenance": null,
+      "size": 21754
+    },
+    {
+      "mtime": 1773174662,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo119.npz",
+      "provenance": null,
+      "size": 16738
+    },
+    {
+      "mtime": 1773174663,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo188.npz",
+      "provenance": null,
+      "size": 14318
+    },
+    {
+      "mtime": 1773174658,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo247.npz",
+      "provenance": null,
+      "size": 14362
+    },
+    {
+      "mtime": 1773174664,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo268.npz",
+      "provenance": null,
+      "size": 14758
+    },
+    {
+      "mtime": 1773174656,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo270.npz",
+      "provenance": null,
+      "size": 20522
+    },
+    {
+      "mtime": 1773174655,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo288.npz",
+      "provenance": null,
+      "size": 13262
+    },
+    {
+      "mtime": 1773174654,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo327.npz",
+      "provenance": null,
+      "size": 13746
+    },
+    {
+      "mtime": 1773174665,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo349.npz",
+      "provenance": null,
+      "size": 16430
+    },
+    {
+      "mtime": 1773174662,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo364.npz",
+      "provenance": null,
+      "size": 13042
+    },
+    {
+      "mtime": 1773174665,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo374.npz",
+      "provenance": null,
+      "size": 14758
+    },
+    {
+      "mtime": 1773174661,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo414.npz",
+      "provenance": null,
+      "size": 14054
+    },
+    {
+      "mtime": 1773174657,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo415.npz",
+      "provenance": null,
+      "size": 16738
+    },
+    {
+      "mtime": 1773174657,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo416.npz",
+      "provenance": null,
+      "size": 19202
+    },
+    {
+      "mtime": 1773174652,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo440.npz",
+      "provenance": null,
+      "size": 15814
+    },
+    {
+      "mtime": 1773174664,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo460.npz",
+      "provenance": null,
+      "size": 12998
+    },
+    {
+      "mtime": 1773174655,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo469.npz",
+      "provenance": null,
+      "size": 17178
+    },
+    {
+      "mtime": 1773174653,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo490.npz",
+      "provenance": null,
+      "size": 15682
+    },
+    {
+      "mtime": 1773174652,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo530.npz",
+      "provenance": null,
+      "size": 16694
+    },
+    {
+      "mtime": 1773174653,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo558.npz",
+      "provenance": null,
+      "size": 13174
+    },
+    {
+      "mtime": 1773174666,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo567.npz",
+      "provenance": null,
+      "size": 15242
+    },
+    {
+      "mtime": 1773174658,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo570.npz",
+      "provenance": null,
+      "size": 17486
+    },
+    {
+      "mtime": 1773174663,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo606.npz",
+      "provenance": null,
+      "size": 19026
+    },
+    {
+      "mtime": 1773174653,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo628.npz",
+      "provenance": null,
+      "size": 14758
+    },
+    {
+      "mtime": 1773174660,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo641.npz",
+      "provenance": null,
+      "size": 16870
+    },
+    {
+      "mtime": 1773174660,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo675.npz",
+      "provenance": null,
+      "size": 18630
+    },
+    {
+      "mtime": 1773174663,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo718.npz",
+      "provenance": null,
+      "size": 14450
+    },
+    {
+      "mtime": 1773174655,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo738.npz",
+      "provenance": null,
+      "size": 15902
+    },
+    {
+      "mtime": 1773174656,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo749.npz",
+      "provenance": null,
+      "size": 17530
+    },
+    {
+      "mtime": 1773174657,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo797.npz",
+      "provenance": null,
+      "size": 16914
+    },
+    {
+      "mtime": 1773174664,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo800.npz",
+      "provenance": null,
+      "size": 17178
+    },
+    {
+      "mtime": 1773174654,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo825.npz",
+      "provenance": null,
+      "size": 13262
+    },
+    {
+      "mtime": 1773174660,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo829.npz",
+      "provenance": null,
+      "size": 13306
+    },
+    {
+      "mtime": 1773174662,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo852.npz",
+      "provenance": null,
+      "size": 15550
+    },
+    {
+      "mtime": 1773174659,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo878.npz",
+      "provenance": null,
+      "size": 16606
+    },
+    {
+      "mtime": 1773174658,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo881.npz",
+      "provenance": null,
+      "size": 18366
+    },
+    {
+      "mtime": 1773174666,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo925.npz",
+      "provenance": null,
+      "size": 15066
+    },
+    {
+      "mtime": 1773174654,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo926.npz",
+      "provenance": null,
+      "size": 12998
+    },
+    {
+      "mtime": 1773174652,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo937.npz",
+      "provenance": null,
+      "size": 14978
+    },
+    {
+      "mtime": 1773174659,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo939.npz",
+      "provenance": null,
+      "size": 11766
+    },
+    {
+      "mtime": 1773174656,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo967.npz",
+      "provenance": null,
+      "size": 18674
+    },
+    {
+      "mtime": 1773174659,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo9749.npz",
+      "provenance": null,
+      "size": 15990
+    },
+    {
+      "mtime": 1773174666,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo9829.npz",
+      "provenance": null,
+      "size": 14978
+    },
+    {
+      "mtime": 1773174665,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/symphony/SymphonyMilkyWay/Halo990.npz",
+      "provenance": null,
+      "size": 15242
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "n_halos": 13899,
+  "n_hosts": 45,
+  "satgen_version": "Symphony",
+  "script": "python/make_h5.py",
+  "sim_version": "Symphony",
+  "written_utc": "2026-07-28T19:32:29+00:00"
+}

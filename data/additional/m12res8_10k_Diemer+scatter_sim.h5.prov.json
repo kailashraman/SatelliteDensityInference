@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "build",
+    "Diemer",
+    "--force"
+  ],
+  "dja_snapshot": null,
+  "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+  "git_dirty": true,
+  "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+  "h5_fingerprint": {
+    "mtime": 1785267594,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+    "size": 1376624522
+  },
+  "host_virial_radius": 258.92401123046875,
+  "inputs": [
+    {
+      "mtime": 1751401316,
+      "path": "/global/scratch/projects/pc_heptheory/dfolsom/Green_m12res8_datasets/25-06-Diemer+scatter-10k.npz",
+      "provenance": null,
+      "size": 2019297351
+    }
+  ],
+  "logMhalf_group": "grafted from SatGen_Dwarf; produced by compute_mhalf (plan step 4), not yet ported",
+  "lvdb_version": "v1.0.5",
+  "masked": true,
+  "migrated_from": null,
+  "n_satellites": 2432159,
+  "n_source": 15152481,
+  "satgen_version": "Diemer",
+  "script": "python/make_h5.py",
+  "sim_version": "Diemer",
+  "written_utc": "2026-07-28T19:38:14+00:00"
+}
