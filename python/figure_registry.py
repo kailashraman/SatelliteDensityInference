@@ -8,9 +8,12 @@ not a directory in this repository, so only the basename is kept; dwarf
 names contain spaces and are kept verbatim, not sanitised.
 
 `REGISTRY` and `TABLE_REGISTRY` map each basename to the python/ module that
-produces it. No plot scripts exist yet (that is steps 10-22), so every entry
-is None here -- this module is the single list those steps fill in, one
-entry at a time, not a working dispatcher.
+produces it. All 34 figures and both tables are now mapped.
+
+These mappings are load-bearing, not documentation: tests/test_figure_names.py
+keys its xfail on whether an entry is None, so registering a producer converts
+that entry into a hard assertion that the artifact exists exactly once under
+plots/. Never register a basename before its producer actually writes it.
 """
 
 import re
@@ -51,6 +54,13 @@ FIGURES, TABLES = _parse_tex_names()
 # basename -> producing python/<module>.py name, or None until that step lands.
 REGISTRY = {name: None for name in FIGURES}
 TABLE_REGISTRY = {name: None for name in TABLES}
+
+# Step 23: both LaTeX tables (python/make_tables.py). Their row order follows
+# notebook cells 105/106 -- classicals, ultrafaints, problem-ultrafaints, each
+# alphabetical -- NOT dwarf_categories.idcs, which is the figure x-axis order.
+# The two artifacts order differently on purpose; see make_tables.py.
+for _name in ('dwarf-observables', 'dwarf_J_table'):
+    TABLE_REGISTRY[_name] = 'make_tables'
 
 # Step 10: the "number function" figure family (python/plot_number_functions.py).
 for _name in ('sims_mpeak.pdf', 'sims_rho150.pdf', 'rho150.pdf', 'Jfactors_all.pdf',
