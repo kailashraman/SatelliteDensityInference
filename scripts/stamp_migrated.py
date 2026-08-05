@@ -8,6 +8,7 @@
     python scripts/stamp_migrated.py paper_quantiles
     python scripts/stamp_migrated.py massProfile
     python scripts/stamp_migrated.py paper_contours
+    python scripts/stamp_migrated.py fermi
 
 Exists as a tracked script rather than an ad-hoc snippet because the stamps it
 writes are the provenance record: a sidecar produced by something not in the
@@ -120,6 +121,69 @@ None of these trees carry every version that exists upstream: `Symphony`,
 repository (superseded catalog / orphaned reweighting -- see
 docs/migration-notes.md) and are simply absent from the local tree walked
 here, not an error condition this script needs to handle specially.
+
+`fermi` covers the three Fermi-LAT TS-grid trees, each copied in wholesale
+like every tree above and carrying no stamps of its own: `results/
+fermi_reweighting/<dwarf>/<variant>.npz` (Circiello:2026inp's *legacy*
+dwarf-SED set), `results/fermi_reweighting_update/<dwarf>/<variant>.npz`
+(the *update* set the drafts actually cite), and `results/
+fermi_expected_limits/<dwarf>/<variant>_blank_fields.npz` (the null-
+distribution grids from the 1008 blank-field SEDs). All three are stamped in
+one pass because their per-variant attribution logic is shared, not because
+their trees are otherwise the same -- `legacy_version` ('legacy'/'update') is
+recorded on the two reweighting trees, `sed_tree='legacy'` on
+fermi_expected_limits (see that module's docstring: it has no _update
+counterpart).
+
+Both producing scripts (`python/fermi_reweighting.py`, `python/
+fermi_expected_limits.py`) already document, in their own module docstrings,
+exactly which SatGen version or `dja_prior` each variant is built from; this
+stamper mirrors that attribution rather than assuming one version tree-wide:
+
+* `mhalf`, `F18`, `K24`, `Jeans_mhalf_err`, `F18_MC`, `F18_MC_mstar_err`,
+  `K24_MC`, `K24_MC_mstar_err` (reweighting trees) and `mhalf_blank_fields`,
+  `F18_MC_blank_fields` (expected_limits) all come from the Diemer
+  `paper_quantiles` file -- stamped `version='Diemer'`.
+* `mhalf_scatter`, `mdyn_errani` come from the `mhalf_scatter` quantiles
+  file (an alias of Diemer, 0.1 dex Mhalf scatter) -- `version='mhalf_scatter'`.
+* `mhalf_mcdaniel` comes from the `mcdaniel` quantiles file --
+  `version='mcdaniel'`.
+* `Jeans_satgen`, `Jeans_satgen_box`, and the four `Jeans_satgen_shmr_*`
+  (reweighting) and `satgen_shmr_fattahi18_blank_fields` (expected_limits)
+  read no SatGen h5 at all -- `version=None`, `dja_prior` set to the matching
+  prior name. Each of these is only ever written when
+  `dwarf.get_Jeans_results(dja_prior=...)` found a posterior (the producing
+  scripts skip the variant entirely otherwise), so the file's mere presence
+  on disk is sufficient to attribute the prior -- no ambiguity to resolve.
+* `Jeans` (reweighting) and `Jeans_blank_fields` (expected_limits) are the
+  one case with genuine ambiguity: both scripts call
+  `dwarf.get_Jeans_results()` with the *default* prior, and fall back to the
+  LVDB `logJ_disp` scaling relation (fixed 0.60 dex error) for the four
+  dwarfs with no DwarfJeansAnalysis posterior at all (Fornax, LMC,
+  Sagittarius, SMC per that method's own comment) -- which branch fired
+  determines whether `dja_prior` should be `config.DJA_PRIOR` or `None`, and
+  nothing in the migrated .npz itself records which. This stamper resolves it
+  the same way the producing scripts do: calling
+  `obs.Dwarf(name).get_Jeans_results()` live against this repository's
+  current `DJA_RESULTS_DIR` (a live dependency per CLAUDE.md) and reading
+  off `Jeans_J_quantiles`. `Jeans_mhalf_err` shares this same fallback
+  determination for its `dja_prior`/`jeans_source` fields (its own version is
+  fixed at `'Diemer'`, and its `jeans_sigma_source` is always `'mhalf_error'`
+  regardless of which branch fired -- matching fermi_reweighting.py exactly).
+* `test_jeans_J`, `mcdaniel_jeans` are hardcoded/tabulated literature
+  constants -- no SatGen h5, no DJA posterior, no `version`, `dja_prior` left
+  unset.
+* `F18_MC_test`, `K24_MC_test`, `K24_test_jeans_J` -- present only under
+  `fermi_reweighting/` (the legacy tree), absent from both trees' current
+  `ALL_VARIANTS`/`KNOWN_VARIANTS` lists in fermi_reweighting.py -- have no
+  known producer and are stamped `produced_by=None` with a note saying so
+  explicitly, the same treatment as `paper_contours`'s `Jeans_Pace`/
+  `Jeans_local`.
+
+None of these three trees gets a version-vs-known-list guard the way
+`_unknown_version` gives the per-dwarf trees above: there is no per-dwarf
+version subdirectory here to validate, only a dwarf-name check (like
+`weights_gc`/`mhalf`) against `Jdata.dwarf_names`.
 """
 
 import argparse
@@ -241,6 +305,58 @@ JEANS_UNKNOWN_PRODUCER_NOTE = (
     'variants) nor in config.DJA_PRIORS -- this tree predates the current '
     'script, its producer is not known, and it is copied in wholesale, not '
     'reproducible by anything currently in this repository')
+
+
+# fermi_reweighting / fermi_reweighting_update basenames (variants) built from
+# the Diemer paper_quantiles file -- see this module's docstring.
+FERMI_DIEMER_BASENAMES = frozenset({
+    'mhalf', 'F18', 'K24',
+    'F18_MC', 'F18_MC_mstar_err', 'K24_MC', 'K24_MC_mstar_err',
+})
+FERMI_MHALF_SCATTER_BASENAMES = frozenset({'mhalf_scatter', 'mdyn_errani'})
+FERMI_MCDANIEL_BASENAMES = frozenset({'mhalf_mcdaniel'})
+# No SatGen h5, no DJA posterior: hardcoded/tabulated literature constants.
+FERMI_NO_INPUT_BASENAMES = frozenset({'test_jeans_J', 'mcdaniel_jeans'})
+# basename -> dja_prior for variants whose presence on disk already proves the
+# posterior existed (the producing script skips the variant otherwise).
+FERMI_SATGEN_PRIOR_BASENAMES = {
+    'Jeans_satgen': 'satgen',
+    'Jeans_satgen_box': 'satgen_box',
+    'Jeans_satgen_shmr_fattahi18': 'satgen_shmr_fattahi18',
+    'Jeans_satgen_shmr_kim24': 'satgen_shmr_kim24',
+    'Jeans_satgen_shmr_danieli23_const': 'satgen_shmr_danieli23_const',
+    'Jeans_satgen_shmr_moster18': 'satgen_shmr_moster18',
+}
+# basenames needing the live dja_posterior-vs-fallback check (see docstring).
+FERMI_JEANS_FALLBACK_BASENAMES = frozenset({'Jeans', 'Jeans_mhalf_err'})
+# Present only under fermi_reweighting/ (legacy), not in fermi_reweighting.py's
+# current ALL_VARIANTS/KNOWN_VARIANTS -- producer genuinely unknown.
+FERMI_UNKNOWN_PRODUCER_BASENAMES = frozenset(
+    {'F18_MC_test', 'K24_MC_test', 'K24_test_jeans_J'})
+FERMI_UNKNOWN_PRODUCER_NOTE = (
+    '{basename!r} is not a variant in the current ALL_VARIANTS/KNOWN_VARIANTS '
+    'lists in python/fermi_reweighting.py -- this file predates the current '
+    'variant list, its producer is not known, and it is copied in wholesale, '
+    'not reproducible by anything currently in this repository')
+
+# fermi_expected_limits basenames -- ALL_VARIANTS there is ('mhalf', 'Jeans',
+# 'F18', 'satgen_shmr_fattahi18'), written as '<variant-or-derived>_blank_fields'.
+FERMI_EXPECTED_LIMITS_DIEMER_BASENAMES = frozenset(
+    {'mhalf_blank_fields', 'F18_MC_blank_fields'})
+FERMI_EXPECTED_LIMITS_SATGEN_PRIOR_BASENAMES = {
+    'satgen_shmr_fattahi18_blank_fields': 'satgen_shmr_fattahi18',
+}
+FERMI_EXPECTED_LIMITS_FALLBACK_BASENAMES = frozenset({'Jeans_blank_fields'})
+
+# (group_name, results dir, upstream results subdir name, producer, extra
+# fields shared by every stamp in that group). The two reweighting trees
+# share their basename->attribution logic (FERMI_* above); fermi_expected_limits
+# has its own smaller variant set with the equivalent EXPECTED_LIMITS_* maps.
+FERMI_GROUPS = (
+    ('fermi_reweighting', 'python/fermi_reweighting.py', {'legacy_version': 'legacy'}),
+    ('fermi_reweighting_update', 'python/fermi_reweighting.py', {'legacy_version': 'update'}),
+    ('fermi_expected_limits', 'python/fermi_expected_limits.py', {'sed_tree': 'legacy'}),
+)
 
 
 def _target_missing(migrated_from, product, counts):
@@ -632,11 +748,130 @@ def _stamp_paper_contours(verified, counts, restamp_paths):
             counts['verified'] += int(is_verified)
 
 
+FERMI_ROOTS = {
+    'fermi_reweighting': config.FERMI_REWEIGHTING_DIR,
+    'fermi_reweighting_update': config.FERMI_REWEIGHTING_UPDATE_DIR,
+    'fermi_expected_limits': config.FERMI_EXPECTED_LIMITS_DIR,
+}
+
+
+def _fermi_jeans_fallback(name, dwarf_cache):
+    """(dja_prior, jeans_source, jeans_sigma_source) for the `Jeans` /
+    `Jeans_mhalf_err` / `Jeans_blank_fields` variants of dwarf `name`,
+    resolved the same way fermi_reweighting.py / fermi_expected_limits.py do
+    at run time: `obs.Dwarf(name).get_Jeans_results()` against the DEFAULT
+    prior (`config.DJA_PRIOR`), falling back to the LVDB `logJ_disp` scaling
+    relation (fixed 0.60 dex) when this repository's current DJA_RESULTS_DIR
+    has no posterior for that dwarf. Cached per dwarf across all three groups
+    -- this hits DwarfJeansAnalysis's derived.npz on disk, not free.
+    """
+    if name not in dwarf_cache:
+        dwarf = obs.Dwarf(name)
+        dwarf.get_Jeans_results()
+        dwarf_cache[name] = dwarf
+    dwarf = dwarf_cache[name]
+    if np.all(np.isfinite(dwarf.Jeans_J_quantiles)):
+        return config.DJA_PRIOR, 'dja_posterior', 'dja_posterior'
+    return None, 'logJ_disp_scaling_relation', 'logJ_disp_scaling_relation_fixed_0.60dex'
+
+
+def _stamp_fermi(verified, counts, restamp_paths):
+    """Stamp `results/fermi_reweighting/`, `results/fermi_reweighting_update/`,
+    and `results/fermi_expected_limits/`. See this script's module docstring
+    for the basename -> version/dja_prior attribution.
+    """
+    dwarf_cache = {}
+
+    for group_name, producer, extra_fields in FERMI_GROUPS:
+        root = FERMI_ROOTS[group_name]
+        for product in sorted(root.rglob('*.npz')):
+            rel = product.relative_to(root)
+            dwarf = rel.parts[0]
+            basename = product.stem
+            key = f'{group_name}/{dwarf}/{basename}'
+
+            if _dwarf_not_in_sample(dwarf, product, counts):
+                continue
+
+            migrated_from = str(UPSTREAM / 'results' / group_name / rel)
+            if _target_missing(migrated_from, product, counts):
+                continue
+            if _producer_conflict(product, restamp_paths, counts):
+                continue
+
+            is_verified, note, verified_fp = _verification_status(
+                product, key in verified)
+
+            this_producer = producer
+            version = None
+            variant_extra = {}
+
+            if group_name == 'fermi_expected_limits':
+                if basename in FERMI_EXPECTED_LIMITS_DIEMER_BASENAMES:
+                    version = 'Diemer'
+                elif basename in FERMI_EXPECTED_LIMITS_SATGEN_PRIOR_BASENAMES:
+                    variant_extra['dja_prior'] = \
+                        FERMI_EXPECTED_LIMITS_SATGEN_PRIOR_BASENAMES[basename]
+                elif basename in FERMI_EXPECTED_LIMITS_FALLBACK_BASENAMES:
+                    dja_prior, jeans_source, jeans_sigma_source = \
+                        _fermi_jeans_fallback(dwarf, dwarf_cache)
+                    variant_extra.update(
+                        dja_prior=dja_prior, jeans_source=jeans_source,
+                        jeans_sigma_source=jeans_sigma_source)
+                else:
+                    print(f'SKIP {product}: {basename!r} is not a known '
+                          'fermi_expected_limits variant -- stray file?')
+                    counts['skipped'] += 1
+                    continue
+            else:
+                if basename in FERMI_DIEMER_BASENAMES:
+                    version = 'Diemer'
+                elif basename in FERMI_MHALF_SCATTER_BASENAMES:
+                    version = 'mhalf_scatter'
+                elif basename in FERMI_MCDANIEL_BASENAMES:
+                    version = 'mcdaniel'
+                elif basename in FERMI_NO_INPUT_BASENAMES:
+                    pass
+                elif basename in FERMI_SATGEN_PRIOR_BASENAMES:
+                    variant_extra['dja_prior'] = FERMI_SATGEN_PRIOR_BASENAMES[basename]
+                elif basename == 'Jeans':
+                    dja_prior, jeans_source, jeans_sigma_source = \
+                        _fermi_jeans_fallback(dwarf, dwarf_cache)
+                    variant_extra.update(
+                        dja_prior=dja_prior, jeans_source=jeans_source,
+                        jeans_sigma_source=jeans_sigma_source)
+                elif basename == 'Jeans_mhalf_err':
+                    version = 'Diemer'
+                    dja_prior, jeans_source, _ = \
+                        _fermi_jeans_fallback(dwarf, dwarf_cache)
+                    variant_extra.update(
+                        dja_prior=dja_prior, jeans_source=jeans_source,
+                        jeans_sigma_source='mhalf_error')
+                elif basename in FERMI_UNKNOWN_PRODUCER_BASENAMES:
+                    this_producer = None
+                    note = note + '; ' + FERMI_UNKNOWN_PRODUCER_NOTE.format(basename=basename)
+                else:
+                    print(f'SKIP {product}: {basename!r} is not a known '
+                          f'{group_name} variant -- stray file?')
+                    counts['skipped'] += 1
+                    continue
+
+            record = provenance.stamp(
+                'scripts/stamp_migrated.py', version=version,
+                migrated_from=migrated_from,
+                produced_by=this_producer, verified=is_verified, note=note,
+                verified_fingerprint=verified_fp, dwarf=dwarf,
+                **extra_fields, **variant_extra)
+            provenance.stamp_existing(product, record)
+            counts['stamped'] += 1
+            counts['verified'] += int(is_verified)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('tree', choices=['paper_Js', 'weights_gc', 'mhalf', 'globals',
                                          'paper_quantiles', 'massProfile',
-                                         'paper_contours'])
+                                         'paper_contours', 'fermi'])
     parser.add_argument('--verified', action='append', default=[],
                         help='relative path of a product diffed against '
                              'upstream, e.g. "Diemer/Antlia II"')
@@ -684,6 +919,8 @@ def main(argv=None):
         _stamp_massProfile(verified, counts, restamp_paths)
     elif args.tree == 'paper_contours':
         _stamp_paper_contours(verified, counts, restamp_paths)
+    elif args.tree == 'fermi':
+        _stamp_fermi(verified, counts, restamp_paths)
 
     print(f"stamped {counts['stamped']} products "
           f"({counts['verified']} verified against upstream, "
