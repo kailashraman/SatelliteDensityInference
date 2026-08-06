@@ -1,0 +1,39 @@
+# PPPC4DM ID -- annihilation spectra tables (Cirelli et al.)
+#
+# Source:  http://www.marcocirelli.net/PPPC4DMID.html
+# Fetched: 2026-08-06 (copied in with the rest of fermi_legacy/)
+# Read by: python/fermi_funcs.py::_load_cirelli_table, via config.DATA_DIR
+#
+# Pinned rather than committed. These are 40 MB of a public, versionless
+# literature release, and the repository's rule is that git carries the recipe
+# and not the bytes. But "fetch it from the web page" is not a recipe if
+# nothing checks what arrived: the tables have no version string, the site
+# republishes in place, and a silent swap would move every Fermi limit in
+# Part II without changing a filename. The digests below are that check.
+#
+# The two directories are not alternates. AtProduction_all/ has electroweak
+# corrections applied and 179 energies per mass; AtProductionNoEW_all/ has
+# neither, at 180 energies. _load_cirelli_table hardcodes those two row counts
+# to reshape the flat table, so a file swapped between the two trees would
+# reshape without error and silently mis-map energies onto masses. Both are
+# pinned for that reason, and all seven particle tables in each, not just the
+# gammas pair the Fermi path currently requests -- the loader takes `particle`
+# as an argument and any of them is one call away.
+#
+# To re-pin: re-fetch, update the digests here, and expect
+# tests/test_pppc4dm_pin.py to fail until you do -- that failure is the point.
+
+AtProduction_all/AtProduction_antideuterons.dat         sha256 = 4cfce1b13a1cdcee4b65280c06eae863aeca1857a8fc96648c117d63f0a85ace
+AtProduction_all/AtProduction_antiprotons.dat           sha256 = b48afca4259ee05b293460e1bd85a545e419ef5f340b4056fd66d9bfce7c1624
+AtProduction_all/AtProduction_gammas.dat                sha256 = 64d9467aa7e643b7a8dab4bf783bea12d3bc18c2aa64e8adba45db9b6824fda6
+AtProduction_all/AtProduction_neutrinos_e.dat           sha256 = fb55b30598408d1c7f347e1b983798e3b7d4d700c33e6742e7beba3a9bb70688
+AtProduction_all/AtProduction_neutrinos_mu.dat          sha256 = 0fb2478ec079cafc668532b7f7dd770d4057a0e27b45a7415255eaa520d5f36c
+AtProduction_all/AtProduction_neutrinos_tau.dat         sha256 = a8ac93cff1c52a5ad151f295ca365306b50273037ab7803e7e0344d6bdc90927
+AtProduction_all/AtProduction_positrons.dat             sha256 = 01b2f42089fa0ac2151b04e33592cdf5a02dbdbf828db2081ef751801bbc1ddc
+AtProductionNoEW_all/AtProductionNoEW_antideuterons.dat sha256 = 81774880bb227d74cf86c59c90193d4d0e247b3ae5951b6e0f1710e8bfc892a7
+AtProductionNoEW_all/AtProductionNoEW_antiprotons.dat   sha256 = a58804944e45e6de0f9731ec9fab9ee38f84994587393f8e90f3b3cd72e5d5fc
+AtProductionNoEW_all/AtProductionNoEW_gammas.dat        sha256 = 5398ad7e3465f5547203bf2e76fb66f955d80554f801013be835d252c5c36500
+AtProductionNoEW_all/AtProductionNoEW_neutrinos_e.dat   sha256 = 88eeb12c9fa02c65e61354537deb0ff08991f9970ddc777e685d7c857b1c2ca8
+AtProductionNoEW_all/AtProductionNoEW_neutrinos_mu.dat  sha256 = 2e26aec7b55ffcaaaebfee85947516f433e83aa440922f2e13955a430c2e592a
+AtProductionNoEW_all/AtProductionNoEW_neutrinos_tau.dat sha256 = 76af5de6df8600541e6623e3f1a24330afd0baf6456c67b80ea6d3905812f0e9
+AtProductionNoEW_all/AtProductionNoEW_positrons.dat     sha256 = e1b15c167dbdac0b7767a78aabba3e20f36263835a2527715c83355d317f5172

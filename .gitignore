@@ -13,6 +13,11 @@ results/
 # them a fresh clone cannot rebuild those two catalogs at all.
 !data/symphony/**/*.npz
 *.npy
+# PPPC4DM annihilation tables: 40 MB of a public literature release, pinned by
+# sha256 in data/fermi_legacy/PPPC4DM/VERSION and checked by
+# tests/test_pppc4dm_pin.py rather than committed. Scoped to that tree so a
+# small .dat input elsewhere under data/ is still committable by default.
+data/fermi_legacy/PPPC4DM/**/*.dat
 *.h5
 *.hdf5
 *.fits
