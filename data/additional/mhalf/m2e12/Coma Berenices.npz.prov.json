@@ -1,0 +1,22 @@
+{
+  "argv": null,
+  "dja_snapshot": null,
+  "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+  "git_dirty": true,
+  "h5_file": "m12res8_2e12_Diemer.h5",
+  "h5_fingerprint": {
+    "mtime": 1761584089,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_2e12_Diemer.h5",
+    "size": 1058751994
+  },
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/mhalf/m2e12/Coma Berenices.npz",
+  "note": "copied from SatGen_Dwarf; not individually verified",
+  "produced_by": "python/compute_mhalf.py (per-dwarf mode: logMhalf, logMdyn_errani)",
+  "satgen_version": "m2e12",
+  "script": "scripts/stamp_migrated.py",
+  "sim_version": "m2e12",
+  "verified": false,
+  "written_utc": "2026-08-02T17:43:01+00:00"
+}

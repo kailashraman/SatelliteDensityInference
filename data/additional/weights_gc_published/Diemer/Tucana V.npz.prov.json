@@ -1,0 +1,27 @@
+{
+  "argv": null,
+  "dja_snapshot": null,
+  "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+  "git_dirty": true,
+  "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
+  "h5_fingerprint": {
+    "mtime": 1785267594,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+    "size": 1376624522
+  },
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/weights_gc/Diemer/Tucana V.npz",
+  "note": "copied from SatGen_Dwarf; not individually verified",
+  "produced_by": "python/compute_weights.py",
+  "satgen_version": "Diemer",
+  "script": "scripts/stamp_migrated.py",
+  "sim_version": "Diemer",
+  "stochastic_arrays": [
+    "mstar_weights",
+    "joint_weights"
+  ],
+  "stochastic_caveat": "mstar_weights, joint_weights are one draw from the unseeded global NumPy RNG in halo_weights.py (SHMR scatter), not a reproducible function of the catalog. compute_weights.py now seeds that RNG (see its module docstring), but a seed cannot recover a draw made before it existed, so rerunning compute_weights.py will not reproduce these bytes. mhalf_weights is deterministic and reproduces bit-exact.",
+  "verified": false,
+  "written_utc": "2026-08-02T17:42:18+00:00"
+}

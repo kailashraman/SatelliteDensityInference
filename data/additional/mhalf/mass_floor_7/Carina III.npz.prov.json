@@ -1,0 +1,22 @@
+{
+  "argv": null,
+  "dja_snapshot": null,
+  "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+  "git_dirty": true,
+  "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+  "h5_fingerprint": {
+    "mtime": 1772746877,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+    "size": 919665664
+  },
+  "inputs": [],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/mhalf/mass_floor_7/Carina III.npz",
+  "note": "copied from SatGen_Dwarf; not individually verified",
+  "produced_by": "python/compute_mhalf.py (per-dwarf mode: logMhalf, logMdyn_errani)",
+  "satgen_version": "mass_floor_7",
+  "script": "scripts/stamp_migrated.py",
+  "sim_version": "mass_floor_7",
+  "verified": false,
+  "written_utc": "2026-08-02T17:43:04+00:00"
+}

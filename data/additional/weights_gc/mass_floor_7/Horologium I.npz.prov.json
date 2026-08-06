@@ -1,0 +1,109 @@
+{
+  "argv": [
+    "38",
+    "mass_floor_7"
+  ],
+  "dja_snapshot": null,
+  "dwarf": "Horologium I",
+  "git_commit": "1ae8edf55bf04dd133790158ec300403746e918d",
+  "git_dirty": true,
+  "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+  "h5_fingerprint": {
+    "mtime": 1772746877,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+    "size": 919665664
+  },
+  "inputs": [
+    {
+      "mtime": 1772746877,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "git_commit": "dff543b53729ca2cef786c3e7b40003bb3a7823b",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+        "n_inputs": 0,
+        "note": "copied verbatim from SatGen_Dwarf; no script in this repo produced it",
+        "satgen_version": "mass_floor_7",
+        "script": null,
+        "sim_version": "mass_floor_7",
+        "written_utc": "2026-07-28T20:07:38+00:00"
+      },
+      "size": 919665664
+    },
+    {
+      "mtime": 1785678925,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/mass_floor_7_Mvir200.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/mass_floor_7_Mvir200.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/compute_mhalf.py (--globals mode)",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "written_utc": "2026-08-02T17:43:54+00:00"
+      },
+      "size": 33141004
+    },
+    {
+      "mtime": 1785678958,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/mhalf/mass_floor_7/Horologium I.npz",
+      "provenance": {
+        "argv": null,
+        "dja_snapshot": null,
+        "git_commit": "19339a4e43c9b2427457b185c176696256feff6d",
+        "git_dirty": true,
+        "h5_file": "26-02-Diemer_mass_floor_7_updated.h5",
+        "h5_fingerprint": {
+          "mtime": 1772746877,
+          "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/26-02-Diemer_mass_floor_7_updated.h5",
+          "size": 919665664
+        },
+        "lvdb_version": "v1.0.5",
+        "migrated_from": "/global/home/users/kraman/pscratch/SatGen_Dwarf/data/additional/mhalf/mass_floor_7/Horologium I.npz",
+        "n_inputs": 0,
+        "note": "copied from SatGen_Dwarf; not individually verified",
+        "produced_by": "python/compute_mhalf.py (per-dwarf mode: logMhalf, logMdyn_errani)",
+        "satgen_version": "mass_floor_7",
+        "script": "scripts/stamp_migrated.py",
+        "sim_version": "mass_floor_7",
+        "verified": false,
+        "written_utc": "2026-08-02T17:43:04+00:00"
+      },
+      "size": 66282002
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "mstar_evolution": "per_halo_tidal",
+  "satgen_version": "mass_floor_7",
+  "script": "python/compute_weights.py",
+  "sim_version": "mass_floor_7",
+  "stochastic_arrays": [
+    "mstar_weights",
+    "joint_weights"
+  ],
+  "stochastic_caveat": "mstar_weights and joint_weights are draws from the global NumPy RNG (SHMR scatter in halo_weights.py), seeded above from zlib.crc32(f\"{version}:{dsph_idx}\") -- reproducible by rerunning this script with the same version and dsph_idx, but not recoverable for any product written before this seeding was added. mhalf_weights does not draw from the RNG and is unaffected.",
+  "written_utc": "2026-08-03T21:08:41+00:00"
+}
