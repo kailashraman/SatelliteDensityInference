@@ -46,3 +46,18 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# The paper sources. A snapshot is kept here while the analysis is being
+# written, so python/figure_registry.py can parse it and tests/test_figure_names.py
+# can assert every figure the papers reference exists exactly once under plots/.
+# The papers themselves are versioned elsewhere and are not part of this
+# repository.
+drafts_temp/
+
+# Scratch notes kept beside the docs while working: dated running logs,
+# half-checked hypotheses, and anything not yet reduced to a statement about
+# the code. Not part of the published record -- nothing tracked may cite a path
+# under here, so `git grep docs/internal` outside this file must stay empty.
+# Anything that turns out to be load-bearing gets rewritten into
+# docs/migration-notes.md or docs/review-checklist.md instead.
+docs/internal/
