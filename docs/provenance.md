@@ -36,7 +36,9 @@ dja_snapshot      {dir, prior, files[]} -- each DJA file actually read is
                   change when a chain is overwritten in place, which is how a
                   DwarfJeansAnalysis re-run updates it
 inputs[]          {path, size, mtime, provenance} per input, one hop deep
-migrated_from     set when copied in from SatGen_Dwarf rather than computed here
+migrated_from     set when copied in from the SatGen_Dwarf source tree rather
+                  than computed here; see "Absolute paths are retained
+                  deliberately" below
 stochastic_arrays which array names in this product are RNG draws, e.g.
                   ('mstar_weights', 'joint_weights')
 stochastic_caveat prose explaining what those draws depend on (the RNG seed)
@@ -95,6 +97,30 @@ Reading inputs, with the guard:
 ```python
 provenance.assert_single_version([js_path, weights_path], expected=version)
 ```
+
+## Absolute paths are retained deliberately
+
+`migrated_from`, `h5_fingerprint.path`, `dja_snapshot.dir` and the `inputs[]`
+paths are recorded as the literal absolute paths on the machine the stage ran
+on, and are not rewritten to a portable stem. This is a deliberate retention,
+not an oversight, and it is the reason ~1150 sidecars name a home directory and
+the `SatGen_Dwarf` source tree:
+
+- `scripts/stamp_migrated.py` re-derives these strings from `UPSTREAM` and
+  refuses (`_target_missing`) to write a stamp whose target does not exist.
+  Rewriting the committed strings would make them disagree with what a rerun of
+  the tracked stamper produces — a sidecar that reads as evidence while being
+  unverifiable by the repository's own tool, which is the failure this layer
+  exists to prevent.
+- `scripts/check_provenance.py` and `docs/provenance-manifest.json` are keyed on
+  these records, so a textual scrub would need the manifest regenerated in the
+  same change and would still leave the two out of step with the stamper.
+- A provenance record's value is in being literal. "These bytes were copied from
+  this exact path on this date" is the claim; a redacted path claims less.
+
+The consequence to know: a path in a sidecar does not resolve off the machine
+the migration ran on, and is a record of where bytes came from rather than an
+instruction for finding them.
 
 Stamping something we cannot rewrite (an `.h5`, or an intermediate copied in
 from `SatGen_Dwarf`):

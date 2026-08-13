@@ -3,8 +3,7 @@
 `python/plot_powerlaw.py` is the only figure-producing script in this
 repository that runs a PyMC NUTS sampler (the V_circ-r_1/2 power-law fits
 behind `powerlaw_posteriors.pdf` and `powerlaw_fit.pdf`). Its `pm.sample()`
-calls pass `random_seed=42` (upstream's own literal, in
-`../SatGen_Dwarf/jupyter/PaperPlots.ipynb` cell 127 -- not added during
+calls pass `random_seed=42` (the `SatGen_Dwarf` source's own literal, not added during
 migration), but a fixed seed alone does not make NUTS output reproducible
 across environments: PyMC compiles the model's log-density and gradient into
 a PyTensor graph, and the compiled step function -- and therefore the exact
