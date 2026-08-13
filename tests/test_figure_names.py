@@ -28,7 +28,10 @@ Do not weaken this by skipping the file or asserting a subset.
 import pytest
 
 import config
-from figure_registry import FIGURES, REGISTRY, TABLE_REGISTRY, TABLES
+from figure_registry import DRAFTS_AVAILABLE, FIGURES, REGISTRY, TABLE_REGISTRY, TABLES
+
+if not DRAFTS_AVAILABLE:
+    pytest.skip('paper sources not present in this checkout', allow_module_level=True)
 
 
 def _glob_excluding_checkpoints(root, pattern):

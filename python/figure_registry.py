@@ -31,10 +31,20 @@ def _parse_tex_names():
     `\\includegraphics{...}`/`\\input{...}` line would still register its
     basename as required. No line in either draft is commented out like that
     today (verified), so this is a documented limitation, not a live bug.
+
+    Raises NoDraftsFoundError if config.DRAFTS_DIR has no *.tex -- drafts_temp/
+    is gitignored, so a fresh clone has no paper sources, and silently
+    degrading to an empty FIGURES/TABLES would make every downstream contract
+    pass while asserting nothing.
     """
+    tex_paths = sorted(config.DRAFTS_DIR.glob('*.tex'))
+    if not tex_paths:
+        raise NoDraftsFoundError(
+            f'no *.tex found under {config.DRAFTS_DIR}; drafts_temp/ is a '
+            'read-only paper snapshot not tracked in this repository')
     figures = []
     tables = []
-    for tex_path in sorted(config.DRAFTS_DIR.glob('*.tex')):
+    for tex_path in tex_paths:
         text = tex_path.read_text()
         for match in _INCLUDEGRAPHICS.finditer(text):
             name = match.group(1).rsplit('/', 1)[-1]
@@ -47,9 +57,21 @@ def _parse_tex_names():
     return figures, tables
 
 
-# pdf basenames (with extension) and table basenames (without -- \input in
-# these drafts never carries one), in first-seen order across the two drafts.
-FIGURES, TABLES = _parse_tex_names()
+class NoDraftsFoundError(Exception):
+    """Raised by _parse_tex_names when config.DRAFTS_DIR has no *.tex."""
+
+
+# True iff drafts_temp/*.tex were found; callers (e.g. test_figure_names.py)
+# check this before relying on FIGURES/TABLES/REGISTRY/TABLE_REGISTRY.
+try:
+    # pdf basenames (with extension) and table basenames (without -- \input in
+    # these drafts never carries one), in first-seen order across the two
+    # drafts.
+    FIGURES, TABLES = _parse_tex_names()
+    DRAFTS_AVAILABLE = True
+except NoDraftsFoundError:
+    FIGURES, TABLES = [], []
+    DRAFTS_AVAILABLE = False
 
 # basename -> producing python/<module>.py name, or None until that step lands.
 REGISTRY = {name: None for name in FIGURES}

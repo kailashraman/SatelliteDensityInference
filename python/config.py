@@ -54,7 +54,18 @@ RESULTS_DIR = (Path(_results_override).expanduser().resolve()
                if _results_override else REPO_ROOT / 'results')
 PLOTS_DIR = REPO_ROOT / 'plots'
 DOCS_DIR = REPO_ROOT / 'docs'
-DRAFTS_DIR = REPO_ROOT / 'drafts_temp'
+# The paper sources are not part of this repository; figure_registry parses
+# whatever snapshot is here and reports DRAFTS_AVAILABLE = False when there is
+# none. Empty is rejected for the same reason as SDI_RESULTS_DIR above, and it
+# matters more here: Path('') is '.', so figure_registry would glob the cwd and
+# a stray .tex would produce a bogus FIGURES list instead of failing loudly.
+_drafts_override = os.environ.get('SDI_DRAFTS_DIR')
+if _drafts_override is not None and not _drafts_override.strip():
+    raise ValueError(
+        'SDI_DRAFTS_DIR is set but empty; unset it to use the default '
+        f'{REPO_ROOT / "drafts_temp"}, or set it to an absolute path')
+DRAFTS_DIR = (Path(_drafts_override).expanduser().resolve()
+              if _drafts_override else REPO_ROOT / 'drafts_temp')
 
 # Derived-product subdirectories, named as in SatGen_Dwarf so migrated code
 # moves with minimal edits.
