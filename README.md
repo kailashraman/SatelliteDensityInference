@@ -5,11 +5,13 @@ Densities in the Cold Dark Matter Model"** (Raman, Folsom, Kaplinghat, Lisanti
 & Safdi), a two-part study of the dark-matter halos of Milky Way dwarf
 spheroidals:
 
-- **Part I — Comparison to Ultra-faint Dwarf Kinematics.** Conditions a SatGen
+- **Part I — Comparison to Ultra-faint Dwarf Kinematics**
+  ([arXiv:2607.27316](https://arxiv.org/abs/2607.27316)). Conditions a SatGen
   subhalo population on either stellar mass (via ten stellar-mass–halo-mass
   relations) or stellar kinematics, and infers ρ₁₅₀, peak masses, r_max/v_max
   and the V_circ–r₁ᐟ₂ relation for 39 dwarfs.
-- **Part II — Implications for Dark Matter Indirect Detection Constraints.**
+- **Part II — Implications for Dark Matter Indirect Detection Constraints**
+  ([arXiv:2607.27326](https://arxiv.org/abs/2607.27326)).
   Turns those posteriors into J-factors, compares them against Jeans-analysis
   J-factors under a ladder of priors, and recasts Fermi-LAT ⟨σv⟩ limits.
 
@@ -123,6 +125,30 @@ plots/     paper figures; plots/supplementary/ holds the all-39-dwarf sets
 tests/     three opt-in tiers
 docs/      provenance manifest, migration notes, review checklist
 jupyter/   exploration only, not part of the reproducibility chain
+```
+
+## Citation
+
+```bibtex
+@article{Raman:2026mky,
+    author = "Raman, Kailash and Folsom, Dylan and Kaplinghat, Manoj and Lisanti, Mariangela and Safdi, Benjamin R.",
+    title = "{Semi-analytic Inference of Satellite Densities in the Cold Dark Matter Model Part I. Comparison to Ultra-faint Dwarf Kinematics}",
+    eprint = "2607.27316",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.GA",
+    month = "7",
+    year = "2026"
+}
+
+@article{Raman:2026zbr,
+    author = "Raman, Kailash and Folsom, Dylan and Kaplinghat, Manoj and Lisanti, Mariangela and Safdi, Benjamin R.",
+    title = "{Semi-analytic Inference of Satellite Densities in the Cold Dark Matter Model Part II. Implications for Dark Matter Indirect Detection Constraints}",
+    eprint = "2607.27326",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.HE",
+    month = "7",
+    year = "2026"
+}
 ```
 
 ## Notes for contributors
