@@ -294,7 +294,8 @@ hardcoded `None` with no setter — dead on the reachable path.
 Confirmed by rerunning `compute_weights.py 0 Diemer` against real data:
 `mhalf_weights` reproduces bit-exact; `mstar_weights` and `joint_weights` do
 **not**. Verification must therefore be stated per array — bit-exact for
-`mhalf_weights`, distributional at a quoted tolerance for the rest.
+`mhalf_weights`, distributional at a quoted tolerance for the rest. A parity
+claim covering the whole file is an overclaim.
 
 **The `weights_gc/` tree carried here is a local regeneration, not the reference
 bytes.** Every sidecar under it records `migrated_from: null` and
@@ -303,7 +304,8 @@ bytes.** Every sidecar under it records `migrated_from: null` and
 realization behind the reference SHMR numbers, and that realization is not
 preserved anywhere in this repository. Any value drawn from `mstar_weights` or
 `joint_weights` is this repository's realization.
-A parity claim covering the whole file is an overclaim. The contour stage inherits
+
+The contour stage inherits
 the same split, measured on one task (`Segue 1`, `Diemer`, `z0`): `_unweighted`
 and `_mhalf` exact on all eight arrays; `_F18`, `_K24`, `_joint_F18` exact in
 `X_hist`/`Y_hist`/`X_kde`/`Y_kde` while `hist_hist`/`hist_kde` differ 3–11% and
