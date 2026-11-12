@@ -48,6 +48,15 @@ running this script, not designed in advance:
      derived-product subtree living under data/, e.g. the SatGen h5 copies
      and per-dwarf weights) is "not applicable"; a null-provenance input
      anywhere else (results/, additional/) is "unknown" -- a real gap.
+     Paths recorded under a former root of this repository (it moved under
+     satgen_inference_project/) are re-anchored onto the current data/ tree
+     first -- only when the input lies under `<root>/data/`, where <root> is
+     the repository root that same sidecar's `figure` path was written under,
+     and only when that file exists in this checkout with the recorded byte
+     size (see _rebase_onto_repo). The classification
+     therefore depends on the local working tree: on a clone without the
+     gitignored large inputs (e.g. data/fermi_legacy_update/**/*.npy), those
+     inputs fall back to "unknown".
 
   Likewise, a record's own `satgen_version` being None is legitimate for a
   pure-Jeans or pure-observational product (e.g. a `Jeans_<prior>` contour,
@@ -71,6 +80,7 @@ unrecoverable.
 
 import argparse
 import json
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -102,13 +112,71 @@ def _family(path):
     return str(path.parent.relative_to(config.PLOTS_DIR))
 
 
-def _is_raw_source_data(path_str):
+def _recorded_root(record, rel):
+    """The repository root the producing stage ran in, from the sidecar's own
+    absolute `figure` path (`<root>/plots/<rel>`); None if it does not fit."""
+    figure = record.get('figure')
+    if not isinstance(figure, str) or not figure:
+        return None
+    parts = Path(figure).parts
+    tail = ('plots',) + Path(rel).parts
+    if parts[-len(tail):] != tail:
+        return None
+    return Path(*parts[:-len(tail)])
+
+
+def _rebase_onto_repo(path, recorded_root, size=None):
+    """Re-anchor an input recorded under a former root of this repository.
+
+    Sidecars record literal absolute paths from wherever the stage ran
+    (docs/provenance.md, "Absolute paths are retained deliberately"), so after
+    the repository moves, data/ inputs no longer sit under config.DATA_DIR and
+    would be misreported as provenance gaps. An input is re-anchored only if
+    it lies under `<recorded_root>/data/` -- the root that same sidecar says
+    the stage ran in -- and the repo-relative file or directory exists here
+    with the recorded byte size. The root is read from the record being audited, so it
+    only shows the record is self-consistent; the size match is the
+    independent check that the local file is the one recorded (mtime is not
+    used: copies reset it). Size is a floor, not proof -- a same-size edit
+    passes, and for a directory st_size is the filesystem's allocation, so on
+    another filesystem it falls back to "unknown" (a false gap, never a false
+    pass); fingerprints record no content hash. Any other path (an upstream SatGen_Dwarf/data/...,
+    a data/ under results/, a sibling clone that shares the directory name, a
+    size mismatch or unknown size) is returned unchanged and keeps its literal
+    classification.
+    """
+    if recorded_root is None or recorded_root == config.REPO_ROOT:
+        return path
+    try:
+        rel = path.relative_to(recorded_root)
+    except ValueError:
+        return path
+    if rel.parts[:1] != ('data',):
+        return path
+    candidate = config.REPO_ROOT / rel
+    if size is None or not candidate.exists() or candidate.stat().st_size != size:
+        return path
+    return candidate
+
+
+def _is_raw_source_data(path_str, recorded_root=None, size=None):
     """True for committed source data under data/ (excluding data/additional/,
     the derived-product subtree that happens to live under data/) -- never
-    stamped by provenance.py by design. See module docstring, rule 2."""
+    stamped by provenance.py by design. See module docstring, rule 2.
+
+    `recorded_root` and `size` (the input record's byte size) enable
+    re-anchoring an input recorded under a former root; see
+    _rebase_onto_repo. Relative paths are never vouched for: their meaning
+    depends on the cwd.
+    """
+    if not isinstance(path_str, str) or not os.path.isabs(path_str):
+        return False
+    # Rebase the normalised literal path, then resolve: resolving first
+    # would follow a symlink out of the repo and rebase on the target.
     try:
-        path = Path(path_str).resolve()
-    except (TypeError, ValueError):
+        path = _rebase_onto_repo(Path(os.path.normpath(path_str)),
+                                 recorded_root, size).resolve()
+    except (ValueError, OSError):
         return False
     return (config.DATA_DIR in path.parents
             and config.ADDITIONAL_DIR not in path.parents
@@ -137,9 +205,12 @@ def build_manifest():
             record = json.load(handle)
 
         inputs = record.get('inputs') or []
-        null_inputs = [inp.get('path') for inp in inputs if inp.get('provenance') is None]
-        unknown_inputs = [p for p in null_inputs if not _is_raw_source_data(p)]
-        na_inputs = [p for p in null_inputs if _is_raw_source_data(p)]
+        null_inputs = [inp for inp in inputs if inp.get('provenance') is None]
+        root = _recorded_root(record, rel)
+        is_raw = {id(inp): _is_raw_source_data(inp.get('path'), root, inp.get('size'))
+                  for inp in null_inputs}
+        unknown_inputs = [inp.get('path') for inp in null_inputs if not is_raw[id(inp)]]
+        na_inputs = [inp.get('path') for inp in null_inputs if is_raw[id(inp)]]
         if unknown_inputs:
             inputs_with_unknown_provenance[rel] = unknown_inputs
         if na_inputs:

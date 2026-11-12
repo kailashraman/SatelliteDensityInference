@@ -1115,3 +1115,31 @@ literal, whether it is being removed or deliberately retained, with the
 retention decision recorded in a tracked document. Reject a change that removes
 a literal from prose while leaving it in tracked machine-readable output with
 no such declaration.
+
+## Path re-anchoring that takes existence as identity
+
+**Where:** tools that normalise recorded absolute paths after a repository or
+dataset moves (provenance auditors, manifest builders, stampers, cache
+validators), by re-rooting at a marker directory such as `data`, `results` or
+`src` and then classifying or trusting the file by its new location.
+
+**What goes wrong:** a path from any other tree that happens to contain the
+marker (an upstream source tree, a sibling repository, a marker nested under
+`results/`, a relative path) gets mapped onto a same-named local file. The
+tool then treats it as the local, trusted input. Existence of the local file
+is taken as proof that it is the file the record refers to. A genuine gap or a
+foreign input is reclassified as benign, and the report shrinks with no
+diagnostic. The fix looks verified because the expected false positives
+disappear, while the new false negatives are invisible.
+
+**What to flag:** re-rooting keyed on the first or any occurrence of a
+directory name rather than on a validated former root; `exists()` as the only
+check; resolving symlinks before re-rooting; no negative tests for marker
+paths under other trees. A trust anchor read from the same record it vouches
+for (a sidecar's own root or output-path field) only shows that the record is
+self-consistent. Require an independent identity check against the local
+file (size is a floor, not proof; a content hash is stronger where
+affordable), or a root list held outside the record. An unvalidated path
+keeps its literal classification. Require a before/after
+count on real records showing which entries moved, and that no other entries
+did.

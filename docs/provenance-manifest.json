@@ -2150,7 +2150,7 @@
     "vcirc_satellites/satellites_vcirc_intro.pdf": {
       "dja_dir": null,
       "dja_prior": null,
-      "git_commit": "8f939a1fe628c47858c59c030a31ae28ed604ed3",
+      "git_commit": "87c660e6bdcc3393de70419ddd400ef7e0c76cbc",
       "git_dirty": true,
       "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
       "lvdb_version": "v1.0.5",
@@ -2159,12 +2159,12 @@
       "satgen_version": "Diemer",
       "script": "python/plot_vcirc_satellites_all.py",
       "sim_version": "Diemer",
-      "written_utc": "2026-08-04T22:03:32+00:00"
+      "written_utc": "2026-11-12T05:58:51+00:00"
     }
   },
   "n_products": 153,
   "n_with_sidecar": 153,
-  "plots_dir": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots",
+  "plots_dir": "/global/scratch/projects/pc_heptheory/kraman/satgen_inference_project/SatelliteDensityInference/plots",
   "report": {
     "inputs_not_applicable": {
       "fermi/fermi_limit_comparison.pdf": [
