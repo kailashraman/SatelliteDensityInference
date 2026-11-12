@@ -152,7 +152,9 @@ for _name in ('powerlaw_posteriors.pdf', 'powerlaw_fit.pdf'):
 # Step 11: the V_circ satellite figures (python/plot_vcirc_satellites_all.py).
 # satellites_vcirc_intro is reproduced from the RENDERED figure, not from
 # notebook cell 133 -- that cell's plotting is almost entirely commented out
-# and would render nothing as it stands.
+# and would render nothing as it stands. One deliberate exception: the NFW
+# reference curve uses Diemer+19 c(M), per the fig:vcirc caption, where the
+# rendered PDF used Ishiyama+21.
 for _name in ('satellites_vcirc_all_fattahi18.pdf', 'satellites_vcirc_all_kim24.pdf',
               'satellites_vcirc_intro.pdf'):
     REGISTRY[_name] = 'plot_vcirc_satellites_all'

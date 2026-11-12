@@ -37,7 +37,8 @@ class _FakeDwarf:
         self.Vcirc_err = [1.0, 1.0] * u.km / u.s
 
 
-def test_build_intro_draws_exactly_one_satgen_band(tmp_path, monkeypatch):
+def _render_intro(tmp_path, monkeypatch):
+    """Run build_intro on small fake inputs and return its Axes."""
     # Small fake r_grid/vcirc_quantiles -- _load()'s real ~1.4 GB inputs
     # (h5, massProfile.npz, scatter_300pc.txt) are not needed to exercise the
     # plotting logic, and importing this module no longer loads them eagerly
@@ -69,8 +70,11 @@ def test_build_intro_draws_exactly_one_satgen_band(tmp_path, monkeypatch):
     monkeypatch.setattr(pvsa.plt, 'subplots', capture_subplots)
 
     pvsa.build_intro()
+    return captured['ax']
 
-    ax = captured['ax']
+
+def test_build_intro_draws_exactly_one_satgen_band(tmp_path, monkeypatch):
+    ax = _render_intro(tmp_path, monkeypatch)
     satgen_rgb = mcolors.to_rgb(pvsa.colors[0])
     satgen_bands = [
         c for c in ax.collections
@@ -81,3 +85,44 @@ def test_build_intro_draws_exactly_one_satgen_band(tmp_path, monkeypatch):
         f'build_intro drew {len(satgen_bands)} fill_between band(s) in the '
         "SatGen median's color; the published satellites_vcirc_intro.pdf has "
         'exactly one (the 68% containment band, quantiles_arr indices 2/4).')
+
+
+def test_intro_nfw_curve_uses_diemer19(tmp_path, monkeypatch):
+    """The reference NFW curve must use the Diemer+19 c(M) relation.
+
+    Bug this pins: build_intro drew the 10^8.5 Msun, z=2 NFW reference with
+    ishiyama21 concentrations (faithfully migrated from the rendered upstream
+    PDF), while temp_part1.tex's fig:vcirc caption states Diemer+19. Fails
+    on the pre-fix source: its green median line matches ishiyama21, not
+    diemer19 (c = 7.69 vs 7.97; V_circ offset up to ~2.4%, far above rtol).
+    Also pins the +/-0.16 dex band so it cannot keep a different c(M).
+    """
+    from colossus.halo import concentration, profile_nfw
+
+    ax = _render_intro(tmp_path, monkeypatch)
+    green = mcolors.to_rgb(pvsa.cm_color)
+    lines = [ln for ln in ax.get_lines()
+             if tuple(np.round(mcolors.to_rgb(ln.get_color()), 6)) == tuple(np.round(green, 6))]
+    assert len(lines) == 1, f'expected one NFW median line, found {len(lines)}'
+    r_kpc, v_drawn = (np.asarray(a) for a in lines[0].get_data())
+
+    h = pvsa.obs.col_co.h
+    M, z = 10 ** 8.5 * h, 2
+
+    def vcirc(model, nsig=0):
+        c = concentration.concentration(M, 'vir', z, model=model) * 10 ** (nsig * 0.16)
+        return profile_nfw.NFWProfile(M=M, c=c, z=z, mdef='vir').circularVelocity(r_kpc * h)
+
+    np.testing.assert_allclose(v_drawn, vcirc('diemer19'), rtol=1e-10)
+    assert not np.allclose(v_drawn, vcirc('ishiyama21'), rtol=1e-3)
+
+    bands = [c for c in ax.collections
+             if type(c).__name__ == 'PolyCollection'
+             and tuple(np.round(c.get_facecolor()[0][:3], 6)) == tuple(np.round(green, 6))]
+    assert len(bands) == 1, f'expected one NFW band, found {len(bands)}'
+    verts = bands[0].get_paths()[0].vertices
+    lo, hi = vcirc('diemer19', -1), vcirc('diemer19', 1)
+    # every r on the grid must have a band vertex on each envelope
+    on_lo = np.array([np.any(np.isclose(verts[:, 1][verts[:, 0] == r], v, rtol=1e-10)) for r, v in zip(r_kpc, lo)])
+    on_hi = np.array([np.any(np.isclose(verts[:, 1][verts[:, 0] == r], v, rtol=1e-10)) for r, v in zip(r_kpc, hi)])
+    assert on_lo.all() and on_hi.all(), 'NFW band edges are not diemer19 * 10^(+/-0.16 dex)'

@@ -42,11 +42,20 @@ measured-only errorbar series, and one NFW curve (the second, unlabeled
 qualifier, matching the rendered legend, whereas the other, commented-out
 block's label literally read $10^{8.5}M_\\odot$ NFW halo ..., Ishiyama" for a
 c_med_diemer curve, a notebook mislabeling not reproduced here since that
-block never rendered). The commented-out 2-sigma/1-sigma NFW bands and the
-Diemer-concentration curve are NOT reproduced, matching the rendered PDF.
+block never rendered). The commented-out 2-sigma/1-sigma NFW bands are NOT
+reproduced, matching the rendered PDF.
+
+Deliberate departure from the rendered PDF: the NFW curve's c(M) model. The
+rendered upstream PDF was drawn with Ishiyama+21 (its green median line
+matches ishiyama21 to <1e-4 dex and is offset 0.006 dex from diemer19 when
+read back from the PDF's vector paths), but temp_part1.tex's fig:vcirc
+caption and the text around it state the Diemer+19 c(M) relation. The caption is
+the spec, so the curve now uses diemer19 (c = 7.97 vs 7.69 at 10^8.5 Msun,
+z=2: V_circ moves by -0.1% to +2.4% over 0.01-10 kpc, ~+1.8% at 300 pc). Pinned by
+tests/test_vcirc_satellites_all.py::test_intro_nfw_curve_uses_diemer19.
 
 `which='intro'`'s NFW reference curve is a fixed 10^8.5 Msun/z=2 halo with the
-Ishiyama+21 c(M) relation (0.16 dex scatter band), computed directly via
+Diemer+19 c(M) relation (0.16 dex scatter band), computed directly via
 colossus -- not through python/nfw.py, which has no concentration-mass
 relation or circularVelocity helper (it only holds the rho150<->NFW-parameter
 inversion). Jdata (imported as obs, itself imported for dwarf_names/Dwarf)
@@ -56,7 +65,8 @@ supplies `.h` for the Mpc/h <-> Mpc-physical conversions upstream used.
 
 Path/import/provenance edits only -- the LMC-analog + top-4-per-host mass
 cut, the median/quantile computation, the per-dwarf errorbar series, and the
-axis/legend configuration are otherwise character-identical to upstream.
+axis/legend configuration are otherwise character-identical to upstream,
+except the intro NFW c(M) model (see "Deliberate departure" above).
 Dropped: the re-pasted rcParams preamble (now `from plot_style import *`) and
 the `os.environ["PATH"] +=` texlive mutation it duplicated (plot_style
 already does this via config.TEXLIVE_BIN).
@@ -268,7 +278,7 @@ def build_inference(which):
 
 def build_intro():
     """Measured MW satellites vs. the SatGen median+bands vs. a reference
-    10^8.5 Msun NFW halo at z=2 (Ishiyama+21 c(M), 0.16 dex scatter band).
+    10^8.5 Msun NFW halo at z=2 (Diemer+19 c(M), 0.16 dex scatter band).
     See module docstring for why this reproduces the RENDERED
     satellites_vcirc_intro.pdf rather than the notebook cell's current
     (post-run-edited) comment state.
@@ -297,7 +307,7 @@ def build_intro():
                                       label=r'\texttt{SatGen} with LMC analog'))
     proxy_lines.append(eb1)
 
-    # ---- reference NFW halo: 10^8.5 Msun (physical) at z=2, Ishiyama+21 c(M) ----
+    # ---- reference NFW halo: 10^8.5 Msun (physical) at z=2, Diemer+19 c(M) ----
     M_phys = 10 ** 8.5  # Msun (physical)
     M = M_phys * obs.col_co.h  # Msun/h (colossus internal units)
     mdef = 'vir'
@@ -305,12 +315,12 @@ def build_intro():
     r_phys_kpc = np.logspace(-2, 1, 200)
     z = 2
 
-    c_med_ishiyama = concentration.concentration(M, mdef, z, model='ishiyama21')
+    c_med_diemer = concentration.concentration(M, mdef, z, model='diemer19')
     r_phys_kpch = r_phys_kpc * obs.col_co.h
 
     vcirc = {}
     for nsig in [0, -1, 1]:
-        c = c_med_ishiyama * 10 ** (nsig * sigma_logc)
+        c = c_med_diemer * 10 ** (nsig * sigma_logc)
         p = profile_nfw.NFWProfile(M=M, c=c, z=z, mdef=mdef)
         vcirc[nsig] = p.circularVelocity(r_phys_kpch)
 

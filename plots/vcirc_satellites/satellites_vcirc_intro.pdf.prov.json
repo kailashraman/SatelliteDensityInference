@@ -4,19 +4,19 @@
     "Diemer"
   ],
   "dja_snapshot": null,
-  "figure": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/plots/vcirc_satellites/satellites_vcirc_intro.pdf",
-  "git_commit": "8f939a1fe628c47858c59c030a31ae28ed604ed3",
+  "figure": "/global/scratch/projects/pc_heptheory/kraman/satgen_inference_project/SatelliteDensityInference/plots/vcirc_satellites/satellites_vcirc_intro.pdf",
+  "git_commit": "87c660e6bdcc3393de70419ddd400ef7e0c76cbc",
   "git_dirty": true,
   "h5_file": "m12res8_10k_Diemer+scatter_sim.h5",
   "h5_fingerprint": {
-    "mtime": 1785267594,
-    "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+    "mtime": 1787784460,
+    "path": "/global/scratch/projects/pc_heptheory/kraman/satgen_inference_project/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
     "size": 1376624522
   },
   "inputs": [
     {
-      "mtime": 1785267594,
-      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
+      "mtime": 1787784460,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/satgen_inference_project/SatelliteDensityInference/data/additional/m12res8_10k_Diemer+scatter_sim.h5",
       "provenance": {
         "argv": [
           "build",
@@ -49,7 +49,7 @@
     },
     {
       "mtime": 1785799151,
-      "path": "/global/scratch/projects/pc_heptheory/kraman/SatelliteDensityInference/results/paper_massProfile/Diemer/massProfile.npz",
+      "path": "/global/scratch/projects/pc_heptheory/kraman/satgen_inference_project/SatelliteDensityInference/results/paper_massProfile/Diemer/massProfile.npz",
       "provenance": {
         "argv": [
           "Diemer"
@@ -82,5 +82,5 @@
   "script": "python/plot_vcirc_satellites_all.py",
   "sim_version": "Diemer",
   "which": "intro",
-  "written_utc": "2026-08-04T22:03:32+00:00"
+  "written_utc": "2026-11-12T05:58:51+00:00"
 }
