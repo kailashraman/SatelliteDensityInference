@@ -1,4 +1,5 @@
 import os,sys
+import zlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -12,6 +13,19 @@ from scipy.optimize import minimize, minimize_scalar, fmin
 from scipy.interpolate import RegularGridInterpolator
 
 import config
+
+def mc_seed(name, stage):
+    """Deterministic per-dwarf, per-stage seed for the Fermi Monte Carlo draws.
+
+    zlib.crc32 of f'{stage}:{name}', as compute_weights.py does for its seeds.
+    Python's str hash() is salted per process, so seeding from it made reruns
+    irreproducible. The stage tag ('fermi_reweighting' or
+    'fermi_expected_limits') keeps the two stages' ensembles independent:
+    without it both would draw the same leading numbers for a given dwarf. The
+    legacy/update data release is deliberately NOT in the tag; see
+    fermi_reweighting.py.
+    """
+    return zlib.crc32(f'{stage}:{name}'.encode()) & 0xffffffff
 
 # Paths into the extracted Fermi-LAT legacy data release, resolved from
 # config so they no longer depend on the working directory.

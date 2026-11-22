@@ -4,12 +4,22 @@ single-J branches of fermi_reweighting.py but loops the call over the 1008
 blank-field SEDs instead of the dwarf's own SED.
 
 Migrated from SatGen_Dwarf/python/fermi_expected_limits.py. Path/import/
-provenance edits only -- the TS computation (convert_sed, imported unchanged
+provenance edits plus the RNG seed change below -- the TS computation (convert_sed, imported unchanged
 from fermi_funcs.py), the mass_vec/sigmav_vec grids (matching
 fermi_reweighting.py's), the per-variant J-factor extraction, the F18 RNG
-seeding convention (default_rng(abs(hash(name)) % (2**32)), one draw per
-field), and the timing/looping/print structure are all character-identical to
-upstream.
+draw (one per field), and the timing/looping/print structure are
+character-identical to upstream. The RNG seed is the one deliberate change:
+upstream's default_rng(abs(hash(name)) % (2**32)) was salted per process, so
+it is now default_rng(mc_seed(name, 'fermi_expected_limits')) (zlib.crc32 of
+'fermi_expected_limits:<name>', from fermi_funcs); the stage tag keeps these
+draws independent of fermi_reweighting.py's.
+
+Products drawn under the old hash() seed cannot be regenerated bit-for-bit; a
+rerun reproduces them only statistically. That covers every shipped tree:
+results/fermi_reweighting/ (legacy, including *_MC_test),
+results/fermi_reweighting_update/, and results/fermi_expected_limits/
+(F18_MC_blank_fields). Shipped products carry no seed field, so a product
+without the stochastic caveat in its provenance should be read as hash-seeded.
 
 Usage, unchanged from upstream:
     python fermi_expected_limits.py <dsph_idx>
@@ -57,7 +67,7 @@ import time
 import numpy as np
 from astropy.io import fits
 
-from fermi_funcs import convert_sed, blank_field_sed_path
+from fermi_funcs import convert_sed, blank_field_sed_path, mc_seed
 import Jdata as obs
 import config
 import provenance
@@ -215,7 +225,7 @@ if run_satgen_shmr:
 if 'F18' in variants:
     # Pre-draw F18 logJs (one per field) using the same seed convention as
     # fermi_reweighting.py.
-    rng = np.random.default_rng(abs(hash(name)) % (2**32))
+    rng = np.random.default_rng(mc_seed(name, 'fermi_expected_limits'))
     u = rng.standard_normal(N_fields)
     sampled_logJs_F18 = np.where(
         u >= 0,
@@ -293,7 +303,17 @@ if 'Jeans' in variants:
     )
 if 'F18' in variants:
     provenance.savez(
-        f'{save_dir}F18_MC_blank_fields', diemer_record,
+        f'{save_dir}F18_MC_blank_fields',
+        dict(diemer_record,
+             stochastic_arrays=('sampled_logJs', 'TS_arrays'),
+             stochastic_caveat=(
+                 'sampled_logJs (one per blank field) are split-normal draws '
+                 'from a per-dwarf NumPy default_rng seeded with '
+                 'zlib.crc32("fermi_expected_limits:<name>") '
+                 '(fermi_funcs.mc_seed). TS_arrays are derived from them. '
+                 'Reproducible by rerunning this script; not recoverable for '
+                 'products written before this seeding, which were '
+                 'hash()-seeded.')),
         mass_vec=mass_vec, sigmav_vec=sigmav_vec,
         TS_arrays=TS_arrays_F18, field_ids=field_ids,
         sampled_logJs=sampled_logJs_F18,

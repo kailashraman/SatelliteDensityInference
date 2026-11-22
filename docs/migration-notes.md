@@ -395,23 +395,29 @@ hundred halos the off-by-one becomes visible. Any future stage that quantiles a
 heavily masked subset, a per-dwarf tail, or a bootstrap resample should be checked
 against this entry first.
 
-### The Fermi MC ensemble is seeded with hash() and is not reproducible
+### The Fermi MC ensemble seed (resolved: stage-tagged crc32)
 
-`fermi_reweighting.py` seeds its 1000-realization Monte Carlo with
+Upstream seeded the 1000-realization Fermi Monte Carlo in `fermi_reweighting.py`
+(and the F18 blank-field draw in `fermi_expected_limits.py`) with
 `np.random.default_rng(abs(hash(name)) % (2**32))`. Python randomizes string
-hashing per process unless `PYTHONHASHSEED` is set, and no launcher sets it, so
-**every run draws a different ensemble**: `hash('Draco')` returns 480799978 /
-878290448 / 2581502141 in three successive processes. The three artifacts on disk
-(legacy `F18_MC`, update `F18_MC`, legacy `F18_MC_test`) are three distinct
-realizations. The module docstring records this as the seeding convention to
-preserve, while `compute_weights.py` documents rejecting exactly this construction
-in favour of `zlib.crc32`. The 68%/95% containment bands of
-`fermi_reweighting_MC.pdf` are this ensemble, so a rerun gives a statistically
-equivalent but numerically different band. Two layers sit underneath: the F18
-quantiles the MC samples from derive from `mstar_weights`, themselves an unseeded
-realization, and the draw is a split-normal fit to the 16/50/84 quantiles rather
-than a full J-factor PDF. Left as-is deliberately: changing the seed changes an
-archived band, and the docstring must change in the same edit.
+hashing per process unless `PYTHONHASHSEED` is set, so every run drew a different
+ensemble. This is resolved here: both scripts now seed from
+`fermi_funcs.mc_seed(name, stage)`, the `zlib.crc32` of `'<stage>:<name>'` with
+stage `fermi_reweighting` or `fermi_expected_limits`, so reruns are reproducible
+from this repo and the two stages' ensembles are independent. The legacy/update
+data release is deliberately not in the tag, so both releases of a stage share
+J draws (common random numbers) and their differences reflect the data only. The
+MC outputs' provenance records a stochastic caveat naming the scheme.
+
+The shipped products (`results/fermi_reweighting/` including `*_MC_test`,
+`results/fermi_reweighting_update/`, `results/fermi_expected_limits/`) are single
+hash-seeded draws that cannot be recovered, and carry no seed field; a product
+without the stochastic caveat should be read as hash-seeded. Rerunning reproduces
+the 68%/95% bands of `fermi_reweighting_MC.pdf` only statistically. Two layers
+sit underneath regardless of seed: the F18 quantiles the MC samples from derive
+from `mstar_weights`, themselves an unseeded realization in the published
+products, and the draw is a split-normal fit to the 16/50/84 quantiles rather
+than a full J-factor PDF.
 
 ### build_jfactors_all's version guard is right; its stated reason is not
 

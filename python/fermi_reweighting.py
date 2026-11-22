@@ -3,12 +3,26 @@ for a set of J-factor "variants" (mhalf/F18/K24 SatGen weights, DJA Jeans
 under several priors, McDaniel literature values, ...).
 
 Migrated from SatGen_Dwarf/python/fermi_reweighting.py. Path/import/provenance
-edits only -- the TS computation (convert_sed/convert_sed_batch, imported
-unchanged from fermi_funcs.py), the mass_vec/sigmav_vec grids, the
-WEIGHT_LIST-equivalent idcs/weight_names arrays and their ORDER, the
-satgen_priors list, the F18/K24 Monte Carlo draw (including the RNG seeding
-convention: default_rng(abs(hash(name)) % (2**32))), and every J-factor
-extraction are all character-identical to upstream.
+edits plus the RNG seed change below -- the TS computation
+(convert_sed/convert_sed_batch, imported unchanged from fermi_funcs.py), the
+mass_vec/sigmav_vec grids, the WEIGHT_LIST-equivalent idcs/weight_names arrays
+and their ORDER, the satgen_priors list, the F18/K24 Monte Carlo draw, and
+every J-factor extraction are all character-identical to upstream. The one
+deliberate change is the RNG seed: upstream used
+default_rng(abs(hash(name)) % (2**32)), and str hash() is salted per process,
+so it was not reproducible. It is now
+default_rng(fermi_funcs.mc_seed(name, 'fermi_reweighting')), i.e. zlib.crc32
+of 'fermi_reweighting:<name>'; the stage tag keeps this ensemble independent of
+fermi_expected_limits.py's. The legacy/update data release is deliberately not
+in the tag: legacy and update runs of a dwarf share the same J draws (common
+random numbers), so their differences reflect the data release only.
+
+Products drawn under the old hash() seed cannot be regenerated bit-for-bit; a
+rerun reproduces them only statistically. That covers every shipped tree:
+results/fermi_reweighting/ (legacy, including *_MC_test),
+results/fermi_reweighting_update/, and results/fermi_expected_limits/
+(F18_MC_blank_fields). Shipped products carry no seed field, so a product
+without the stochastic caveat in its provenance should be read as hash-seeded.
 
 Usage, unchanged from upstream:
     python fermi_reweighting.py <dsph_idx>
@@ -390,10 +404,21 @@ if 'test_jeans_J' in variants and name == 'Segue 1':
 # ============================================================
 if needs_mc:
     N_MC = 1000
-    rng = np.random.default_rng(abs(hash(name)) % (2**32))
+    rng = np.random.default_rng(mc_seed(name, 'fermi_reweighting'))
     mc_idcs = [4, 10]
     mc_weight_names = ['F18', 'K24']
     sigmaJ_fixed = logJ_err[0]  # mhalf error
+    mc_record = dict(
+        diemer_record,
+        stochastic_arrays=('sampled_logJs', 'TS_arrays'),
+        stochastic_caveat=(
+            'sampled_logJs are split-normal draws from a per-dwarf NumPy '
+            'default_rng seeded with zlib.crc32("fermi_reweighting:<name>") '
+            '(fermi_funcs.mc_seed), one stream per dwarf: F18 draws first, '
+            'then K24. TS_arrays are derived from them. Shared by the legacy '
+            'and update data releases (common random numbers). Reproducible '
+            'by rerunning this script; not recoverable for products written '
+            'before this seeding, which were hash()-seeded.'))
 
     for w_i, idx in enumerate(mc_idcs):
         wname = mc_weight_names[w_i]
@@ -425,7 +450,7 @@ if needs_mc:
                 mass_vec=mass_vec, sigmav_vec=sigmav_vec,
             )
 
-            provenance.savez(f'{save_dir}{wname}_MC', diemer_record,
+            provenance.savez(f'{save_dir}{wname}_MC', mc_record,
                              mass_vec=mass_vec, sigmav_vec=sigmav_vec,
                              TS_arrays=TS_arrays,
                              sampled_logJs=sampled_logJs)
@@ -439,7 +464,7 @@ if needs_mc:
                 mass_vec=mass_vec, sigmav_vec=sigmav_vec,
             )
 
-            provenance.savez(f'{save_dir}{wname}_MC_mstar_err', diemer_record,
+            provenance.savez(f'{save_dir}{wname}_MC_mstar_err', mc_record,
                              mass_vec=mass_vec, sigmav_vec=sigmav_vec,
                              TS_arrays=TS_arrays,
                              sampled_logJs=sampled_logJs)
