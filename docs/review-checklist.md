@@ -291,7 +291,7 @@ changes every downstream number the next time the stage runs.
 ## Catalog rebuilt underneath its derived products
 
 **Where:** version registries pointing at an h5 that has been regenerated since
-the `weights_gc/`, `mhalf/`, or `paper_quantiles/` products keyed to it were
+the `halo_weights/`, `mhalf/`, or `paper_quantiles/` products keyed to it were
 written — especially where a superseded `*_old` or `*_backup` file still sits
 beside it in the source tree.
 
@@ -1143,3 +1143,27 @@ affordable), or a root list held outside the record. An unvalidated path
 keeps its literal classification. Require a before/after
 count on real records showing which entries moved, and that no other entries
 did.
+
+## Invariance check that never exercises the changed path
+
+**Where:** "no diff" claims after a bulk move, rename or refactor — a
+regenerated manifest, provenance report or parity output that comes back
+byte-identical — and classifiers written as "everything under X except an
+enumerated list", whose meaning changes whenever the directory layout does.
+
+**What goes wrong:** the identical output is read as proof that the change
+preserved behaviour, but no record in the data actually reached the changed
+branch (for example, every input took an earlier early-return). The
+regression stays latent until real data reaches that branch — typically a
+stale or recreated path that a denylist classifier now silently treats as
+exempt, so a genuine gap drops out of the report. Tests written alongside
+can be vacuous in the same way: a fixture whose size, mtime or other
+precondition stops the code under test before it reaches the branch the test
+name describes, while parametrisation gives the look of coverage.
+
+**What to flag:** a "no diff" or "unchanged" claim that does not say how many
+records went through the changed code path; a denylist classifier left in
+place after a directory restructure, with no allow-list and no test of an
+unknown or retired directory; a fixture whose preconditions keep the code
+from reaching the branch the test claims to cover. Ask for a mutation check:
+disable the new logic and confirm at least one test fails.
