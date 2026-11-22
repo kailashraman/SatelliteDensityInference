@@ -1188,3 +1188,21 @@ no explicit allow-list of the objects expected to have no product; no check
 that the root itself exists; comments that say "skip" where the contract
 should say "fail". Require the expected-missing set to be named, everything
 else to raise, and a data-tier test that every expected product is present.
+
+## Object-keyed seed shared by sibling stages
+
+**Where:** Monte Carlo stages seeded from a stable function of the object name
+alone (dwarf, halo, field), where more than one producer draws for the same
+object.
+
+**What goes wrong:** replacing a per-process-salted seed with a deterministic
+one makes sibling stages draw exactly the same leading random numbers. Two
+ensembles that used to be independent (an observed band and an expected band,
+two pipeline stages) become identical or correlated. Nothing in the arrays
+shows it, and any comparison between those stages silently uses shared draws.
+
+**What to flag:** one seed helper called with only the object name from more
+than one producer; seeds that leave out the stage, variant or tree without a
+stated reason; a "same seed convention as X" comment offered as a reason two
+streams can be compared. Require the stage in the seed key, and a docstring
+that says which sharing (if any) is deliberate.
