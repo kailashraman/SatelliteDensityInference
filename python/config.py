@@ -105,10 +105,20 @@ TREES_DIR = Path(os.environ.get(
 # --------------------------------------------------------------------------
 # Upstream dependency 2: DwarfJeansAnalysis production posteriors.
 # Layout: <DJA_RESULTS_DIR>/<lvdb_key>/<prior>/{posterior_samples,derived}.npz
+# Default: the sibling checkout of the DwarfJeansAnalysis repo
+# (<REPO_ROOT>/../DwarfJeansAnalysis). Empty is rejected for the same reason as
+# SDI_RESULTS_DIR above: Path('') is '.', which would silently look for
+# <lvdb_key>/<prior>/derived.npz under the cwd. A relative override is resolved
+# against the cwd here, once, so stamps record an absolute path.
 # --------------------------------------------------------------------------
-DJA_RESULTS_DIR = Path(os.environ.get(
-    'SDI_DJA_RESULTS_DIR',
-    '/global/scratch/projects/pc_heptheory/kraman/DwarfJeansAnalysis/results/production'))
+_dja_override = os.environ.get('SDI_DJA_RESULTS_DIR')
+if _dja_override is not None and not _dja_override.strip():
+    raise ValueError(
+        'SDI_DJA_RESULTS_DIR is set but empty; unset it to use the default '
+        f'{REPO_ROOT.parent / "DwarfJeansAnalysis" / "results" / "production"}, '
+        'or set it to an absolute path')
+DJA_RESULTS_DIR = (Path(_dja_override).expanduser().resolve() if _dja_override else
+                   REPO_ROOT.parent / 'DwarfJeansAnalysis' / 'results' / 'production')
 
 # Default prior for Dwarf.get_Jeans_results(). The prior ladder in Part II
 # selects others explicitly; this is only the fallback.

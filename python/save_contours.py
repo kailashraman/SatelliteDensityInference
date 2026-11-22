@@ -214,7 +214,7 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
         jeans_rmax = this_dwarf.jeans_rmax
         jeans_vmax = this_dwarf.jeans_vmax
         jeans_weights = this_dwarf.jeans_weights
-        if len(jeans_weights) == 0:
+        if len(jeans_weights) == 0:  # only Jdata.DJA_SKIP_KEYS dwarfs
             print(f'Jeans {prior}: no posterior samples for {dwarf}, skipping')
             continue
         # The Jeans contour comes entirely from DwarfJeansAnalysis's

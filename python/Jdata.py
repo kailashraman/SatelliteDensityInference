@@ -39,9 +39,11 @@ import config
 DJA_PRODUCTION_DIR = str(config.DJA_RESULTS_DIR)
 # DJA_PRIOR = 'jeffreys'
 DJA_PRIOR = config.DJA_PRIOR
-# Dwarfs whose DJA posteriors should be ignored (e.g. unresolved dispersion).
-# DJA_SKIP_KEYS = {'tucana_5'}
-DJA_SKIP_KEYS = {}
+# lvdb keys whose DwarfJeansAnalysis results are always skipped (Fornax, LMC,
+# Sagittarius, SMC): get_Jeans_results leaves them with NaN Jeans quantiles
+# whether or not a run exists on disk. Any other dwarf with a missing
+# derived.npz is an error, not a skip.
+DJA_SKIP_KEYS = {'fornax_1', 'lmc', 'sagittarius_1', 'smc'}
 
 # set up colossus cosmology to match SatGen
 from SatGen import profiles as pf
@@ -479,11 +481,28 @@ class Dwarf:
         match = dwarf_all[dwarf_all['name'] == self.name]
         lvdb_key = match['key'][0] if len(match) > 0 else None
         ps_path = None
-        if lvdb_key is not None and lvdb_key not in DJA_SKIP_KEYS:
+        # Reset before any raise, so a failed call on a reused Dwarf cannot
+        # leave the previous prior's path behind for a caller to stamp.
+        self.jeans_dja_path = None
+        # A name with no LVDB key would otherwise fall through to NaN Jeans
+        # results, which the Fermi stages silently replace with the
+        # scaling-relation J.
+        if lvdb_key is None:
+            raise KeyError(f'{self.name!r} has no LVDB key in dwarf_all')
+        # Checked at call time, not import: importing Jdata must work without DJA.
+        if not os.path.isdir(DJA_PRODUCTION_DIR):
+            raise FileNotFoundError(
+                f'DwarfJeansAnalysis results directory not found: '
+                f'{DJA_PRODUCTION_DIR}; set SDI_DJA_RESULTS_DIR to the '
+                f'DwarfJeansAnalysis results/production directory')
+        if lvdb_key not in DJA_SKIP_KEYS:
             candidate = os.path.join(DJA_PRODUCTION_DIR, lvdb_key, dja_prior,
                                      'derived.npz')
-            if os.path.isfile(candidate):
-                ps_path = candidate
+            if not os.path.isfile(candidate):
+                raise FileNotFoundError(
+                    f'No DwarfJeansAnalysis derived.npz for {self.name} '
+                    f'(prior={dja_prior}): {candidate}')
+            ps_path = candidate
         # The DwarfJeansAnalysis file actually read for this prior, so a
         # caller stamping the result can fingerprint the real dependency
         # (derived.npz under DJA_RESULTS_DIR) rather than the unrelated

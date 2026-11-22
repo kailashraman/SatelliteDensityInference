@@ -314,9 +314,11 @@ if 'Jeans_mhalf_err' in variants:
     provenance.savez(f'{save_dir}Jeans_mhalf_err', record,
                      mass_vec=mass_vec, sigmav_vec=sigmav_vec, TS_array=TS_array)
 
-# DJA Jeans posteriors under SatGen-informed priors. Skip the dwarf/prior
-# combinations where no posterior_samples.npz exists rather than falling back
-# to the scaling-relation J — the point of these outputs is the satgen prior.
+# DJA Jeans posteriors under SatGen-informed priors. The skipped dwarfs
+# (Jdata.DJA_SKIP_KEYS) come back NaN and are skipped here rather than
+# falling back to the scaling-relation J — the point of these outputs is the
+# satgen prior. Any other dwarf missing a prior's derived.npz raises in
+# get_Jeans_results and fails the task.
 satgen_priors = [
     ('satgen',                          'Jeans_satgen'),
     ('satgen_box',                      'Jeans_satgen_box'),

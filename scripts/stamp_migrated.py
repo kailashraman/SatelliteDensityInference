@@ -767,8 +767,10 @@ def _fermi_jeans_fallback(name, dwarf_cache):
     resolved the same way fermi_reweighting.py / fermi_expected_limits.py do
     at run time: `obs.Dwarf(name).get_Jeans_results()` against the DEFAULT
     prior (`config.DJA_PRIOR`), falling back to the LVDB `logJ_disp` scaling
-    relation (fixed 0.60 dex) when this repository's current DJA_RESULTS_DIR
-    has no posterior for that dwarf. Cached per dwarf across all three groups
+    relation (fixed 0.60 dex) for the dwarfs in
+    Jdata.DJA_SKIP_KEYS. A missing DJA_RESULTS_DIR or posterior for any
+    other dwarf raises, so the stamper refuses rather than stamping a
+    fallback. Cached per dwarf across all three groups
     -- this hits DwarfJeansAnalysis's derived.npz on disk, not free.
     """
     if name not in dwarf_cache:

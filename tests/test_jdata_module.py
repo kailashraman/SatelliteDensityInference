@@ -5,6 +5,8 @@ entire file it appears in, so putting these alongside the pandas-only catalog
 checks would silently disable those in the fast tier.
 """
 
+from pathlib import Path
+
 import pytest
 
 import config
@@ -89,3 +91,87 @@ def test_ursa_major_iii_still_constructs():
     dwarf = jdata.Dwarf('Ursa Major III')
     assert np.isfinite(dwarf.rhalf.value)
     assert np.all(np.isfinite(dwarf.rhalf_err.value))
+
+
+# The Jeans-results tests patch Jdata.DJA_PRODUCTION_DIR, not config: it is
+# captured as a str at import, so a config override after import has no effect.
+RUN_DWARF = 'Draco'  # has a DwarfJeansAnalysis run; Fornax is in DJA_SKIP_KEYS
+SKIPPED_DWARF = 'Fornax'
+
+
+def test_jeans_results_raise_when_dja_root_is_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(jdata, 'DJA_PRODUCTION_DIR', str(tmp_path / 'nope'))
+    with pytest.raises(FileNotFoundError, match='SDI_DJA_RESULTS_DIR'):
+        jdata.Dwarf(RUN_DWARF).get_Jeans_results()
+
+
+def test_jeans_results_raise_when_a_priors_derived_is_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(jdata, 'DJA_PRODUCTION_DIR', str(tmp_path))
+    key = jdata.dwarf_all[jdata.dwarf_all['name'] == RUN_DWARF]['key'][0]
+    (tmp_path / key / 'loguniform').mkdir(parents=True)
+    with pytest.raises(FileNotFoundError, match='derived.npz'):
+        jdata.Dwarf(RUN_DWARF).get_Jeans_results(dja_prior='loguniform')
+
+
+def test_skipped_dwarf_returns_nan_without_raising(tmp_path, monkeypatch):
+    monkeypatch.setattr(jdata, 'DJA_PRODUCTION_DIR', str(tmp_path))  # root exists, empty
+    dwarf = jdata.Dwarf(SKIPPED_DWARF)
+    dwarf.get_Jeans_results()
+    assert dwarf.jeans_dja_path is None
+    assert all(v != v for v in dwarf.Jeans_J_quantiles)
+
+
+@pytest.mark.needs_data
+def test_default_dja_root_has_every_expected_posterior():
+    """What actually catches the DwarfJeansAnalysis checkout moving again.
+
+    Checks whichever root is configured (SDI_DJA_RESULTS_DIR or the sibling
+    default): every dwarf outside DJA_SKIP_KEYS has every prior."""
+    root = Path(jdata.DJA_PRODUCTION_DIR)
+    assert root.is_dir(), f'{root} missing; set SDI_DJA_RESULTS_DIR'
+    missing = []
+    for name in jdata.dwarf_names:
+        match = jdata.dwarf_all[jdata.dwarf_all['name'] == name]
+        key = match['key'][0] if len(match) > 0 else None
+        if key is None or key in jdata.DJA_SKIP_KEYS:
+            continue
+        for prior in config.DJA_PRIORS:
+            if not (root / key / prior / 'derived.npz').is_file():
+                missing.append(f'{key}/{prior}')
+    assert not missing, missing
+
+
+
+def test_failed_jeans_call_clears_the_previous_path(tmp_path, monkeypatch):
+    """A raise must not leave a previous prior's path on a reused Dwarf, where
+    a caller collecting jeans_dja_path for provenance would stamp it."""
+    monkeypatch.setattr(jdata, 'DJA_PRODUCTION_DIR', str(tmp_path))
+    dwarf = jdata.Dwarf(RUN_DWARF)
+    dwarf.jeans_dja_path = 'stale/loguniform/derived.npz'
+    with pytest.raises(FileNotFoundError):
+        dwarf.get_Jeans_results(dja_prior='loguniform')
+    assert dwarf.jeans_dja_path is None
+
+
+def test_name_without_lvdb_key_raises():
+    """Unknown names used to fall through to NaN, which the Fermi stages turn
+    into the scaling-relation J without a word. Ursa Major III is the one name
+    the pipeline constructs a Dwarf for that is absent from dwarf_all."""
+    dwarf = jdata.Dwarf('Ursa Major III')
+    with pytest.raises(KeyError, match='no LVDB key'):
+        dwarf.get_Jeans_results()
+
+
+def test_skipped_dwarf_ignores_a_run_on_disk(tmp_path, monkeypatch):
+    """DJA_SKIP_KEYS means always skip, not "no run exists": a derived.npz
+    appearing upstream for a listed dwarf must not be picked up."""
+    monkeypatch.setattr(jdata, 'DJA_PRODUCTION_DIR', str(tmp_path))
+    key = jdata.dwarf_all[jdata.dwarf_all['name'] == SKIPPED_DWARF]['key'][0]
+    assert key in jdata.DJA_SKIP_KEYS
+    run = tmp_path / key / jdata.DJA_PRIOR
+    run.mkdir(parents=True)
+    (run / 'derived.npz').write_bytes(b'not a real npz')  # would fail to load if read
+    dwarf = jdata.Dwarf(SKIPPED_DWARF)
+    dwarf.get_Jeans_results()
+    assert dwarf.jeans_dja_path is None
+    assert all(v != v for v in dwarf.Jeans_J_quantiles)

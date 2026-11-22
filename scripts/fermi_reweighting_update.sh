@@ -11,9 +11,10 @@
 #
 # Requires the paper_quantiles/galactocentric/{Diemer,mhalf_scatter} trees
 # (scripts/compute_quantiles.sh) and, for the Jeans_satgen* variants,
-# DwarfJeansAnalysis posteriors under $SDI_DJA_RESULTS_DIR to already exist for
-# the dwarfs/priors being requested -- fermi_reweighting.py skips (does not
-# fail) a Jeans_satgen* variant with no posterior for a given dwarf.
+# DwarfJeansAnalysis posteriors under config.DJA_RESULTS_DIR (override:
+# $SDI_DJA_RESULTS_DIR) for the dwarfs/priors being requested. Only the dwarfs
+# in Jdata.DJA_SKIP_KEYS skip the Jeans_satgen*
+# variants; for any other dwarf a missing posterior fails the task.
 #
 # mcdaniel is NOT buildable here: paper_quantiles/galactocentric/mcdaniel was
 # deliberately not migrated (its weights are 17 GB and excluded; no in-repo

@@ -122,6 +122,31 @@ def test_external_paths_are_overridable():
     assert lines[1] == '/tmp/fake-dja'
 
 
+def test_dja_default_is_the_sibling_checkout():
+    """With SDI_DJA_RESULTS_DIR unset the default is the sibling repo, not an
+    absolute path that goes stale when the checkout moves."""
+    env = {k: v for k, v in os.environ.items() if k != 'SDI_DJA_RESULTS_DIR'}
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config; '
+         'print(config.DJA_RESULTS_DIR)' % str(REPO_ROOT / 'python')],
+        capture_output=True, text=True, env=env)
+    assert result.returncode == 0, result.stderr
+    assert Path(result.stdout.strip()) == (
+        REPO_ROOT.parent / 'DwarfJeansAnalysis' / 'results' / 'production')
+
+
+def test_empty_dja_override_is_rejected():
+    env = dict(os.environ, SDI_DJA_RESULTS_DIR='')
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config'
+         % str(REPO_ROOT / 'python')],
+        capture_output=True, text=True, env=env)
+    assert result.returncode != 0
+    assert 'SDI_DJA_RESULTS_DIR is set but empty' in result.stderr
+
+
 # data/additional/ was split into satgen_catalogs/, mhalf/, halo_weights/ and
 # halo_weights_published/. A reference to the old layout that survives in code
 # fails only when that path is actually hit -- or, for a writer that mkdirs its
@@ -192,3 +217,16 @@ def test_data_dirs_exist_and_old_layout_is_gone():
                  config.WEIGHTS_DIR, config.WEIGHTS_PUBLISHED_DIR):
         assert path.is_dir(), path
     assert not (config.DATA_DIR / 'additional').exists()
+
+
+def test_relative_dja_override_is_resolved_once(tmp_path):
+    """A relative override must not stay cwd-dependent: Jdata captures it at
+    import and provenance stamps it, so it is resolved against the cwd here."""
+    env = dict(os.environ, SDI_DJA_RESULTS_DIR='rel/production')
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config; '
+         'print(config.DJA_RESULTS_DIR)' % str(REPO_ROOT / 'python')],
+        cwd=str(tmp_path), capture_output=True, text=True, env=env)
+    assert result.returncode == 0, result.stderr
+    assert Path(result.stdout.strip()) == (tmp_path / 'rel' / 'production').resolve()

@@ -12,8 +12,10 @@
 #
 # Requires the paper_quantiles/galactocentric/Diemer tree (for mhalf/F18) and,
 # for Jeans/satgen_shmr_fattahi18, DwarfJeansAnalysis posteriors under
-# $SDI_DJA_RESULTS_DIR -- fermi_expected_limits.py skips (does not fail) the
-# satgen_shmr_fattahi18 variant when a dwarf has no such posterior.
+# config.DJA_RESULTS_DIR (override: $SDI_DJA_RESULTS_DIR). The
+# satgen_shmr_fattahi18 variant is skipped only for the dwarfs in
+# Jdata.DJA_SKIP_KEYS; for any other dwarf a missing posterior
+# fails the task.
 #
 # This is the expensive stage: one convert_sed() Minuit-free profile fit per
 # (blank field, variant), 1008 fields per dwarf per variant. Time below is a
