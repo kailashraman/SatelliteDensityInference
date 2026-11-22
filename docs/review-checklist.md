@@ -1167,3 +1167,24 @@ place after a directory restructure, with no allow-list and no test of an
 unknown or retired directory; a fixture whose preconditions keep the code
 from reaching the branch the test claims to cover. Ask for a mutation check:
 disable the new logic and confirm at least one test fails.
+
+## Missing-input check that treats "no run by design" like "run not found"
+
+**Where:** loaders for per-object upstream products (posteriors, per-dwarf or
+per-halo files from a sibling pipeline) that return NaN or an empty result
+when a file is absent, feeding downstream stages that switch to a
+scaling-relation, literature or default value on NaN.
+
+**What goes wrong:** a few objects legitimately have no upstream product, and
+the loader handles them with a bare existence check. A wrong root, a moved
+checkout or a partial upstream run then makes every object look like one of
+those exceptions. Every figure, table and limit quietly switches to the
+fallback, and the provenance stamp truthfully records "fallback", so nothing
+looks wrong on inspection.
+
+**What to flag:** `if os.path.isfile(...)` (or `exists()`) with no else
+branch; a NaN sentinel that downstream code converts into a substitute value;
+no explicit allow-list of the objects expected to have no product; no check
+that the root itself exists; comments that say "skip" where the contract
+should say "fail". Require the expected-missing set to be named, everything
+else to raise, and a data-tier test that every expected product is present.
