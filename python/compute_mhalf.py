@@ -22,8 +22,8 @@ which upstream ran on ~10^6 halos inside every one of the 43 per-dwarf tasks
 (~4.3x10^7 calls total, ~43x the real work). It now runs on ~10^6 halos exactly
 once, in `--globals` mode only.
 
-Per-dwarf output: data/additional/mhalf/<version>/<dwarf>.npz
-Globals output:   data/additional/<version>_{rho30,M30,rho150,Mvir200}.npz
+Per-dwarf output: data/mhalf/<version>/<dwarf>.npz
+Globals output:   data/satgen_catalogs/<version>_{rho30,M30,rho150,Mvir200}.npz
 """
 import sys
 import numpy as np
@@ -109,5 +109,5 @@ else:
         record = provenance.stamp('python/compute_mhalf.py', version=version,
                                   argv=sys.argv[1:], inputs=[config.h5_path(version)],
                                   quantity=name)
-        provenance.savez(config.ADDITIONAL_DIR / f'{version}_{name}', record,
+        provenance.savez(config.SATGEN_CATALOGS_DIR / f'{version}_{name}', record,
                          **{name: arr})

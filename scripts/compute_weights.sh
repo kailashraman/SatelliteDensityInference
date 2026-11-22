@@ -6,8 +6,8 @@
 #
 # Requires BOTH passes of scripts/compute_mhalf.sh to have already been run
 # for this version's underlying catalog: compute_weights.py reads
-# data/additional/<sim_version>_Mvir200.npz (pass 2, --globals) AND
-# data/additional/mhalf/<sim_version>/<dwarf>.npz (pass 1, per-dwarf) via
+# data/satgen_catalogs/<sim_version>_Mvir200.npz (pass 2, --globals) AND
+# data/mhalf/<sim_version>/<dwarf>.npz (pass 1, per-dwarf) via
 # halo_weights.py's from_logMstar/from_logMhalf.
 #
 # Full regeneration covers all nine versions this repository carries:
@@ -18,7 +18,7 @@
 #   Diemer's).
 #
 # Regenerating changes mstar_weights and joint_weights relative to the
-# migrated weights_gc/ products, dominantly because ResampleMstar.evolved_Mstar
+# migrated halo_weights_published/ products, dominantly because ResampleMstar.evolved_Mstar
 # now maps each halo's infall stellar mass to z=0 with its own Errani+18 tidal
 # ratio (read off stellar_mass/tpeak_stellar_mass) instead of the old constant
 # +1.2 dex offset -- see halo_weights.py and tests/test_evolved_mstar.py. Two

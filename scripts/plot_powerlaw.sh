@@ -12,7 +12,7 @@
 # Kim24}/scatter_300pc.txt (scripts/vcirc_scatter_300pc.sh +
 # concat_vcirc_scatter_300pc.sh), results/paper_quantiles/galactocentric/
 # <version>/<dwarf>.npz (scripts/compute_quantiles.sh), and
-# data/additional/weights_gc/<version>/<dwarf>.npz (scripts/compute_weights.sh)
+# data/halo_weights/<version>/<dwarf>.npz (scripts/compute_weights.sh)
 # for the ~20 dwarfs with r_1/2 < 300 pc outside the classical/problem-ultrafaint
 # categories (see python/dwarf_categories.py).
 #

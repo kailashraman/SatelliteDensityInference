@@ -41,7 +41,7 @@ Two upstream absolute paths become config-derived:
     symphony_base_dir / mwest_base_dir -> config.SYMPHONY_DIR / 'SymphonyMilkyWay' / 'MWest'
         (already migrated per-host reductions; config.SYMPHONY_DIR existed)
     out_dir                             -> config.PLOTS_DIR / <family>
-config.WEIGHTS_DIR, config.ADDITIONAL_DIR and config.PAPER_JS_DIR already
+config.WEIGHTS_DIR, config.SATGEN_CATALOGS_DIR and config.PAPER_JS_DIR already
 existed (used by save_contours.py / compute_weights.py / Jhalopos.py
 respectively); no new path constant was added for any of the above.
 
@@ -426,7 +426,7 @@ def satgen_logrho150(version, n_rows):
 
 
 def rho150_path(version):
-    return config.ADDITIONAL_DIR / f'{version}_rho150.npz'
+    return config.SATGEN_CATALOGS_DIR / f'{version}_rho150.npz'
 
 
 def weights_path(dwarf_version, name):
@@ -482,7 +482,7 @@ def build_sims(observable_key, fig_key, annotation, ylim):
 # ---------------------------------------------------------------------------
 def load_dwarf_weights(names, keys):
     """Load per-dwarf weight arrays for each key in `keys` from
-    data/additional/weights_gc/{version}/<name>.npz. `keys` is a list of
+    data/halo_weights/{version}/<name>.npz. `keys` is a list of
     (array_name, index_or_None) pairs, e.g. ('mhalf_weights', None) or
     ('mstar_weights', 3). Returns a list (one per key) of lists (one per
     dwarf) of weight arrays."""

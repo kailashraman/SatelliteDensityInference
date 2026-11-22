@@ -49,14 +49,19 @@ change, the same failure class as the removed `Ursa Major III.npz` pair under
 `weights_gc/Diemer` and `mhalf/Diemer`).
 
 `weights_gc`, `mhalf`, and `globals` cover the other three trees copied
-straight from SatGen_Dwarf/data/additional without a stamp: the per-dwarf
-`weights_gc/<version>/<dwarf>.npz` (compute_weights.py), the per-dwarf
+straight from upstream SatGen_Dwarf/data/additional without a stamp: the
+per-dwarf `weights_gc/<version>/<dwarf>.npz` (upstream name; local
+`data/halo_weights/`, compute_weights.py), the per-dwarf
 `mhalf/<version>/<dwarf>.npz` (compute_mhalf.py per-dwarf mode), and the four
 catalog-global `<version>_{rho30,M30,rho150,Mvir200}.npz` files
 (compute_mhalf.py --globals mode). All three are the same failure as the
 original paper_Js gap: once a consumer calls `assert_single_version` on them,
 an unstamped file is rejected outright, so a tree copied in wholesale needs a
 stamp before that guard can be turned on for the scripts that read it.
+
+The `weights_gc` tree option handles config.WEIGHTS_DIR (data/halo_weights/)
+only; no tree option reaches data/halo_weights_published/ (pre-existing;
+documented here, not fixed).
 
 `paper_quantiles` covers `results/paper_quantiles/galactocentric/<version>/
 <dwarf>.npz` (compute_quantiles.py), copied in the same way.
@@ -221,7 +226,8 @@ MIGRATED_FROM_OVERRIDES = {
 
 GLOBAL_QUANTITIES = ('rho30', 'M30', 'rho150', 'Mvir200')
 
-# weights_gc/** and paper_quantiles/** hold mstar_weights/joint_weights (or,
+# Upstream SatGen_Dwarf weights_gc/** (local data/halo_weights/, data/halo_weights_published/)
+# and paper_quantiles/** hold mstar_weights/joint_weights (or,
 # for paper_quantiles, quantile columns built from them): draws through
 # halo_weights.py's unseeded global NumPy RNG (SHMR scatter), taken before
 # compute_weights.py seeded it. See docs/review-checklist.md, "Stochastic
@@ -579,11 +585,11 @@ def _stamp_per_dwarf_tree(root, upstream_root, producer, verified, counts,
 
 def _stamp_globals(verified, counts, restamp_paths):
     """Stamp `<version>_{rho30,M30,rho150,Mvir200}.npz` directly under
-    ADDITIONAL_DIR, keyed like the per-dwarf trees by '<version>/<quantity>'
+    SATGEN_CATALOGS_DIR, keyed like the per-dwarf trees by '<version>/<quantity>'
     in --verified."""
     producer = 'python/compute_mhalf.py (--globals mode)'
     for quantity in GLOBAL_QUANTITIES:
-        for product in sorted(config.ADDITIONAL_DIR.glob(f'*_{quantity}.npz')):
+        for product in sorted(config.SATGEN_CATALOGS_DIR.glob(f'*_{quantity}.npz')):
             version = product.stem[:-len(f'_{quantity}')]
             if _unknown_version(version, product, counts):
                 continue
@@ -880,7 +886,7 @@ def main(argv=None):
                              'product whose existing sidecar -- written by '
                              'something other than this script -- should be '
                              'overwritten deliberately, e.g. '
-                             '"data/additional/weights_gc/Diemer/Sculptor.npz". '
+                             '"data/halo_weights/Diemer/Sculptor.npz". '
                              'Repeatable. There is no tree-wide form: a '
                              'stamper minting records from directory layout '
                              'must not blanket-overwrite sidecars it did not '

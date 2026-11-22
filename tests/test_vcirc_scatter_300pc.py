@@ -42,7 +42,7 @@ SCRIPT_PATH = config.REPO_ROOT / 'python' / 'vcirc_scatter_300pc.py'
 def version_registry(tmp_path, monkeypatch):
     """Register a throwaway SatGen version with a real (empty) h5 on disk.
 
-    Points VCIRC_SCATTER_DIR/PAPER_MASSPROFILE_DIR/ADDITIONAL_DIR at tmp_path
+    Points VCIRC_SCATTER_DIR/PAPER_MASSPROFILE_DIR/SATGEN_CATALOGS_DIR at tmp_path
     so the script's os.makedirs and file reads never touch the real repo
     tree.
     """
@@ -50,7 +50,7 @@ def version_registry(tmp_path, monkeypatch):
     h5_path = tmp_path / f'{version}.h5'
     with h5py.File(h5_path, 'w') as f:
         f.create_dataset('virial_mass', data=np.ones(1))
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', tmp_path)
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', tmp_path)
     monkeypatch.setitem(config.H5_REGISTRY, version, h5_path.name)
     monkeypatch.setattr(config, 'VCIRC_SCATTER_DIR', tmp_path / 'vcirc_scatter_300pc')
     monkeypatch.setattr(config, 'PAPER_MASSPROFILE_DIR', tmp_path / 'paper_massProfile')

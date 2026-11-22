@@ -31,7 +31,7 @@ def catalog(tmp_path, monkeypatch):
     it has no "catalog unavailable" fallback -- so the fixture must provide a
     real h5 with a `virial_mass` dataset, not merely register the version.
     """
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', tmp_path)
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', tmp_path)
     monkeypatch.setitem(config.H5_REGISTRY, VERSION, f'{VERSION}.h5')
 
     def _make(n_halos):

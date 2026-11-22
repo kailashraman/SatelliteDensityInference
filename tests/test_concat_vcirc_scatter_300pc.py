@@ -39,7 +39,7 @@ def tree(tmp_path, monkeypatch):
     """
     base = tmp_path / 'vcirc_scatter_300pc' / VERSION
     monkeypatch.setattr(config, 'VCIRC_SCATTER_DIR', tmp_path / 'vcirc_scatter_300pc')
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', tmp_path)
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', tmp_path)
     monkeypatch.setitem(config.H5_REGISTRY, VERSION, f'{VERSION}.h5')
     monkeypatch.setattr(vsp, 'SHMR_NAMES', [SHMR_A, SHMR_B])
     monkeypatch.setattr(obs, 'dwarf_names', np.array(DWARF_NAMES))

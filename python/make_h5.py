@@ -1,4 +1,4 @@
-"""Build the SatGen halo catalogs (data/additional/*.h5) from the raw datasets.
+"""Build the SatGen halo catalogs (data/satgen_catalogs/*.h5) from the raw datasets.
 
 This is the root of the pipeline DAG: every downstream stage reads one of these
 files via config.h5_path(). Upstream the recipe lived only in
@@ -7,7 +7,7 @@ repository unable to rebuild its own inputs.
 
 Subcommands
 -----------
-    build <version>          dfolsom dataset -> data/additional/<file>.h5
+    build <version>          dfolsom dataset -> data/satgen_catalogs/<file>.h5
     sims <Symphony|MWest>    per-host .npz tree -> a much smaller h5
     augment-mhalf <version>  add the logMhalf/<dwarf> group in place
 
@@ -281,7 +281,7 @@ def cmd_augment_mhalf(args):
 
     Symphony and MWest only. halo_weights.from_logMhalf reads this group for
     those two catalogs; for the SatGen versions it reads
-    data/additional/mhalf/<version>/ instead, produced by compute_mhalf (plan
+    data/mhalf/<version>/ instead, produced by compute_mhalf (plan
     step 4). This computes logMhalf from the NFW parameters the N-body
     reductions carry, which the SatGen catalogs do not have.
 

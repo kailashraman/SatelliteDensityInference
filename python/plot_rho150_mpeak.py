@@ -38,7 +38,7 @@ Scope decisions flagged, not made silently:
   is consulted only inside `get_mask`/weight-floor logistics, which this
   script never calls, so `logMpeak` is identical regardless of the
   `mass_floor` argument passed at construction. Reproduced as-is.
-* Dead loads dropped: `mhalf_weights` (from `data/additional/weights_gc/`)
+* Dead loads dropped: `mhalf_weights` (from `data/halo_weights/`)
   and `surviving`/`mw_hosts_lmc`/`vmax_infall`/`rmax_infall`/`vmax`/`rmax`
   (from the h5 catalog) are read in the cell but never referenced again in
   it -- vestigial from an earlier cell version. Not replicated: they have no
@@ -292,7 +292,7 @@ def main():
     args = parser.parse_args()
 
     version = args.version
-    rho150_path = config.ADDITIONAL_DIR / f'{version}_rho150.npz'
+    rho150_path = config.SATGEN_CATALOGS_DIR / f'{version}_rho150.npz'
     logrho150 = np.log10(np.load(rho150_path)['rho150'])
 
     with ResampleMstar(version=version, mass_floor=8, cut='distance') as weights:

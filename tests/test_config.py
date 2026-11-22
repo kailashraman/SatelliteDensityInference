@@ -1,6 +1,7 @@
 """config.py resolves paths from the module, not from cwd."""
 
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -33,7 +34,7 @@ def test_h5_path_known_versions():
     for version in ['Diemer', 'Zhao', 'm2e12', 'Diemer_0p12', 'mass_floor_7',
                     'Symphony', 'MWest']:
         path = config.h5_path(version)
-        assert path.parent == config.ADDITIONAL_DIR
+        assert path.parent == config.SATGEN_CATALOGS_DIR
         assert path.suffix == '.h5'
 
 
@@ -119,3 +120,75 @@ def test_external_paths_are_overridable():
     lines = result.stdout.split()
     assert lines[0] == '/tmp/fake-trees'
     assert lines[1] == '/tmp/fake-dja'
+
+
+# data/additional/ was split into satgen_catalogs/, mhalf/, halo_weights/ and
+# halo_weights_published/. A reference to the old layout that survives in code
+# fails only when that path is actually hit -- or, for a writer that mkdirs its
+# output, never fails and silently recreates data/additional/. Paths into the
+# upstream SatGen_Dwarf tree legitimately keep the old names (that is where the
+# migrated files came from). Those are exempted by an explicit allow-list of
+# (file, stripped-line substring) pairs, so any new hit fails.
+_OLD_LAYOUT = re.compile(
+    r"""ADDITIONAL_DIR|data/additional|\badditional/|['"]additional['"]|weights_gc""")
+_STAMP = 'scripts/stamp_migrated.py'
+_OLD_LAYOUT_ALLOWED = [
+    # stamper docstring / comments naming the upstream SatGen_Dwarf tree
+    (_STAMP, 'python scripts/stamp_migrated.py weights_gc'),
+    (_STAMP, '`weights_gc/Diemer` and `mhalf/Diemer`).'),
+    (_STAMP, '`weights_gc`, `mhalf`, and `globals` cover the other three trees copied'),
+    (_STAMP, 'straight from upstream SatGen_Dwarf/data/additional without a stamp: the'),
+    (_STAMP, 'per-dwarf `weights_gc/<version>/<dwarf>.npz` (upstream name; local'),
+    (_STAMP, 'The `weights_gc` tree option handles config.WEIGHTS_DIR'),
+    (_STAMP, '"stray file from a sample change" story as `weights_gc`/`mhalf`, but this'),
+    (_STAMP, '`weights_gc`/`mhalf`) against `Jdata.dwarf_names`.'),
+    (_STAMP, '# Upstream SatGen_Dwarf weights_gc/**'),
+    (_STAMP, '# J-factor file to weight, so a fixed array-name tuple (as for weights_gc'),
+    (_STAMP, '`stochastic_arrays` is either a fixed tuple of array names (weights_gc,'),
+    # UPSTREAM / path expressions
+    (_STAMP, "migrated_from = str(UPSTREAM / 'data' / 'additional' / product.name)"),
+    (_STAMP, "config.WEIGHTS_DIR, UPSTREAM / 'data' / 'additional' / 'weights_gc',"),
+    (_STAMP, "config.MHALF_DIR, UPSTREAM / 'data' / 'additional' / 'mhalf',"),
+    # the weights_gc CLI tree token
+    (_STAMP, "parser.add_argument('tree', choices=['paper_Js', 'weights_gc', 'mhalf', 'globals',"),
+    (_STAMP, "elif args.tree == 'weights_gc':"),
+    # config comment naming the upstream directory
+    ('python/config.py', '# additional/ (satgen_catalogs, mhalf, halo_weights <- additional/weights_gc,'),
+    ('python/config.py', '# halo_weights_published <- additional/weights_gc_published).'),
+    # the manifest-builder tests deliberately name the retired directory
+    ('tests/test_build_provenance_manifest.py', "for d in RAW_DIRS + ['additional', 'somethingnew']:"),
+    ('tests/test_build_provenance_manifest.py', "@pytest.mark.parametrize('d', ['additional', 'somethingnew'])"),
+]
+
+
+def test_no_code_references_old_data_additional_layout():
+    tracked = subprocess.run(
+        ['git', 'ls-files', 'python', 'scripts', 'tests'],
+        cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout.split()
+    offenders = []
+    used = set()
+    for rel in tracked:
+        if not rel.endswith(('.py', '.sh')) or rel == 'tests/test_config.py':
+            continue
+        for lineno, line in enumerate(
+                (REPO_ROOT / rel).read_text().splitlines(), 1):
+            if not _OLD_LAYOUT.search(line):
+                continue
+            hits = [e for e in _OLD_LAYOUT_ALLOWED if rel == e[0] and e[1] in line]
+            if hits:
+                used.update(hits)
+                continue
+            offenders.append(f'{rel}:{lineno}: {line.strip()}')
+    assert not offenders, '\n'.join(offenders)
+    # An allow-list entry that no longer matches is a stale exemption waiting
+    # to excuse some future line; drop it.
+    stale = [e for e in _OLD_LAYOUT_ALLOWED if e not in used]
+    assert not stale, stale
+
+
+@pytest.mark.needs_data
+def test_data_dirs_exist_and_old_layout_is_gone():
+    for path in (config.SATGEN_CATALOGS_DIR, config.MHALF_DIR,
+                 config.WEIGHTS_DIR, config.WEIGHTS_PUBLISHED_DIR):
+        assert path.is_dir(), path
+    assert not (config.DATA_DIR / 'additional').exists()

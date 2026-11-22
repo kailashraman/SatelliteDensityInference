@@ -157,7 +157,7 @@ def test_stamp_allows_deliberately_unmigrated_version():
 def test_stamp_records_h5_fingerprint_when_catalog_present(tmp_path, monkeypatch):
     catalog = tmp_path / 'm12res8_10k_Diemer+scatter_sim.h5'
     catalog.write_bytes(b'x' * 128)
-    monkeypatch.setattr(provenance.config, 'ADDITIONAL_DIR', tmp_path)
+    monkeypatch.setattr(provenance.config, 'SATGEN_CATALOGS_DIR', tmp_path)
 
     record = provenance.stamp('python/fake.py', version='Diemer')
     assert record['h5_file'] == 'm12res8_10k_Diemer+scatter_sim.h5'
@@ -417,7 +417,7 @@ def test_convention_bearing_scripts_actually_stamp():
 
 @pytest.mark.needs_data
 @pytest.mark.parametrize('tree,glob_pattern', [
-    ('data/additional/weights_gc', '*/*.npz'),
+    ('data/halo_weights', '*/*.npz'),
     ('results/paper_quantiles/galactocentric', '*/*.npz'),
     # vcirc_scatter_300pc.py's per-dwarf rows: <version>/<shmr>/per_dwarf/
     # row_<idx>.csv, each with its own .prov.json sidecar rather than an

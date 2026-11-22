@@ -3,7 +3,8 @@
 
     python scripts/check_provenance.py [subdir ...]
 
-With no argument, walks all of results/. Exit status is 1 if anything is
+With no argument, walks all of results/ plus the four data/ halo-product
+dirs (satgen_catalogs/, mhalf/, halo_weights/, halo_weights_published/). Exit status is 1 if anything is
 unstamped, so this can gate a commit.
 """
 
@@ -37,10 +38,13 @@ def is_leftover_temp(path):
 
 
 def main(argv):
-    # data/additional is included by default: the h5 catalogs are the root of
-    # the DAG, and an unstamped one is invisible in every product below it.
+    # The derived-product dirs under data/ are included by default: the h5
+    # catalogs are the root of the DAG, and an unstamped one is invisible in
+    # every product below it.
     roots = ([Path(a) for a in argv[1:]]
-             or [config.RESULTS_DIR, config.ADDITIONAL_DIR])
+             or [config.RESULTS_DIR, config.SATGEN_CATALOGS_DIR,
+                 config.MHALF_DIR, config.WEIGHTS_DIR,
+                 config.WEIGHTS_PUBLISHED_DIR])
 
     unstamped = []
     by_version = defaultdict(list)

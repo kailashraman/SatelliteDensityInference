@@ -6,9 +6,9 @@
 #   sbatch --export=ALL,VERSION=Zhao,REDSHIFT=infall scripts/save_contours.sh
 #
 # Requires scripts/compute_weights.sh to have already completed for this
-# version (reads data/additional/weights_gc/<version>/<dwarf>.npz) and
+# version (reads data/halo_weights/<version>/<dwarf>.npz) and
 # scripts/compute_mhalf.sh's pass 2 for this version's rho150 file
-# (data/additional/<version>_rho150.npz):
+# (data/satgen_catalogs/<version>_rho150.npz):
 #
 #   sbatch --array=0-0 --export=ALL,VERSION=Diemer,MHALF_GLOBALS=1 scripts/compute_mhalf.sh
 #

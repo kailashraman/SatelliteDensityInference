@@ -95,7 +95,7 @@ alternative at each of the three sites it touches:
   therefore keeps the text annotation for both quantities but omits the
   axhspan/hatch for quantity='rho150'.
 
-config constants reused: config.ADDITIONAL_DIR, config.PAPER_QUANTILES_DIR,
+config constants reused: config.SATGEN_CATALOGS_DIR, config.PAPER_QUANTILES_DIR,
 config.PLOTS_DIR, config.h5_path. No new config constant was added.
 """
 import sys
@@ -322,8 +322,8 @@ def _shmr_fattahi_kim(version, mass_floor):
     order of magnitude larger. That is the measured cause of L_vs_Mpeak.pdf
     differing from published by 12.1% of pixels and L_vs_rho150.pdf by 6.8%.
     """
-    logMpeak200 = np.log10(np.load(config.ADDITIONAL_DIR / f'{version}_Mvir200.npz')['Mvir200'])
-    logrho150 = np.log10(np.load(config.ADDITIONAL_DIR / f'{version}_rho150.npz')['rho150'])
+    logMpeak200 = np.log10(np.load(config.SATGEN_CATALOGS_DIR / f'{version}_Mvir200.npz')['Mvir200'])
+    logrho150 = np.log10(np.load(config.SATGEN_CATALOGS_DIR / f'{version}_rho150.npz')['rho150'])
     with halo_weights.ResampleMstar(version=version, mass_floor=mass_floor) as weights:
         logMpeak = weights.logMpeak
         vpeak = weights.h5['tpeak_v_max'][()]

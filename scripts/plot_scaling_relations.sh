@@ -10,9 +10,9 @@
 # versions each figure reads -- Diemer (all four figures), mass_floor_7
 # (L_vs_Mpeak/L_vs_rho150's high-res band) and lvdb (lvdb_kdsa_rho150's LVDB
 # series). tidal_stripping additionally reads the splashback SatGen h5
-# directly (data/additional/m12res8_10k_Diemer+scatter_sim_all.h5, no
+# directly (data/satgen_catalogs/m12res8_10k_Diemer+scatter_sim_all.h5, no
 # separate build step) and L_vs_Mpeak/L_vs_rho150 read
-# data/additional/{Diemer,mass_floor_7}_{Mvir200,rho150}.npz
+# data/satgen_catalogs/{Diemer,mass_floor_7}_{Mvir200,rho150}.npz
 # (scripts/compute_mhalf.sh's pass 2).
 #
 # L_vs_Mpeak.pdf and L_vs_rho150.pdf draw their SatGen bands from unseeded

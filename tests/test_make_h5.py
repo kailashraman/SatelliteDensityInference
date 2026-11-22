@@ -241,7 +241,7 @@ def test_every_registered_catalog_is_present_and_fingerprinted():
     for version, filename in config.H5_REGISTRY.items():
         if filename is None:
             continue
-        path = config.ADDITIONAL_DIR / filename
+        path = config.SATGEN_CATALOGS_DIR / filename
         assert path.exists(), f'{version} registered but missing: {filename}'
         record = provenance.read(path)
         assert record is not None, f'{version} is unstamped'

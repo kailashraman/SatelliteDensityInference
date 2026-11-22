@@ -20,7 +20,7 @@
 #
 # This fix corrects the branch's *shape* -- it no longer raises NameError --
 # it does not make it runnable here: the local Symphony/MWest h5 files
-# (data/additional/{SymphonyMilkyWay,MWest}.h5, rebuilt by make_h5.py sims)
+# (data/satgen_catalogs/{SymphonyMilkyWay,MWest}.h5, rebuilt by make_h5.py sims)
 # carry no `logMhalf` group at all, so `weights.h5['logMhalf'][dwarf]` still
 # raises, now a KeyError instead of a NameError. See docs/migration-notes.md,
 # "SymphonyMilkyWay_old.h5 mixed two simulation suites": the rebuild dropped
@@ -132,7 +132,7 @@ mhalf_folder = config.MHALF_DIR
 
 provenance_inputs = [config.h5_path(version), weights_dir / (dwarf + '.npz')]
 if not version in ['Symphony', 'MWest']:
-    provenance_inputs.append(config.ADDITIONAL_DIR / f'{sim_version}_rho150.npz')
+    provenance_inputs.append(config.SATGEN_CATALOGS_DIR / f'{sim_version}_rho150.npz')
     provenance_inputs.append(mhalf_folder / sim_version / f'{dwarf}.npz')
 if has_J:
     provenance_inputs.append(J_factor_file)
@@ -156,7 +156,7 @@ with ResampleMstar(version = sim_version, mass_floor=8, cut='distance') as weigh
         Mvir = weights.h5['virial_mass'][()]
 
         concentration = Greens[:,1]
-        rho150 = np.load(config.ADDITIONAL_DIR / f'{sim_version}_rho150.npz')['rho150']
+        rho150 = np.load(config.SATGEN_CATALOGS_DIR / f'{sim_version}_rho150.npz')['rho150']
         Mhalf = 10**(np.load(mhalf_folder / sim_version / f'{dwarf}.npz')['logMhalf'])
         test_dwarf = obs.Dwarf(dwarf)
         dispersion = np.sqrt(const.G * Mhalf*u.Msun / (test_dwarf.rhalf.to(u.kpc) * 3)).to(u.km / u.s).value
@@ -190,9 +190,9 @@ if len(Mhalf) != len(weights_list[0]):
 
 print('Read sim data')
 
-# np.savez(f'../data/additional/{version}_rho30', rho30=rho30)
-# np.savez(f'../data/additional/{version}_M30', M30=M30)
-# np.savez(f'../data/additional/{version}_rho150', rho150=rho150)
+# np.savez(f'../data/satgen_catalogs/{version}_rho30', rho30=rho30)
+# np.savez(f'../data/satgen_catalogs/{version}_M30', M30=M30)
+# np.savez(f'../data/satgen_catalogs/{version}_rho150', rho150=rho150)
 
 if not version in ['Symphony', 'MWest']:
     # physical concentration parameter

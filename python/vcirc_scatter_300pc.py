@@ -5,7 +5,7 @@ Migrated from SatGen_Dwarf/python/vcirc_scatter_300pc.py. The three hardcoded
 absolute SatGen_Dwarf paths (BASE, MASSPROF, MVIR200) are replaced with
 config-derived paths (VCIRC_SCATTER_DIR/<version>,
 PAPER_MASSPROFILE_DIR/<version>/massProfile.npz,
-ADDITIONAL_DIR/<version>_Mvir200.npz). The numerics are otherwise unchanged:
+SATGEN_CATALOGS_DIR/<version>_Mvir200.npz). The numerics are otherwise unchanged:
 N_MC, NARROW_SIGMA, R_TARGET_KPC, SEED, the SHMR_NAMES list and its order (the
 task decomposition below depends on that order), the SHMR dispatch chain, and
 the CSV field order/format specifiers are all as upstream. N_MC, NARROW_SIGMA,
@@ -132,7 +132,7 @@ shmr_name = SHMR_NAMES[shmr_idx]
 OUT_DIR  = config.VCIRC_SCATTER_DIR / VERSION / shmr_name / 'per_dwarf'
 OUT_PATH = OUT_DIR / f'row_{dwarf_idx:03d}.csv'
 MASSPROF = config.PAPER_MASSPROFILE_DIR / VERSION / 'massProfile.npz'
-MVIR200  = config.ADDITIONAL_DIR / f'{VERSION}_Mvir200.npz'
+MVIR200  = config.SATGEN_CATALOGS_DIR / f'{VERSION}_Mvir200.npz'
 
 os.makedirs(OUT_DIR, exist_ok=True)
 

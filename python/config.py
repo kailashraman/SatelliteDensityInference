@@ -35,11 +35,11 @@ DATA_DIR = REPO_ROOT / 'data'
 #
 # SCOPE, and it is narrower than it looks: this redirects products under
 # RESULTS_DIR ONLY. compute_weights.py and compute_mhalf.py write under
-# ADDITIONAL_DIR (data/additional/{weights_gc,mhalf}), which this does NOT
-# move -- and those are the products that cannot be recovered if overwritten,
-# since mstar_weights/joint_weights are unseeded single realizations. Before a
-# parity rerun of either stage, copy those subtrees by hand; the override will
-# not protect them.
+# WEIGHTS_DIR / MHALF_DIR (data/{halo_weights,mhalf}), which this does NOT
+# move. A parity rerun of either stage therefore overwrites the very baseline
+# it is checked against; copy those subtrees by hand first, the override will
+# not protect them. (The unrecoverable unseeded realization lives in
+# WEIGHTS_PUBLISHED_DIR, which no stage writes.)
 #
 # Empty and relative values are rejected rather than accepted: `export
 # SDI_RESULTS_DIR=` or `sbatch --export=ALL,SDI_RESULTS_DIR=` yields '', and
@@ -67,9 +67,15 @@ if _drafts_override is not None and not _drafts_override.strip():
 DRAFTS_DIR = (Path(_drafts_override).expanduser().resolve()
               if _drafts_override else REPO_ROOT / 'drafts_temp')
 
-# Derived-product subdirectories, named as in SatGen_Dwarf so migrated code
-# moves with minimal edits.
-ADDITIONAL_DIR = DATA_DIR / 'additional'
+# Halo-level products under data/, renamed from upstream SatGen_Dwarf's
+# additional/ (satgen_catalogs, mhalf, halo_weights <- additional/weights_gc,
+# halo_weights_published <- additional/weights_gc_published).
+SATGEN_CATALOGS_DIR = DATA_DIR / 'satgen_catalogs'
+WEIGHTS_DIR = DATA_DIR / 'halo_weights'
+WEIGHTS_PUBLISHED_DIR = DATA_DIR / 'halo_weights_published'
+MHALF_DIR = DATA_DIR / 'mhalf'
+# results/ products keep their SatGen_Dwarf names so migrated code moves with
+# minimal edits.
 PAPER_JS_DIR = RESULTS_DIR / 'paper_Js'
 PAPER_QUANTILES_DIR = RESULTS_DIR / 'paper_quantiles'
 PAPER_CONTOURS_DIR = RESULTS_DIR / 'paper_contours'
@@ -83,9 +89,6 @@ FERMI_REWEIGHTING_DIR = RESULTS_DIR / 'fermi_reweighting'
 FERMI_REWEIGHTING_UPDATE_DIR = RESULTS_DIR / 'fermi_reweighting_update'
 FERMI_EXPECTED_LIMITS_DIR = RESULTS_DIR / 'fermi_expected_limits'
 VCIRC_SCATTER_DIR = RESULTS_DIR / 'vcirc_scatter_300pc'
-
-WEIGHTS_DIR = ADDITIONAL_DIR / 'weights_gc'
-MHALF_DIR = ADDITIONAL_DIR / 'mhalf'
 
 # Per-host reductions of the Symphony and Milky-Way-est N-body suites, used by
 # multipanel_systematics.pdf and the distance/mass number functions. Upstream
@@ -138,7 +141,7 @@ TEXLIVE_BIN = os.environ.get(
 # cosmology. Mixing versions corrupts results silently, which is why every
 # derived product records the version it was built from (see provenance.py).
 #
-# Values are filenames under ADDITIONAL_DIR. Entries mapped to None are known
+# Values are filenames under SATGEN_CATALOGS_DIR. Entries mapped to None are known
 # to the registry but were deliberately not migrated -- h5_path() raises a
 # message saying so, rather than failing later with a confusing FileNotFound.
 # --------------------------------------------------------------------------
@@ -222,4 +225,4 @@ def h5_path(version, resolve_alias=True):
         raise KeyError(
             f'SatGen version {key!r} is not usable in this repository: '
             f'{NOT_MIGRATED.get(key, "no reason recorded")}')
-    return ADDITIONAL_DIR / filename
+    return SATGEN_CATALOGS_DIR / filename

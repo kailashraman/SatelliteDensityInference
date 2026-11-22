@@ -5,13 +5,13 @@
 # *** Two passes, and they are NOT interchangeable. ***
 #
 # Pass 1 -- array, one task per dwarf, writes ONLY the per-dwarf product:
-#     data/additional/mhalf/<version>/<dwarf>.npz
+#     data/mhalf/<version>/<dwarf>.npz
 #
 #   sbatch scripts/compute_mhalf.sh                        # Diemer
 #   sbatch --export=ALL,VERSION=Zhao scripts/compute_mhalf.sh
 #
 # Pass 2 -- a SINGLE task, writes ONLY the four catalog-global products:
-#     data/additional/<version>_{rho30,M30,rho150,Mvir200}.npz
+#     data/satgen_catalogs/<version>_{rho30,M30,rho150,Mvir200}.npz
 #
 #   sbatch --array=0-0 --export=ALL,VERSION=Diemer,MHALF_GLOBALS=1 scripts/compute_mhalf.sh
 #

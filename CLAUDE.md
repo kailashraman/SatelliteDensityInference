@@ -101,7 +101,7 @@ Plots and reproduction code for a two-part paper series (Raman, Folsom, Kaplingh
 **Everything in the papers reproduces from this repo alone, with one exception: generation of the SatGen trees and satellite catalogs**, which live under `config.TREES_DIR` (`TREES_*`, `SAT_*`, one per cosmology/resolution variant; overridable via `SDI_TREES_DIR`) and are fixed upstream input. Everything downstream — J-factors, reweighting, quantiles, contours, Jeans posteriors, Fermi recasting, figures — belongs here.
 
 - **Full reproduction is infeasible as a test** (SLURM array over ~10⁵–10⁶ halos per dwarf). Verify at the level one task or a cached intermediate supports, and say which level you reached.
-- **Cache intermediates, not just figures.** Every figure regenerates from an `.npz`/`.h5` via a script that lives here, and each intermediate records its SatGen variant, catalog snapshot, and producing script — silent version mixing is invisible in the figures and is the worst failure mode here.
+- **Cache intermediates, not just figures.** Every figure regenerates from an `.npz`/`.h5` via a script that lives here, and each intermediate (under `results/`, or the halo-level products under `data/`, see "Datasets are self-contained") records its SatGen variant, catalog snapshot, and producing script — silent version mixing is invisible in the figures and is the worst failure mode here.
 - Migrating a figure from `SatGen_Dwarf` means porting the *code path*, not the PDF.
 - The Jeans-side figures depend on `../DwarfJeansAnalysis`, which is itself a tracked, reproducible repo — so the chain stays intact without duplicating its pipeline here. Record which of its `results/` a figure consumed.
 
@@ -120,7 +120,7 @@ This section is the **where things go and why** — the equivalent of an `ARCHIT
 ```
 python/       computation source code — importable modules + analysis entry points
 scripts/      run harness — SLURM launchers and plot-production drivers
-data/         all input datasets, self-contained (see below)
+data/         all input datasets and SatGen halo catalogs/weights, self-contained (see below)
 results/      derived intermediates (.npz/.h5), one subdirectory per product
 plots/        final paper figures, one subdirectory per figure family
 jupyter/      exploration only
@@ -145,7 +145,16 @@ The split is **local, not committed**: data lives in the working tree so the rep
 
 `data/` holds observational and literature inputs — dwarf catalogs, stellar kinematics, published limit curves, SHMR tables — one subdirectory per source. Small text inputs are committed; they are the provenance-critical layer, where a silent catalog swap changes every downstream number.
 
-`results/` holds derived intermediates, gitignored. Each product records the SatGen variant, input catalog snapshot, and producing script, and rebuilds from `data/` plus the trees via a script in `scripts/`.
+`data/` also holds the halo-level products built from the trees, because they are the pipeline's entry point when the trees are not available:
+
+- `satgen_catalogs/`: per-version `.h5` halo catalogs (`make_h5.py`) and the per-halo `<version>_{rho30,M30,rho150,Mvir200}.npz` arrays beside them (`compute_mhalf.py --globals`).
+- `mhalf/<version>/`: per-dwarf half-light masses (`compute_mhalf.py`).
+- `halo_weights/<version>/`: per-dwarf conditioning weights (`compute_weights.py`, seeded).
+- `halo_weights_published/<version>/`: the weights migrated from `SatGen_Dwarf`. Their SHMR weights are a single draw from an unseeded RNG that cannot be reproduced, so this is the only way back to the published SHMR numbers. Nothing regenerates it.
+
+`SDI_RESULTS_DIR` does not redirect these writers. Back up the affected subtree by hand before rerunning any of them for a parity check.
+
+`results/` holds the other derived intermediates (the halo products above live under `data/`), gitignored. Each product records the SatGen variant, input catalog snapshot, and producing script, and rebuilds from `data/` plus the trees via a script in `scripts/`.
 
 ## Things that will bite you
 

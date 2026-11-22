@@ -116,7 +116,7 @@ That branch read `sats['logMhalf'][dwarf][()]`, and `sats` is defined nowhere in
 the module or in anything it star-imports — a `NameError` that made the branch
 unrunnable. Ported as the open h5 handle's `logMhalf` group, matching
 `halo_weights.from_logMhalf`. This corrects the branch's *shape*, not its
-runnability: the rebuilt `data/additional/{SymphonyMilkyWay,MWest}.h5` carry no
+runnability: the rebuilt `data/satgen_catalogs/{SymphonyMilkyWay,MWest}.h5` carry no
 `logMhalf` group (see below), so it now raises `KeyError` instead. Any reference
 Symphony/MWest quantiles predate this line as written.
 
@@ -133,7 +133,7 @@ forwarding the argument.
 
 ### Ursa Major III orphan products removed; its catalog code is live and kept
 
-`weights_gc/Diemer/Ursa Major III.npz` and `mhalf/Diemer/Ursa Major III.npz` were
+`halo_weights/Diemer/Ursa Major III.npz` and `mhalf/Diemer/Ursa Major III.npz` were
 orphans: the name is commented out of `dwarf_names`, so no task in `--array=0-42`
 maps to it. Removed, with the dead commented UMa III lines in `Jdata.py`.
 **Kept, and must stay:** the `gc_ambiguous` table load, the `uma3_row` /
@@ -297,12 +297,13 @@ Confirmed by rerunning `compute_weights.py 0 Diemer` against real data:
 `mhalf_weights`, distributional at a quoted tolerance for the rest. A parity
 claim covering the whole file is an overclaim.
 
-**The `weights_gc/` tree carried here is a local regeneration, not the reference
+**The `halo_weights/` tree carried here is a local regeneration, not the reference
 bytes.** Every sidecar under it records `migrated_from: null` and
 `mstar_evolution: per_halo_tidal`, so the tree is reproducible by rerunning
 `compute_weights.py` at the same (version, dwarf) — but it is *not* the
-realization behind the reference SHMR numbers, and that realization is not
-preserved anywhere in this repository. Any value drawn from `mstar_weights` or
+realization behind the reference SHMR numbers. That realization survives only
+as the migrated copy in `data/halo_weights_published/`, which no stage writes
+and none can regenerate. Any value drawn from `mstar_weights` or
 `joint_weights` is this repository's realization.
 
 The contour stage inherits
@@ -501,7 +502,7 @@ Four product trees were deleted after being copied:
 
 | removed | reason |
 |---|---|
-| `weights_gc/{Symphony,MWest}` | keyed to the contaminated 63-host catalog; not regenerable; no figure consumes them |
+| `halo_weights/{Symphony,MWest}` | keyed to the contaminated 63-host catalog; not regenerable; no figure consumes them |
 | `paper_quantiles/{Symphony,MWest}` | descend from those weights |
 | `paper_quantiles/mcdaniel` | its 17 GB of weights were deliberately excluded, leaving no in-repo producer |
 | `paper_quantiles/Geha` | same, and it reaches no figure (below) |
@@ -511,7 +512,7 @@ tree was taken wholesale while those versions' weights were excluded by scope,
 leaving derived products nothing here could rebuild. `fermi_reweighting.py`
 therefore excludes `mhalf_mcdaniel` from its default variant set and fails with a
 targeted message if it is requested explicitly, as
-`scripts/fermi_reweighting_update.sh` records. `weights_gc/` and
+`scripts/fermi_reweighting_update.sh` records. `halo_weights/` and
 `paper_quantiles/galactocentric/` now hold the same nine versions: `Diemer`,
 `Diemer_0p12`, `Zhao`, `lmc`, `lmc_50`, `lvdb`, `m2e12`, `mass_floor_7`,
 `mhalf_scatter`. `scripts/stamp_migrated.py` treats `Symphony`, `MWest`,

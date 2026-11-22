@@ -153,7 +153,7 @@ if dwarf in classicals:
 else:
     kde_bw = 0.05
 
-rho150_path = config.ADDITIONAL_DIR / f'{version}_rho150.npz'
+rho150_path = config.SATGEN_CATALOGS_DIR / f'{version}_rho150.npz'
 
 provenance_inputs = [config.h5_path(version), weights_path, rho150_path]
 provenance.assert_single_version(provenance_inputs, expected=version)

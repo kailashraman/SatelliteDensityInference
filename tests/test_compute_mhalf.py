@@ -27,7 +27,7 @@ h5py = pytest.importorskip('h5py')
 
 pytestmark = pytest.mark.needs_satgen
 
-# Literal rows from data/additional/m12res8_10k_Diemer+scatter_sim.h5
+# Literal rows from data/satgen_catalogs/m12res8_10k_Diemer+scatter_sim.h5
 # (Green_params: [Minit, c, Delta, z_infall]; virial_mass in Msun), copied in
 # so this fixture does not depend on that (gitignored, multi-GB) file existing.
 GREEN_PARAMS = np.array([
@@ -58,26 +58,25 @@ EXPECTED_GLOBALS = {
 @pytest.fixture
 def fixture_catalog(tmp_path, monkeypatch):
     """Register a throwaway SatGen version backed by the tiny catalog above,
-    with ADDITIONAL_DIR/MHALF_DIR sandboxed to tmp_path so nothing here can
+    with SATGEN_CATALOGS_DIR/MHALF_DIR sandboxed to tmp_path so nothing here can
     write into the real data/ tree.
 
-    config.WEIGHTS_DIR (like config.MHALF_DIR) is derived from
-    config.ADDITIONAL_DIR at import time, not re-derived on each access --
-    patching ADDITIONAL_DIR alone does NOT sandbox it. compute_mhalf.py never
-    reads WEIGHTS_DIR, so it is left unpatched here; any future test in this
-    file that exercises a code path touching WEIGHTS_DIR must patch it
-    explicitly (`monkeypatch.setattr(config, 'WEIGHTS_DIR', ...)`) or it will
+    SATGEN_CATALOGS_DIR, MHALF_DIR and WEIGHTS_DIR are independent constants
+    (each derived from config.DATA_DIR), so patching one does NOT sandbox the
+    others. compute_mhalf.py never reads WEIGHTS_DIR, so it is left unpatched
+    here; any future test in this file that exercises a code path touching
+    WEIGHTS_DIR must patch it explicitly (`monkeypatch.setattr(config, 'WEIGHTS_DIR', ...)`) or it will
     write into the real data/ tree.
     """
     version = 'sdi_test_mhalf_fixture'
-    additional_dir = tmp_path / 'additional'
-    additional_dir.mkdir()
+    catalogs_dir = tmp_path / 'satgen_catalogs'
+    catalogs_dir.mkdir()
     filename = 'fixture.h5'
-    with h5py.File(additional_dir / filename, 'w') as f:
+    with h5py.File(catalogs_dir / filename, 'w') as f:
         f.create_dataset('Green_params', data=GREEN_PARAMS)
         f.create_dataset('virial_mass', data=VIRIAL_MASS)
 
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', additional_dir)
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', catalogs_dir)
     monkeypatch.setattr(config, 'MHALF_DIR', tmp_path / 'mhalf')
     monkeypatch.setitem(config.H5_REGISTRY, version, filename)
     return version
@@ -113,7 +112,7 @@ def test_per_dwarf_mode_writes_exactly_one_file_and_no_globals(fixture_catalog):
         f'expected exactly the per-dwarf product, got {written}'
 
     for name in GLOBAL_NAMES:
-        assert not (config.ADDITIONAL_DIR / f'{version}_{name}.npz').exists(), \
+        assert not (config.SATGEN_CATALOGS_DIR / f'{version}_{name}.npz').exists(), \
             f'per-dwarf mode wrote the global {name} file -- the race is back'
 
 
@@ -131,7 +130,7 @@ def test_two_concurrent_per_dwarf_tasks_neither_write_globals(fixture_catalog):
     assert (mhalf_dir / f'{dwarf1}.npz').exists()
 
     for name in GLOBAL_NAMES:
-        assert not (config.ADDITIONAL_DIR / f'{version}_{name}.npz').exists()
+        assert not (config.SATGEN_CATALOGS_DIR / f'{version}_{name}.npz').exists()
 
 
 def test_per_dwarf_output_holds_only_the_dwarf_quantities(fixture_catalog):
@@ -164,7 +163,7 @@ def test_globals_mode_writes_exactly_the_four_files(fixture_catalog):
     _run_mhalf('--globals', version)
 
     for name in GLOBAL_NAMES:
-        path = config.ADDITIONAL_DIR / f'{version}_{name}.npz'
+        path = config.SATGEN_CATALOGS_DIR / f'{version}_{name}.npz'
         assert path.exists()
         with np.load(path) as data:
             keys = {k for k in data.files if k != provenance.PROVENANCE_KEY}
@@ -184,7 +183,7 @@ def test_globals_values_match_expected(fixture_catalog):
     _run_mhalf('--globals', version)
 
     for name in GLOBAL_NAMES:
-        with np.load(config.ADDITIONAL_DIR / f'{version}_{name}.npz') as data:
+        with np.load(config.SATGEN_CATALOGS_DIR / f'{version}_{name}.npz') as data:
             np.testing.assert_allclose(data[name], EXPECTED_GLOBALS[name], rtol=1e-6)
 
 
@@ -193,13 +192,13 @@ def test_matches_migrated_products_on_real_catalog_slice(tmp_path, monkeypatch):
     """Runs compute_mhalf.py itself -- both `--globals` and per-dwarf mode --
     against a fixture h5 built from the first N rows of the real Diemer
     catalog, and checks its own output against the migrated
-    data/additional/{Diemer_*,mhalf/Diemer/<dwarf>} products.
+    data/{satgen_catalogs/Diemer_*,mhalf/Diemer/<dwarf>} products.
 
     Rebuilt to route through the actual entry point rather than
     re-implementing the compute loop inline: a re-implementation that drifts
     from the script (a radius or constant slip) would leave that version of
     this test green, since it would only be checking itself. Registered via
-    H5_REGISTRY/ADDITIONAL_DIR/MHALF_DIR monkeypatching (the same pattern as
+    H5_REGISTRY/SATGEN_CATALOGS_DIR/MHALF_DIR monkeypatching (the same pattern as
     `fixture_catalog` above), so the script reads/writes entirely inside
     `tmp_path` and never touches the real data/ tree.
 
@@ -211,7 +210,7 @@ def test_matches_migrated_products_on_real_catalog_slice(tmp_path, monkeypatch):
     # Captured before monkeypatching config below, so the comparison reads
     # the real migrated products regardless of where the script under test
     # is redirected to write.
-    real_additional_dir = config.ADDITIONAL_DIR
+    real_catalogs_dir = config.SATGEN_CATALOGS_DIR
     real_mhalf_dir = config.MHALF_DIR
 
     n = 200
@@ -222,14 +221,14 @@ def test_matches_migrated_products_on_real_catalog_slice(tmp_path, monkeypatch):
         virial_mass = f['virial_mass'][:n]
 
     version = 'sdi_test_parity_slice'
-    additional_dir = tmp_path / 'additional'
-    additional_dir.mkdir()
+    catalogs_dir = tmp_path / 'satgen_catalogs'
+    catalogs_dir.mkdir()
     filename = 'fixture_slice.h5'
-    with h5py.File(additional_dir / filename, 'w') as f:
+    with h5py.File(catalogs_dir / filename, 'w') as f:
         f.create_dataset('Green_params', data=Greens)
         f.create_dataset('virial_mass', data=virial_mass)
 
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', additional_dir)
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', catalogs_dir)
     monkeypatch.setattr(config, 'MHALF_DIR', tmp_path / 'mhalf')
     monkeypatch.setitem(config.H5_REGISTRY, version, filename)
 
@@ -237,8 +236,8 @@ def test_matches_migrated_products_on_real_catalog_slice(tmp_path, monkeypatch):
     _run_mhalf(str(dwarf_idx), version)
 
     for name in GLOBAL_NAMES:
-        with np.load(additional_dir / f'{version}_{name}.npz') as computed, \
-             np.load(real_additional_dir / f'Diemer_{name}.npz') as migrated:
+        with np.load(catalogs_dir / f'{version}_{name}.npz') as computed, \
+             np.load(real_catalogs_dir / f'Diemer_{name}.npz') as migrated:
             assert np.array_equal(computed[name], migrated[name][:n]), \
                 f'Diemer_{name}.npz no longer matches compute_mhalf.py --globals'
 

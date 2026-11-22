@@ -8,9 +8,9 @@
 #   sbatch --export=ALL,VERSION=Zhao scripts/plot_number_functions.sh
 #
 # Requires, for the version being rendered: the SatGen h5 (config.h5_path),
-# its rho150 file (data/additional/<version>_rho150.npz, from
+# its rho150 file (data/satgen_catalogs/<version>_rho150.npz, from
 # scripts/compute_mhalf.sh's pass 2), and scripts/compute_weights.sh's output
-# (data/additional/weights_gc/<version>/<dwarf>.npz) for inference_rho150.
+# (data/halo_weights/<version>/<dwarf>.npz) for inference_rho150.
 # jfactors_all additionally requires results/paper_Js/halo_position/<version>/
 # (scripts/Jhalopos.sh + concat_Js.sh) and results/paper_Js/<version>/<dwarf>/
 # (scripts/Jdwarf.sh + concat_Js.sh), and refuses any version but Diemer --

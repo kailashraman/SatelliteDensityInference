@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build a SatGen halo catalog under data/additional/.
+# Build a SatGen halo catalog under data/satgen_catalogs/.
 #
 #   scripts/make_h5.sh build Diemer
 #   scripts/make_h5.sh build splashback --unmasked
@@ -12,7 +12,7 @@
 # NOTE: `build <version>` alone does not reproduce a published catalog for the
 # versions that carry a logMhalf group. That group is added by
 #   scripts/make_h5.sh augment-mhalf <version>
-# which depends on data/additional/mhalf/<version>/ from compute_mhalf.py. The
+# which depends on data/mhalf/<version>/ from compute_mhalf.py. The
 # full order is: build -> compute_mhalf -> augment-mhalf.
 #
 # This script does not submit to SLURM. Submitting jobs is the user's call.

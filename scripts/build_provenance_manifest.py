@@ -44,10 +44,12 @@ running this script, not designed in advance:
      stamps by design (its docstring: "every product THIS REPOSITORY WRITES
      carries a stamp" -- these are read, not written). Flagging committed
      source data as a provenance gap is noise that would bury the real one.
-     So: an input under DATA_DIR but NOT under ADDITIONAL_DIR (the
-     derived-product subtree living under data/, e.g. the SatGen h5 copies
-     and per-dwarf weights) is "not applicable"; a null-provenance input
-     anywhere else (results/, additional/) is "unknown" -- a real gap.
+     So: an input under one of the raw-input subdirectories of DATA_DIR
+     listed in RAW_DATA_SUBDIRS (an explicit allow-list) is "not applicable";
+     a null-provenance input anywhere else (results/, the derived-product
+     subtrees satgen_catalogs/, mhalf/, halo_weights/, halo_weights_published/,
+     or any directory not on the list) is "unknown" -- a real gap. A new raw
+     source must be added to RAW_DATA_SUBDIRS, else it is reported (fail-loud).
      Paths recorded under a former root of this repository (it moved under
      satgen_inference_project/) are re-anchored onto the current data/ tree
      first -- only when the input lies under `<root>/data/`, where <root> is
@@ -159,10 +161,18 @@ def _rebase_onto_repo(path, recorded_root, size=None):
     return candidate
 
 
+# Raw observational/literature input subdirectories of data/ -- never stamped
+# by provenance.py by design. This is an allow-list: a new raw source added
+# under data/ must be added here or its inputs are reported as provenance gaps
+# (fail-loud by design). Derived products under data/ (satgen_catalogs/, mhalf/,
+# halo_weights/, halo_weights_published/) and any unknown directory are gaps.
+RAW_DATA_SUBDIRS = ('literature', 'kinematics', 'lvdb', 'symphony',
+                    'fermi_legacy', 'fermi_legacy_update')
+
+
 def _is_raw_source_data(path_str, recorded_root=None, size=None):
-    """True for committed source data under data/ (excluding data/additional/,
-    the derived-product subtree that happens to live under data/) -- never
-    stamped by provenance.py by design. See module docstring, rule 2.
+    """True for committed source data under one of RAW_DATA_SUBDIRS of data/
+    -- never stamped by provenance.py by design. See module docstring, rule 2.
 
     `recorded_root` and `size` (the input record's byte size) enable
     re-anchoring an input recorded under a former root; see
@@ -178,9 +188,7 @@ def _is_raw_source_data(path_str, recorded_root=None, size=None):
                                  recorded_root, size).resolve()
     except (ValueError, OSError):
         return False
-    return (config.DATA_DIR in path.parents
-            and config.ADDITIONAL_DIR not in path.parents
-            and path != config.ADDITIONAL_DIR)
+    return any(config.DATA_DIR / d in path.parents for d in RAW_DATA_SUBDIRS)
 
 
 def build_manifest():

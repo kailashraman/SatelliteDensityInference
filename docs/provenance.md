@@ -1,6 +1,6 @@
 # Provenance
 
-Every derived product in `results/`, every `.h5` in `data/additional/`, and every
+Every derived product in `results/`, every `.h5` in `data/satgen_catalogs/`, and every
 figure in `plots/` carries a record of what produced it. This exists because the
 worst failure mode in this pipeline is invisible: a figure combining `Diemer`
 quantiles with `Zhao` weights looks entirely normal, and nothing in the arrays

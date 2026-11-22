@@ -26,6 +26,8 @@ bpm = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(bpm)
 
 OLD_ROOT = Path('/nonexistent/old_root/SatelliteDensityInference')
+DERIVED_DIRS = ['satgen_catalogs', 'mhalf', 'halo_weights', 'halo_weights_published']
+RAW_DIRS = list(bpm.RAW_DATA_SUBDIRS)
 
 
 @pytest.fixture
@@ -35,11 +37,18 @@ def fake_repo(tmp_path, monkeypatch):
     data = root / 'data'
     (data / 'literature').mkdir(parents=True)
     (data / 'literature' / 'limit.csv').write_text('x\n')
-    (data / 'additional').mkdir()
-    (data / 'additional' / 'catalog.h5').write_text('')
+    for d in DERIVED_DIRS:
+        (data / d).mkdir()
+        (data / d / 'product.npz').write_text('x\n')
+    for d in RAW_DIRS + ['additional', 'somethingnew']:
+        (data / d).mkdir(exist_ok=True)
+        (data / d / 'product.npz').write_text('x\n')
     monkeypatch.setattr(config, 'REPO_ROOT', root)
     monkeypatch.setattr(config, 'DATA_DIR', data)
-    monkeypatch.setattr(config, 'ADDITIONAL_DIR', data / 'additional')
+    monkeypatch.setattr(config, 'SATGEN_CATALOGS_DIR', data / 'satgen_catalogs')
+    monkeypatch.setattr(config, 'MHALF_DIR', data / 'mhalf')
+    monkeypatch.setattr(config, 'WEIGHTS_DIR', data / 'halo_weights')
+    monkeypatch.setattr(config, 'WEIGHTS_PUBLISHED_DIR', data / 'halo_weights_published')
     return root
 
 
@@ -59,9 +68,29 @@ def test_current_root_data_input_is_raw_source_data(fake_repo):
     assert raw(fake_repo / 'data/literature/limit.csv', root=None)
 
 
-def test_old_root_additional_input_is_still_a_gap(fake_repo):
-    # data/additional/ holds derived products, which must carry a stamp.
-    assert not raw(OLD_ROOT / 'data/additional/catalog.h5')
+@pytest.mark.parametrize('derived', DERIVED_DIRS)
+def test_old_root_derived_input_is_still_a_gap(fake_repo, derived):
+    # These data/ subtrees hold derived products, which must carry a stamp.
+    assert not raw(OLD_ROOT / 'data' / derived / 'product.npz')
+
+
+@pytest.mark.parametrize('derived', DERIVED_DIRS)
+def test_current_root_derived_input_is_not_raw(fake_repo, derived):
+    assert not raw(fake_repo / 'data' / derived / 'product.npz', root=fake_repo)
+    assert not raw(fake_repo / 'data' / derived / 'product.npz', root=None)
+
+
+@pytest.mark.parametrize('rawdir', RAW_DIRS)
+def test_allow_listed_raw_dir_input_is_raw(fake_repo, rawdir):
+    assert raw(fake_repo / 'data' / rawdir / 'product.npz', root=fake_repo)
+    assert raw(OLD_ROOT / 'data' / rawdir / 'product.npz')
+
+
+@pytest.mark.parametrize('d', ['additional', 'somethingnew'])
+def test_retired_or_unknown_data_dir_is_a_gap(fake_repo, d):
+    """Allow-list, fail-loud: anything not listed is reported, not vouched for."""
+    assert not raw(fake_repo / 'data' / d / 'product.npz', root=fake_repo)
+    assert not raw(OLD_ROOT / 'data' / d / 'product.npz')
 
 
 def test_old_root_missing_file_is_not_vouched_for(fake_repo):
@@ -94,7 +123,7 @@ def test_without_recorded_root_old_paths_are_not_rebased(fake_repo):
     '/nonexistent/DwarfJeansAnalysis/results/data/literature/limit.csv',  # sibling repo
     '/some/other/SatelliteDensityInference/data/literature/limit.csv',   # same-name clone elsewhere
     '/anywhere/data/literature/limit.csv',                               # no repo root before data/
-    f'{OLD_ROOT}/data/literature/../additional/catalog.h5',              # .. into additional/
+    f'{OLD_ROOT}/data/literature/../satgen_catalogs/product.npz',        # .. into satgen_catalogs/
     f'{OLD_ROOT}/data/../results/x.npz',                                 # .. out of data/
 ])
 def test_foreign_data_paths_are_not_rebased(fake_repo, path):

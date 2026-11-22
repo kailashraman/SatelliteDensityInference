@@ -21,8 +21,8 @@
 # mhalf_weights does not draw from the RNG at all and is unaffected.
 #
 # This makes *future* runs of this script reproducible; it cannot recover a
-# draw made before the seed existed. Products in weights_gc/ that predate this
-# change are a different, unrecoverable realization of mstar_weights and
+# draw made before the seed existed. Products in halo_weights_published/ (the
+# pre-seed draws migrated from SatGen_Dwarf) are a different, unrecoverable realization of mstar_weights and
 # joint_weights -- see scripts/stamp_migrated.py's STOCHASTIC_CAVEAT, mirrored
 # below in this script's own provenance record.
 #
@@ -127,7 +127,7 @@ else:
 
 provenance_inputs = [config.h5_path(version)]
 if not version in ['Symphony', 'MWest']:
-    provenance_inputs.append(config.ADDITIONAL_DIR / f'{sim_version}_Mvir200.npz')
+    provenance_inputs.append(config.SATGEN_CATALOGS_DIR / f'{sim_version}_Mvir200.npz')
     provenance_inputs.append(config.MHALF_DIR / sim_version / f'{dwarf}.npz')
 # Checked immediately after the version dispatch, before any heavy computation
 # or RNG draw -- a bad input is otherwise found only after full walltime (and,
@@ -138,7 +138,7 @@ provenance.assert_single_version(provenance_inputs, expected=version)
 np.random.seed(zlib.crc32(f'{version}:{dsph_idx}'.encode()) & 0xffffffff)
 
 if not version in ['Symphony', 'MWest']:
-    logMpeak200 = np.log10(np.load(config.ADDITIONAL_DIR / f'{sim_version}_Mvir200.npz')['Mvir200'])
+    logMpeak200 = np.log10(np.load(config.SATGEN_CATALOGS_DIR / f'{sim_version}_Mvir200.npz')['Mvir200'])
     with ResampleMstar(version = sim_version, mass_floor=mass_floor) as weights:
         logMpeak, z = weights.logMpeak, weights.z_in
         vpeak = weights.h5['tpeak_v_max'][()]
