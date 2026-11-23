@@ -1206,3 +1206,46 @@ than one producer; seeds that leave out the stage, variant or tree without a
 stated reason; a "same seed convention as X" comment offered as a reason two
 streams can be compared. Require the stage in the seed key, and a docstring
 that says which sharing (if any) is deliberate.
+
+## Deposit contents taken from a directory listing instead of the manifest
+
+**Where:** packaging, upload and publish steps for data releases that ship
+"everything in the output directory", and the descriptive text beside them
+(README, record description) that names files.
+
+**What goes wrong:** a partial, stale or mixed build uploads cleanly because no
+step reconciles the shipped file set with what the manifest declares. An
+interrupted build leaves truncated archives beside the previous build's
+valid-looking manifest; a renamed or old archive stays in a resumed draft; a
+description promises a file no step generates. The deposit looks finished and
+the gap shows up only when a reader fetches it, after the DOI is minted.
+
+**What to flag:** an upload loop over `iterdir()`/`glob` with no check against
+the manifest's file list, sizes and checksums; a resume path that never lists
+remote files absent from the local set; descriptive text naming a file that no
+code writes; a manifest not removed or atomically replaced at the start of a
+rebuild; a commit or timestamp stamp rewritten over archives that run did not
+rebuild; coverage checks that match by path without comparing size or hash to
+what the manifest recorded.
+
+## Overlaid layers built under different sample selections
+
+**Where:** figures and products that overlay a prior (unweighted) layer and
+posterior (weighted) layers drawn from the same population, where the sample
+selection (distance band, mass floor, host cuts such as an LMC-analog
+requirement) is a function argument or default rather than a recorded field.
+
+**What goes wrong:** one layer is built under a different selection from the
+others, through a temporary edit, a different default, or a flag set on only
+one call. The figure still looks plausible, the layers share axes and bins,
+and the caption describes one selection while one layer shows another. A
+rerun with today's defaults then fails to reproduce one layer only, which
+looks like a porting bug in that layer.
+
+**What to flag:** selection flags (`lmc_selection`, mass floors, cuts) that
+are not recorded in the product's provenance; prior and posterior layers of
+one figure produced by separate calls with independently defaulted selection
+arguments; a stored product whose sample size (recoverable from histogram
+counts) differs from what the current mask gives. Require the selection to be
+an explicit, stamped argument, and require parity checks to cover the
+unweighted layer as well as the weighted ones.
