@@ -1296,3 +1296,21 @@ release cannot be rebuilt from the commit it names.
 **What to flag:** a dirty check that excludes untracked files while the build
 reads its definition from the repository. Require the spec, docs and packer
 paths to be tracked and unmodified, or the stamp to record that they are not.
+
+## Selection described by its intent instead of its rule
+
+**Where:** docstrings, deposit READMEs and paper-facing notes that summarise a
+sample cut (a host selection, "remove the companion", "exclude the analog").
+
+**What goes wrong:** the prose says what the cut was meant to do, while the
+code does something close to it but different, such as removing the heaviest
+object in each group instead of the object that met the criterion, or treating
+"the" match as unique when a group can have several or none. Parity tests pass
+because code and stored products agree, so the wrong description reaches the
+methods text unchecked.
+
+**What to flag:** a selection described with a definite article for an object
+the code picks by a different criterion; any prose summary of a mask that does
+not restate its literal rule (thresholds, the property ranked, what happens to
+groups with zero or several matches). Ask for a count of groups where the
+intent and the rule disagree.
