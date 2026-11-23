@@ -1331,7 +1331,9 @@ missing some of its fields.
 covered by git, the tier's archives or an earlier stage's writes; recipe steps
 that name a launcher but not the versions or index set the figures consume; a
 per-version or per-object subset of a deposited input with no matching
-restricted run in the recipe.
+restricted run in the recipe; a restricted run ("only these objects have X")
+that does not name the figures reading the stage's products for the wider set,
+or the tier that carries them instead.
 
 ## Control-file read missing from a figure manifest
 
@@ -1346,3 +1348,31 @@ though the coverage check passes.
 **What to flag:** a `json.load`/`read_text()` in a figure driver whose path is
 not passed to the figure manifest; a sibling-repository path derived by
 walking `.parent` up from a data-directory override.
+
+## Documentation pointer to a place that does not hold the item
+
+**Where:** READMEs and tier specs that say "see the header / the docs / the
+last line for X".
+
+**What goes wrong:** an edit moves the pointer to a more general location that
+documents a neighbouring fact (array size) but not X (argument order, which
+differs per stage). Readers who skip the code transpose arguments, and nothing
+fails until a wrong run.
+
+**What to flag:** a pointer sentence with no check that the named location
+contains the item; per-stage facts that differ between stages (argument order,
+task-index meaning) described collectively.
+
+## Unchecked explanation for unresolvable recorded identifiers
+
+**Where:** deposit and provenance prose explaining why recorded commit hashes
+or paths do not resolve ("predate the public history", "from an older
+layout").
+
+**What goes wrong:** the stated cause is plausible but false (dates overlap; a
+history was rebuilt rather than truncated), and the count is wrong ("most"
+for nearly all).
+
+**What to flag:** any "most/all recorded X cannot be found because Y" without
+a tally behind it; require resolvable and unresolvable counts and the date
+range.
