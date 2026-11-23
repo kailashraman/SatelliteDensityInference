@@ -1376,3 +1376,20 @@ for nearly all).
 **What to flag:** any "most/all recorded X cannot be found because Y" without
 a tally behind it; require resolvable and unresolvable counts and the date
 range.
+
+## Figure manifest that does not record its invocation
+
+**Where:** figure drivers that build their provenance record without passing
+`argv` (or pass it from a `main(argv=None)` before argparse fills it), so the
+manifest stores `argv: null`.
+
+**What goes wrong:** the driver's defaults differ from what the launcher
+passes (`--fermi-version update`, `--version mass_floor_7`), and the
+manifest cannot say which ran. Rerunning from the manifest silently uses the
+defaults: it reads a different results tree, or fails on missing inputs, and
+a reproduction check built on the manifests tests the wrong invocation.
+
+**What to flag:** any figure manifest with `argv` null; a driver whose
+argparse default differs from its launcher's argument and that does not stamp
+the parsed value; reproduction tooling that falls back to an empty argument
+list when `argv` is missing.
