@@ -1249,3 +1249,22 @@ arguments; a stored product whose sample size (recoverable from histogram
 counts) differs from what the current mask gives. Require the selection to be
 an explicit, stamped argument, and require parity checks to cover the
 unweighted layer as well as the weighted ones.
+
+## Input-selecting mode flag that leaves the output path unchanged
+
+**Where:** stages that gain a flag choosing between alternative inputs (a
+weights draw, a data release, a prior) but keep writing to the same product
+tree.
+
+**What goes wrong:** the default and non-default modes overwrite each other's
+products in place. Only a provenance field tells them apart, and the
+aggregating consumers don't read it. A one-off run in the default mode, or a
+partial array rerun, silently mixes realizations inside a paper figure, and
+file counts, version guards and plots all look normal.
+
+**What to flag:** a new CLI mode that changes what is read but not where
+results are written; a default mode that differs from what the paper launcher
+passes while sharing its output tree; a provenance field added for the mode
+that no guard or figure driver checks; docstrings saying output paths are
+"the same either way". Require either per-mode output trees or a refusal to
+write one mode's products into the other's tree.
