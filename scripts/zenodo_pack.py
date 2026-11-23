@@ -25,10 +25,18 @@ Checks (always, also with --dry-run); any failure is a hard failure:
   - each such non-directory input's on-disk size equals the size recorded in
     the manifest, and each git-tracked input exists and is unmodified vs HEAD.
 
+The README bytes and DJA git state are read once, right after those checks. After
+the build (also with --only) the SDI/DJA git-state and build-file checks are
+re-run; if HEAD moved or anything became dirty the pack fails and removes the
+archives built in that run and the README, writing no MANIFEST.
+
 A build unlinks MANIFEST.json first, writes each archive to <name>.part and
 renames it on success, so an interrupted build never leaves a stale manifest
 next to new archives. With --only, the other archives' existing records
-(including their stamps) are kept.
+(including their stamps) are kept; this requires an existing MANIFEST.json, and
+each kept archive must exist in DIR with the recorded size (otherwise run a full
+pack). A kept archive built at an older commit is noted, not an error. No MANIFEST
+is written unless it has a record for every archive in the spec.
 
 Builds are deterministic (sorted members, normalized uid/gid/uname/mtime,
 gzip mtime=0), so a rebuild is byte-identical within one Python/zlib
@@ -45,7 +53,6 @@ import json
 import os
 import posixpath
 import re
-import shutil
 import subprocess
 import sys
 import tarfile
@@ -451,11 +458,15 @@ def git_state(path):
 
 
 def dirty_build_files(paths):
-    """Those of `paths` (the files that define the build) that are untracked,
-    modified or staged in their own checkout, or whose git state is unknown."""
+    """Those of `paths` (the files that define the build) that are untracked
+    (including gitignored), modified or staged in their own checkout, or whose
+    git state is unknown."""
     bad = []
     for p in map(Path, paths):
         try:
+            subprocess.run(['git', '-C', str(p.parent), 'ls-files', '--error-unmatch',
+                            '--', p.name],
+                           capture_output=True, text=True, check=True)
             d = subprocess.run(['git', '-C', str(p.parent), 'status', '--porcelain',
                                 '--', p.name],
                                capture_output=True, text=True, check=True).stdout.strip()
@@ -479,17 +490,30 @@ def file_digests(path):
     return sha.hexdigest(), md5.hexdigest()
 
 
+def changed_during_build(repo_root, dja_dir, spec_path, readme_path, sdi_state,
+                         dja_state):
+    """Re-run the start-of-run git and build-file checks after the build. A
+    message if the SDI HEAD moved, the SDI dirty state (including dirty
+    build-defining files) differs from what was stamped, or the DJA state
+    changed; else None."""
+    c, d = git_state(repo_root)
+    bad = dirty_build_files([spec_path, readme_path, METADATA_PATH,
+                             Path(__file__).resolve()])
+    if c is not None and bad:
+        d = True
+    if (c, d) != tuple(sdi_state):
+        return (f'SDI git state changed during the build (stamped {tuple(sdi_state)}, '
+                f'now {(c, d)}; build-defining files differing: {bad})')
+    if git_state(dja_dir) != tuple(dja_state):
+        return f'DJA git state changed during the build (stamped {tuple(dja_state)})'
+    return None
+
+
 def run(out_dir, spec_path=SPEC_PATH, repo_root=None, dja_dir=None, names=None,
         dry_run=False, only=None, allow_dirty=False, readme_path=README_PATH):
     repo_root = Path(repo_root or config.REPO_ROOT)
     dja_dir = Path(dja_dir or config.DJA_RESULTS_DIR)
     readme_path = Path(readme_path)
-    spec = load_spec(spec_path)
-    if only:
-        unknown = set(only) - {a['name'] for a in spec}
-        if unknown:
-            raise SystemExit(f'--only: unknown archive(s) {sorted(unknown)}')
-
     early = []
     if not readme_path.is_file():
         early.append(f'{README_NAME} not found at {readme_path} (written by hand; '
@@ -514,6 +538,17 @@ def run(out_dir, spec_path=SPEC_PATH, repo_root=None, dja_dir=None, names=None,
         else:
             early.append(f'build-defining file(s) untracked or differ from HEAD: '
                          f'{bad}; commit them or pass --allow-dirty')
+
+    # Read once, right after the git/build-file checks; these exact bytes (and
+    # this DJA state) are what ships and is stamped, whatever happens during the build.
+    # The spec is loaded here too, so it is the one at the stamped commit.
+    spec = load_spec(spec_path)
+    if only:
+        unknown = set(only) - {a['name'] for a in spec}
+        if unknown:
+            raise SystemExit(f'--only: unknown archive(s) {sorted(unknown)}')
+    readme_bytes = readme_path.read_bytes() if readme_path.is_file() else None
+    dja_c, dja_d = git_state(dja_dir)
 
     resolved, inputs, sizes, problems = resolve_archives(spec, repo_root, dja_dir, names)
     problems = early + problems
@@ -546,16 +581,38 @@ def run(out_dir, spec_path=SPEC_PATH, repo_root=None, dja_dir=None, names=None,
         return 0
 
     out_dir = Path(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
     mpath = out_dir / 'MANIFEST.json'
-    prev = None
-    if only and mpath.exists():
-        prev = json.loads(mpath.read_text())
-    mpath.unlink(missing_ok=True)       # no stale manifest next to new archives
     current = {a['name'] for a in spec}
+    prev = None
+    if only:
+        if not mpath.exists():
+            print(f'FAIL: --only needs an existing {mpath} (run a full pack first)')
+            return 1
+        prev = json.loads(mpath.read_text())
+        kept_problems = []
+        for name, rec in prev['archives'].items():
+            if name not in current or name in only:
+                continue
+            f = out_dir / name
+            if not f.is_file():
+                kept_problems.append(f'kept archive {name} missing from {out_dir}')
+            elif f.stat().st_size != rec['size']:
+                kept_problems.append(f'kept archive {name}: on-disk size '
+                                     f'{f.stat().st_size} != recorded {rec["size"]}')
+            if rec.get('sdi_git_commit') != sdi_c:
+                print(f"NOTE: kept archive {name} was built at SDI commit "
+                      f"{rec.get('sdi_git_commit')}, current commit is {sdi_c}")
+        if kept_problems:
+            print('FAIL: --only cannot keep inconsistent archives (run a full pack):')
+            for p in kept_problems:
+                print('  ', p)
+            return 1
+    out_dir.mkdir(parents=True, exist_ok=True)
+    mpath.unlink(missing_ok=True)       # no stale manifest next to new archives
     archives = {k: v for k, v in prev['archives'].items() if k in current} if prev else {}
     members = [m for m in prev['members']
                if m['archive'] not in set(only) and m['archive'] in current] if prev else []
+    built = []
     for a in spec:
         if only and a['name'] not in only:
             continue
@@ -567,10 +624,23 @@ def run(out_dir, spec_path=SPEC_PATH, repo_root=None, dja_dir=None, names=None,
                    built_utc=datetime.datetime.now(datetime.timezone.utc)
                    .isoformat(timespec='seconds'))
         archives[a['name']] = rec
+        built.append(a['name'])
         members += [{'archive': a['name'], **m} for m in mem]
-    shutil.copyfile(readme_path, out_dir / README_NAME)
-    r_sha, r_md5 = file_digests(out_dir / README_NAME)
-    dja_c, dja_d = git_state(dja_dir)
+    late = changed_during_build(repo_root, dja_dir, spec_path, readme_path,
+                                (sdi_c, sdi_d), (dja_c, dja_d))
+    if late:
+        for n in built + [README_NAME]:
+            (out_dir / n).unlink(missing_ok=True)
+        print(f'FAIL: {late}; removed the archives built in this run and wrote no '
+              'MANIFEST (rerun the pack)')
+        return 1
+    missing = sorted(current - set(archives))
+    if missing:
+        print(f'FAIL: no manifest record for archive(s) {missing}; wrote no MANIFEST '
+              '(run a full pack)')
+        return 1
+    (out_dir / README_NAME).write_bytes(readme_bytes)
+    r_sha, r_md5 = hashlib.sha256(readme_bytes).hexdigest(), hashlib.md5(readme_bytes).hexdigest()
     manifest = {
         'created_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
         'sdi_git_commit': sdi_c, 'sdi_git_dirty': sdi_d,
@@ -578,7 +648,7 @@ def run(out_dir, spec_path=SPEC_PATH, repo_root=None, dja_dir=None, names=None,
         'path_remap': {'repo': REPO_REMAP, 'repo_root_pattern': REPO_ROOT_PATTERN,
                        'dja_root_pattern': DJA_ROOT_PATTERN,
                        'dja_arc_prefix': DJA_ARC_PREFIX},
-        'readme': {'name': README_NAME, 'size': (out_dir / README_NAME).stat().st_size,
+        'readme': {'name': README_NAME, 'size': len(readme_bytes),
                    'sha256': r_sha, 'md5': r_md5},
         'archives': archives,
         'members': members,

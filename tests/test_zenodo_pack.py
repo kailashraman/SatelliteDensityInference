@@ -431,6 +431,52 @@ def test_untracked_build_defining_file_refused(world, monkeypatch, capsys):
     assert man['archives']['cat.tar']['sdi_git_dirty'] is True
 
 
+def _during_build(monkeypatch, action):
+    real = zp.build_archive
+
+    def build(*a, **k):
+        r = real(*a, **k)
+        action()
+        return r
+    monkeypatch.setattr(zp, 'build_archive', build)
+
+
+@pytest.mark.parametrize('only', [None, ['res.tar']])
+@pytest.mark.parametrize('what', ['head_moved', 'dirty', 'build_file_dirty', 'dja_moved'])
+def test_git_state_change_during_build_fails_and_leaves_nothing(world, monkeypatch,
+                                                               capsys, what, only):
+    out = world['tmp'] / 'o'
+    go(world, out)                                      # a previous build
+
+    def change():
+        if what == 'head_moved':
+            monkeypatch.setattr(zp, 'git_state', lambda p: ('newcommit', False))
+        elif what == 'dirty':
+            monkeypatch.setattr(zp, 'git_state', lambda p: ('deadbeef', True))
+        elif what == 'dja_moved':
+            monkeypatch.setattr(zp, 'git_state',
+                                lambda p: ('deadbeef' if p == world['repo'] else 'other', False))
+        else:
+            monkeypatch.setattr(zp, 'dirty_build_files', lambda paths: [str(paths[0])])
+    _during_build(monkeypatch, change)
+    assert go(world, out, only=only) == 1
+    assert 'during the build' in capsys.readouterr().out
+    assert not (out / 'MANIFEST.json').exists()         # no manifest claiming the old commit
+    assert not (out / zp.README_NAME).exists()
+    built = {'res.tar'} if only else {'cat.tar', 'w.tar.gz', 'res.tar', 'dja.tar.gz'}
+    assert not any((out / n).exists() for n in built)
+
+
+def test_readme_shipped_is_the_one_read_at_the_start(world, monkeypatch):
+    out = world['tmp'] / 'o'
+    _during_build(monkeypatch, lambda: world['readme'].write_bytes(b'# newer readme\n'))
+    assert go(world, out) == 0
+    data = (out / 'README_DATA.md').read_bytes()
+    assert data == b'# readme\n'
+    r = json.loads((out / 'MANIFEST.json').read_text())['readme']
+    assert r['sha256'] == sha(data) and r['size'] == len(data)
+
+
 def test_only_drops_records_for_removed_archives(world):
     out = world['tmp'] / 'o'
     add_spec_archive(world, {'name': 'gone.tar', 'compression': 'none',
@@ -454,3 +500,67 @@ def test_glob_includes_hidden_but_not_ipynb_checkpoints(tmp_path):
     files, empty = zp.resolve_globs(['d/**'], tmp_path)
     assert set(files) == {'d/.hidden.txt', 'd/sub/.dot/f.txt', 'd/vis.txt'}
     assert not empty
+
+
+# ------------------------------------------------------- --only consistency
+
+def test_only_without_manifest_refused(world, capsys):
+    out = world['tmp'] / 'o'
+    assert go(world, out, only=['res.tar']) == 1
+    assert 'full pack first' in capsys.readouterr().out
+    assert not (out / 'MANIFEST.json').exists() and not (out / 'res.tar').exists()
+
+
+def test_only_missing_kept_archive_refused(world, capsys):
+    out = world['tmp'] / 'o'
+    go(world, out)
+    (out / 'cat.tar').unlink()
+    assert go(world, out, only=['res.tar']) == 1
+    assert 'cat.tar missing' in capsys.readouterr().out
+    assert (out / 'MANIFEST.json').exists()             # refused before touching it
+
+
+def test_only_kept_archive_size_mismatch_refused(world, capsys):
+    out = world['tmp'] / 'o'
+    go(world, out)
+    with open(out / 'w.tar.gz', 'ab') as f:
+        f.write(b'junk')
+    assert go(world, out, only=['res.tar']) == 1
+    assert 'w.tar.gz: on-disk size' in capsys.readouterr().out
+
+
+def test_only_manifest_must_cover_every_spec_archive(world, capsys):
+    out = world['tmp'] / 'o'
+    go(world, out)
+    edit = json.loads((out / 'MANIFEST.json').read_text())
+    del edit['archives']['cat.tar']
+    (out / 'MANIFEST.json').write_text(json.dumps(edit))
+    assert go(world, out, only=['res.tar']) == 1
+    assert 'no manifest record' in capsys.readouterr().out
+    assert not (out / 'MANIFEST.json').exists()
+
+
+def test_only_notes_kept_archive_from_older_commit(world, monkeypatch, capsys):
+    out = world['tmp'] / 'o'
+    go(world, out)
+    capsys.readouterr()
+    monkeypatch.setattr(zp, 'git_state', lambda p: ('cafe1234', False))
+    assert go(world, out, only=['res.tar']) == 0
+    text = capsys.readouterr().out
+    assert 'NOTE' in text and 'cat.tar' in text and 'deadbeef' in text and 'cafe1234' in text
+    assert 'res.tar was built' not in text
+
+
+def test_gitignored_build_file_counts_as_dirty(tmp_path):
+    d = tmp_path / 'g'
+    write(d / 'a.json')
+    write(d / 'b.json')
+    _git(d, 'init', '-q')
+    _git(d, 'add', '.')
+    _git(d, 'commit', '-q', '-m', 'x')
+    assert _REAL_DIRTY([d / 'a.json', d / 'b.json']) == []
+    _git(d, 'rm', '-q', '--cached', 'b.json')
+    write(d / '.gitignore', b'b.json\n')
+    _git(d, 'add', '.gitignore')
+    _git(d, 'commit', '-q', '-m', 'y')
+    assert _REAL_DIRTY([d / 'a.json', d / 'b.json']) == [str(d / 'b.json')]
