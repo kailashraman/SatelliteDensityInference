@@ -183,6 +183,12 @@ _OLD_LAYOUT_ALLOWED = [
     # the manifest-builder tests deliberately name the retired directory
     ('tests/test_build_provenance_manifest.py', "for d in RAW_DIRS + ['additional', 'somethingnew']:"),
     ('tests/test_build_provenance_manifest.py', "@pytest.mark.parametrize('d', ['additional', 'somethingnew'])"),
+    # the Zenodo packer maps paths recorded under the retired layout onto the
+    # deposited one, and its tests feed it such recorded paths
+    ('scripts/zenodo_pack.py', '# Recorded paths predate commit 2e655c4 (data/additional/ split)'),
+    ('scripts/zenodo_pack.py', "(r'^data/additional/"),
+    ('scripts/zenodo_pack.py', "'repo' rel is repo-relative after the data/additional remap"),
+    ('tests/test_zenodo_pack.py', '/data/additional/'),
 ]
 
 
