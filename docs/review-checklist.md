@@ -1268,3 +1268,31 @@ passes while sharing its output tree; a provenance field added for the mode
 that no guard or figure driver checks; docstrings saying output paths are
 "the same either way". Require either per-mode output trees or a refusal to
 write one mode's products into the other's tree.
+
+## Comma-list value passed through `sbatch --export=ALL,VAR=a,b`
+
+**Where:** launcher headers, READMEs and run instructions that pass a
+multi-valued variable (variant lists, dwarf lists) to a SLURM job through
+`--export`.
+
+**What goes wrong:** sbatch splits `--export` on commas, so only the first
+element reaches the job and the rest are read as variable names. The job runs
+a smaller set of variants or objects without any error, and the missing
+products surface only when a figure or table is built.
+
+**What to flag:** any documented `--export=...VAR=x,y`; shorthand in
+instructions (braces, ranges) that the receiving script does not parse
+literally. Prefer the environment-prefix form `VAR=x,y sbatch ...`.
+
+## Build stamp that ignores untracked files that define the build
+
+**Where:** packaging and release scripts that record `git rev-parse HEAD` plus
+a dirty flag computed with `--untracked-files=no`.
+
+**What goes wrong:** a spec, README or packer script that was never committed
+passes the clean check, and the recorded commit does not contain it. The
+release cannot be rebuilt from the commit it names.
+
+**What to flag:** a dirty check that excludes untracked files while the build
+reads its definition from the repository. Require the spec, docs and packer
+paths to be tracked and unmodified, or the stamp to record that they are not.
