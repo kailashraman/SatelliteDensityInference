@@ -13,7 +13,8 @@ DwarfJeansAnalysis at packing time.
 ## Two ways to use it
 
 **`figures` — redraw every paper figure and table** from the intermediates
-the figures were made from. Minutes per figure, no cluster needed.
+the figures were made from. Minutes per figure; needs the Python environment
+and a LaTeX installation, not a cluster.
 
 **`inputs` — recompute the paper results** from the minimal inputs: halo
 catalogs, the frozen SHMR weight draw, Fermi-LAT data and the Jeans-analysis
@@ -29,7 +30,26 @@ export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"                   # printed b
 
 The fetch checks every archive against Zenodo's md5 and `MANIFEST.json`'s
 sha256 before unpacking, and refuses to overwrite a differing local file
-unless given `--force`.
+unless given `--force`. It needs only the Python standard library, from a
+release with `tarfile.data_filter` (3.12, or a 3.8–3.11 patch release from
+mid-2023 onward).
+
+## Running the code elsewhere
+
+The `scripts/*.sh` launchers are the SLURM jobs the authors ran on their own
+cluster. Their `#SBATCH` headers (account, partition, QOS, excluded nodes) and
+their environment setup (`source ~/.bashrc; conda activate J_calc`) are
+specific to that machine, so they will not run unmodified anywhere else. Each
+launcher is a thin wrapper: it runs `python/<stage>.py` with the arguments
+shown on its last line, and for array jobs the task index is the dwarf index
+(0–42). Run the Python entry points directly, or adapt the headers to your
+scheduler.
+
+Before drawing figures, set `SDI_TEXLIVE_BIN` to the directory containing
+`latex`: the figures use LaTeX text, and the default points at a module path on
+the authors' cluster. The repository's `environment.yml` pins the
+Python packages the papers were produced with (`conda env create -f
+environment.yml`); it does not include LaTeX.
 
 ## Archives
 
@@ -49,8 +69,9 @@ versions, which `compute_weights.py` regenerates deterministically.
 
 ## Recomputing from `inputs`
 
-Stage order (each `scripts/<stage>.sh` launches `python/<stage>.py`; see its
-header for arguments):
+Stage order. The launcher names below are the authors' SLURM jobs; each
+header documents the arguments of the `python/<stage>.py` it wraps (see
+"Running the code elsewhere"):
 
 1. `compute_mhalf.sh`, pass 1 (per-dwarf half-light masses). Its pass 2, the
    per-version global arrays, is already in `sdi_satgen_catalogs.tar`.
@@ -63,12 +84,13 @@ header for arguments):
    `VERSION=Diemer` with `WEIGHTS_SOURCE=published`
 5. `save_contours.sh` and `fermi_reweighting_update.sh` (both read the frozen
    published weights by default). The paper's Fermi figures use nine
-   variants; select them with
-   `VARIANTS=Jeans,Jeans_satgen,Jeans_satgen_box,Jeans_satgen_shmr_fattahi18,Jeans_satgen_shmr_kim24,Jeans_satgen_shmr_danieli23_const,Jeans_satgen_shmr_moster18,mhalf,F18_MC sbatch scripts/fermi_reweighting_update.sh`
-   (an environment prefix, not `--export`, which splits on commas). The
-   default run also includes `mhalf_scatter` and `mdyn_errani`, which need
+   variants:
+   `python python/fermi_reweighting.py <dwarf_index> --legacy-version update --weights-source published --variants Jeans,Jeans_satgen,Jeans_satgen_box,Jeans_satgen_shmr_fattahi18,Jeans_satgen_shmr_kim24,Jeans_satgen_shmr_danieli23_const,Jeans_satgen_shmr_moster18,mhalf,F18_MC`
+   (through the launcher, set `VARIANTS` as an environment prefix rather than
+   with `sbatch --export`, which splits on commas). The default run also
+   includes `mhalf_scatter` and `mdyn_errani`, which need
    published `mhalf_scatter` weights that are not deposited.
-6. the figure and table drivers (`scripts/plot_*.sh`, `make_tables.sh`)
+6. the figure and table drivers (`python/plot_*.py` and `python/make_tables.py`; their launchers are `scripts/plot_*.sh` and `make_tables.sh`)
 
 ## Reproducibility notes
 
@@ -81,11 +103,14 @@ header for arguments):
   conditioned on the half-light mass involve no randomness and are identical
   in both.
 - **The `mass_floor_7` prior contours** (`*_unweighted` under
-  `results/paper_contours/rho150_mpeak/mass_floor_7/`,
-  the gray contours in the ρ₁₅₀–M_peak figures) were built from halos in
-  hosts with an LMC-analog satellite, excluding that satellite. The current
-  code does not apply this selection, so rerunning it changes those gray
-  contours; the deposited products are the published ones.
+  `results/paper_contours/rho150_mpeak/mass_floor_7/` and
+  `results/paper_contours/galactocentric/z0/mass_floor_7/`; the gray contours
+  in the ρ₁₅₀–M_peak figures) use a host selection: keep hosts with any
+  satellite of M_peak > 10¹¹ M☉ within 100 kpc of the host centre, then
+  remove each host's most massive satellite by M_peak, wherever it lies.
+  `save_contours.py` applies it for `mass_floor_7` only, records it as
+  `prior_lmc_selection` in the provenance, and reproduces the deposited
+  contours bit for bit.
 - **The Fermi Monte Carlo bands** (`*_MC` products) were drawn with a
   per-process random seed. The code now seeds them deterministically, so a
   rerun reproduces the published bands statistically, not bit for bit. The

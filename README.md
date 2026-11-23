@@ -51,7 +51,8 @@ the merger trees and satellite catalogs the pipeline starts from.
 ## Reproducing a figure
 
 ```bash
-conda activate J_calc                       # SatGen is a pip dependency of this env
+conda env create -f environment.yml && conda activate sdi
+export SDI_TEXLIVE_BIN=/path/to/texlive/bin  # directory holding `latex`
 python python/plot_rmax_vmax.py "Segue 1"   # one figure
 bash scripts/plot_rmax_vmax.sh --supplementary   # all 39 dwarfs
 ```
@@ -60,6 +61,19 @@ Every driver is `scripts/<name>.sh` wrapping `python/<name>.py`, and takes its
 parameters as arguments rather than hardcoding them. Figure drivers run in
 minutes on cached intermediates; the pipeline stages that produce those
 intermediates are SLURM array jobs over 10⁵–10⁶ halos per dwarf.
+
+**The `scripts/*.sh` launchers are written for the authors' cluster and are
+not portable as they stand.** Their `#SBATCH` headers name our account,
+partitions, QOS and excluded nodes, and they activate a conda environment
+called `J_calc` through `~/.bashrc`. Read them as the record of how each stage
+was invoked. Elsewhere, run `python/<name>.py` with the arguments the launcher
+passes (for an array job, the task index is the dwarf index, 0–42), or adapt
+the headers to your scheduler. Two machine-specific defaults in
+`python/config.py` need overriding off this cluster: `SDI_TEXLIVE_BIN` (the
+directory holding `latex`, which every figure needs) and `SDI_TREES_DIR` (the
+SatGen trees, read only by `make_h5.py`). `environment.yml` pins the
+Python packages the papers were produced with (linux-64); see
+`docs/pymc-environment.md` for why the PyMC pins matter.
 
 Tests come in three tiers, so the default run is fast and needs no data:
 
@@ -125,8 +139,9 @@ to build if any recorded figure input is missing from the deposit);
 - **The Fermi Monte Carlo bands** were drawn with a per-process `hash()` seed
   and reproduce only statistically. The code now seeds them deterministically
   (`fermi_funcs.mc_seed`), so reruns from here on are reproducible.
-- **The `mass_floor_7` prior contours** in the ρ₁₅₀–M_peak figures were built
-  with an LMC-analog host selection that the current code does not apply.
+- **The `mass_floor_7` prior contours** in the ρ₁₅₀–M_peak figures use a
+  host selection: hosts with a satellite of M_peak > 10¹¹ M☉ within 100 kpc,
+  minus each host's most massive satellite (`get_mask(lmc_selection=True)`).
 - **The power-law posteriors need pinned package versions** as well as their
   seed, because PyMC compiles the log-density; see `docs/pymc-environment.md`.
 
