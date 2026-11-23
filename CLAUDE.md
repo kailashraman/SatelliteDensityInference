@@ -158,7 +158,7 @@ The split is **local, not committed**: data lives in the working tree so the rep
 
 ## Things that will bite you
 
-- **SatGen is a pip dependency of the `J_calc` conda env**, not vendored. `Green` / `Dekel` / `NFW` imports fail outside it.
+- **SatGen comes from the conda-forge `satgen` package** (0.1.0, upstream SatGen, pinned in `environment.yml`; installed in the `J_calc` conda env), not vendored. It is not the folsomde fork, which generated the trees. `Green` / `Dekel` / `NFW` imports fail outside it.
 - **`<version>` is an argument, not a tag** — it selects the SatGen realization/cosmology (`Diemer`, `Zhao`, `Correa`, …). Mixing versions corrupts results silently.
 - **Dwarf names contain spaces** (`Ursa Major II`, `Segue 1`) and appear verbatim in filenames the `.tex` references. Quote paths; don't sanitize names. The `SatGen_take2/` prefix in `\includegraphics` is the paper build tree, not a directory here — match the basenames.
 - **Part I and Part II share upstream intermediates.** A reweighting or catalog change moves figures in both; check both drafts before calling a change scoped.
