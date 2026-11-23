@@ -38,6 +38,7 @@ import numpy as np
 import pytest
 
 import config
+import provenance
 
 REPO = Path(config.REPO_ROOT)
 PYTHON_DIR = REPO / 'python'
@@ -536,3 +537,36 @@ def test_fermi_published_reproduces_stored_update_products(tmp_path):
         assert 'TS_array' in base
         for k in base:
             assert np.array_equal(base[k], new[k]), f'{variant}:{k} differs'
+
+
+# ------------------------------- --rundata: mass_floor_7 prior-contour parity
+
+MF7_PRIOR_PRODUCTS = ['galactocentric/z0/mass_floor_7', 'rho150_mpeak/mass_floor_7']
+
+
+@pytest.fixture(scope='module')
+def draco_mf7_contour_run(tmp_path_factory):
+    obs = pytest.importorskip('Jdata', reason='needs the J_calc environment')
+    idx = str(list(obs.dwarf_names).index('Draco'))
+    d = tmp_path_factory.mktemp('contours_mf7')
+    assert config.RESULTS_DIR != d.resolve()
+    out = _run('save_contours', [idx, 'mass_floor_7', 'z0'], d, timeout=3600)
+    assert out.returncode == 0, out.stderr[-3000:]
+    return d
+
+
+@pytest.mark.needs_data
+@pytest.mark.needs_satgen
+@pytest.mark.parametrize('subdir', MF7_PRIOR_PRODUCTS)
+def test_mass_floor_7_prior_contour_uses_lmc_host_selection(draco_mf7_contour_run, subdir):
+    """The published mass_floor_7 '_unweighted' prior is drawn from hosts with
+    an LMC analog (the analog removed). Without that selection the Draco
+    histograms differ, so this fails if the selection is dropped."""
+    base = _arrays(config.PAPER_CONTOURS_DIR / subdir / 'Draco_unweighted.npz')
+    new_path = draco_mf7_contour_run / 'paper_contours' / subdir / 'Draco_unweighted.npz'
+    new = _arrays(new_path)
+    assert base.keys() == new.keys()
+    for k in base:
+        assert np.array_equal(base[k], new[k]), f'{subdir}/Draco_unweighted:{k} differs'
+    assert provenance.read(new_path)['prior_lmc_selection'] is True
+

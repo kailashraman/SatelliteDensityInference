@@ -18,7 +18,15 @@ args exactly as upstream did, in the same order:
                   so seeded raises unless SDI_RESULTS_DIR redirects away from
                   <repo>/results.
 
-Path/import/provenance edits only -- the grid construction, KDE/histogram
+The '_unweighted' prior contours use get_mask(..., lmc_selection=True) for
+mass_floor_7 and no host selection otherwise; both records stamp
+`prior_lmc_selection`. That selection keeps hosts with any satellite of
+logMpeak > 11 within 100 kpc of the host centre, then removes each host's most
+massive satellite by logMpeak, wherever it sits (so in a host whose heaviest
+satellite lies beyond 100 kpc, the <100 kpc satellite stays in). The weighted
+contours never read that mask.
+
+Apart from that, path/import/provenance edits only -- the grid construction, KDE/histogram
 settings, contour levels, the weights indices used, and the redshift
 handling are all character-identical to upstream.
 
@@ -203,7 +211,15 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
         xvals = (vmax_infall * u.kpc/u.Gyr).to(u.km/u.s).value
         yvals = rmax_infall
 
-    mask = weights.get_mask(dwarf)
+    # `mask` selects only the '_unweighted' prior samples below. For
+    # mass_floor_7 the published prior (the gray contours in the
+    # rho150-Mpeak figures) uses get_mask's lmc_selection rule (see the
+    # module docstring); every other version uses no host selection.
+    # Verified bit-exact against the stored z0 galactocentric and
+    # rho150_mpeak products for all 43 dwarfs; the infall tree has no stored
+    # mass_floor_7 product, so the rule is unverified there.
+    prior_lmc_selection = version == 'mass_floor_7'
+    mask = weights.get_mask(dwarf, lmc_selection=prior_lmc_selection)
 
     logrho150 = logrho150 = np.log10(np.load(rho150_path)['rho150'])
 
@@ -224,7 +240,8 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
     galactocentric_record = provenance.stamp(
         'python/save_contours.py', version=version, argv=sys.argv[1:],
         inputs=provenance_inputs, dwarf=dwarf, redshift=redshift,
-        weights_source=weights_source, weights_dir=weights_dir)
+        weights_source=weights_source, weights_dir=weights_dir,
+        prior_lmc_selection=prior_lmc_selection)
 
     save_contour(np.log10(xvals), np.log10(yvals), mhalf_weights, dwarf + '_mhalf', save_dir, galactocentric_record, level=0.68, kde_bw=kde_bw)
     save_contour(np.log10(xvals), np.log10(yvals), RP17_weights, dwarf + '_RP17', save_dir, galactocentric_record, level=0.68, kde_bw=kde_bw)
@@ -278,7 +295,8 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
     rho150_mpeak_record = provenance.stamp(
         'python/save_contours.py', version=version, argv=sys.argv[1:],
         inputs=provenance_inputs, dwarf=dwarf,
-        weights_source=weights_source, weights_dir=weights_dir)
+        weights_source=weights_source, weights_dir=weights_dir,
+        prior_lmc_selection=prior_lmc_selection)
 
     xvals = 10**logrho150
     yvals = 10**logMpeak
