@@ -41,8 +41,9 @@ in the repository runs past a few unit tests without it. It has two tiers:
 
 - **`figures`** (about 27 GB download): the intermediates every paper figure
   and table reads. With it, each figure redraws in minutes, no cluster needed.
-  `jeans_corner.pdf` cannot be redrawn from it (it is drawn by the
-  DwarfJeansAnalysis repository). The supplementary rmax/vmax figures can be
+  `jeans_corner.pdf` cannot be redrawn from it (it is drawn by
+  DwarfJeansAnalysis; see `zenodo/README_DATA.md` for redrawing it from that
+  repository's record). The supplementary rmax/vmax figures can be
   redrawn only after recomputing from `inputs`; the supplementary
   ρ₁₅₀–M_peak figures for all dwarfs except Draco, Hydrus I and Segue 1
   cannot be reproduced from the record. Use the published PDFs in `plots/`.

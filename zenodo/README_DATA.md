@@ -203,13 +203,16 @@ code elsewhere"):
   from each other.
 - **The halo-position J-factors** (`Jhalopos`) use an unseeded VEGAS
   integration, so they reproduce only statistically.
-- **`jeans_corner.pdf` cannot be redrawn from this record.** It is drawn by
-  DwarfJeansAnalysis's own plotting script
-  (https://github.com/kailashraman/DwarfJeansAnalysis), which also reads the
+- **`jeans_corner.pdf` is not redrawn from this record.** DwarfJeansAnalysis's
+  `scripts/plot_posteriors.py` draws it
+  (https://github.com/kailashraman/DwarfJeansAnalysis), and also needs the
   run's `audit.json` and that repository's star catalogs, neither of them in
-  this record, and runs in that repository's environment. This record
-  carries the posterior chain it plots; the published PDF is in the
-  repository under `plots/jeans/`.
+  this record. To redraw it, fetch the DwarfJeansAnalysis Zenodo record into
+  a DwarfJeansAnalysis checkout (see its `zenodo/README_DATA.md`), set
+  `SDI_DJA_RESULTS_DIR` to that checkout's `results/production`, and run
+  `python python/fetch_jeans_corner.py` in the `DwarfJeans` environment. This
+  overwrites `plots/jeans/jeans_corner.pdf`; `git checkout plots/jeans/`
+  restores it. That record reports a pixel-identical redraw at 100 dpi.
 - Provenance sidecars record the paths on the machine that produced them,
   and the `git_commit` of the checkout that wrote them. None of the commits
   recorded in the deposited sidecars is in the public repository;
@@ -222,8 +225,10 @@ code elsewhere"):
 
 ## How this record was checked
 
-Before publication, from a fresh clone of the repository holding only this
-record's archives (unpacked with `zenodo_fetch.py`) and an environment built
+Before publication, from a fresh clone of the repository (with the code of
+commit ad78489; the later fetch hardening, commit 2f7dfc7, was checked by its
+unit tests, not by a rerun on the full record) holding only this record's
+archives (unpacked with `zenodo_fetch.py`) and an environment built
 from `environment.yml`. The figure drivers ran under `strace`, which found no
 successful file open under the authors' data directories, sibling checkouts
 or working conda environment:
