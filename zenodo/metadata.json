@@ -1,0 +1,58 @@
+{
+  "upload_type": "dataset",
+  "title": "Data for: Semi-analytic Inference of Satellite Densities in the Cold Dark Matter Model (Parts I and II)",
+  "creators": [
+    {
+      "name": "Raman, Kailash"
+    },
+    {
+      "name": "Folsom, Dylan"
+    },
+    {
+      "name": "Kaplinghat, Manoj"
+    },
+    {
+      "name": "Lisanti, Mariangela"
+    },
+    {
+      "name": "Safdi, Benjamin R."
+    }
+  ],
+  "description": "<p>Data accompanying the two-part paper series \"Semi-analytic Inference of Satellite Densities in the Cold Dark Matter Model\" (Part I: Comparison to Ultra-faint Dwarf Kinematics; Part II: Implications for Dark Matter Indirect Detection Constraints). The archives unpack at the root of the SatelliteDensityInference repository and support two reproduction tiers.</p><p><b>figures</b>: regenerate every paper figure directly from intermediates (SatGen halo catalogs, seeded conditioning weights, the <code>results/</code> products the figure manifests record, and a snapshot of the DwarfJeansAnalysis results).</p><p><b>inputs</b>: the minimal inputs to recompute the paper results (SatGen halo catalogs, the published unseeded SHMR conditioning weights, Fermi-LAT data, and the DwarfJeansAnalysis results). SatGen merger trees are not included.</p><p>See README_DATA.md and MANIFEST.json (per-file sha256, producing commits) in the record, and use scripts/zenodo_fetch.py in the code repository to download and unpack.</p>",
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "dark matter",
+    "dwarf spheroidal galaxies",
+    "satellite galaxies",
+    "SatGen",
+    "J-factors",
+    "Fermi-LAT"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/kailashraman/SatelliteDensityInference",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/kailashraman/DwarfJeansAnalysis",
+      "relation": "isDerivedFrom",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "arXiv:2607.27316",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint",
+      "scheme": "arxiv"
+    },
+    {
+      "identifier": "arXiv:2607.27326",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint",
+      "scheme": "arxiv"
+    }
+  ]
+}

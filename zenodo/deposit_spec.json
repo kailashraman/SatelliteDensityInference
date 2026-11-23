@@ -1,0 +1,50 @@
+{
+  "_comment": "Declarative archive list read by scripts/zenodo_pack.py. Each archive stores repo-relative paths and unpacks at the repo root; every file's .prov.json sidecar is added when it exists. 'include' entries are globs relative to the repo root ('**' recursive; one level of {a,b} alternation; hidden files match, except .ipynb_checkpoints directories, which are always excluded). 'from_figure_manifests' derives the file list from the inputs recorded in the paper-figure manifests under plots/.",
+  "archives": [
+    {
+      "name": "sdi_satgen_catalogs.tar",
+      "compression": "none",
+      "tiers": ["figures", "inputs"],
+      "include": ["data/satgen_catalogs/**"]
+    },
+    {
+      "name": "sdi_halo_weights_seeded.tar.gz",
+      "compression": "gzip",
+      "tiers": ["figures"],
+      "include": ["data/halo_weights/Diemer/**"]
+    },
+    {
+      "name": "sdi_halo_weights_published.tar.gz",
+      "compression": "gzip",
+      "tiers": ["inputs"],
+      "include": [
+        "data/halo_weights_published/Diemer/**",
+        "data/halo_weights_published/mass_floor_7/{Draco,Hydrus I,Segue 1}.*"
+      ]
+    },
+    {
+      "name": "sdi_fermi_legacy.tar.gz",
+      "compression": "gzip",
+      "tiers": ["inputs"],
+      "include": ["data/fermi_legacy/**"]
+    },
+    {
+      "name": "sdi_fermi_legacy_update.tar.gz",
+      "compression": "gzip",
+      "tiers": ["figures", "inputs"],
+      "include": ["data/fermi_legacy_update/**"]
+    },
+    {
+      "name": "sdi_results.tar",
+      "compression": "none",
+      "tiers": ["figures"],
+      "from_figure_manifests": {"source": "repo", "under": ["results/"]}
+    },
+    {
+      "name": "dja_results_snapshot.tar.gz",
+      "compression": "gzip",
+      "tiers": ["figures", "inputs"],
+      "from_figure_manifests": {"source": "dja", "arc_prefix": "data/dja_results/"}
+    }
+  ]
+}

@@ -61,3 +61,4 @@ drafts_temp/
 # Anything that turns out to be load-bearing gets rewritten into
 # docs/migration-notes.md or docs/review-checklist.md instead.
 docs/internal/
+.zenodo_fetch_*/

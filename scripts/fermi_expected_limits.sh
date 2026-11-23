@@ -3,7 +3,7 @@
 # task per dwarf, looping over the 1008 blank-field SEDs internally.
 #
 #   sbatch scripts/fermi_expected_limits.sh                            # all variants
-#   sbatch --export=ALL,VARIANTS=mhalf,Jeans scripts/fermi_expected_limits.sh
+#   VARIANTS=mhalf,Jeans sbatch scripts/fermi_expected_limits.sh
 #
 # No legacy/update choice here: unlike fermi_reweighting.py, this script never
 # reads the dwarf's own SED, only data/fermi_legacy/blank_fields/, which has

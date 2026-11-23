@@ -90,27 +90,43 @@ does not itself contain. Both external paths resolve from single constants in
 `python/config.py` (`TREES_DIR`, `DJA_RESULTS_DIR`), each overridable by
 environment variable.
 
-### Planned: Zenodo deposition
+### Zenodo deposition
 
-The input datasets and derived intermediates will be deposited on Zenodo so the
-chain is reproducible off this machine. The DOI will be added here once the
-deposition is made.
+The data needed to reproduce both papers is packaged for a single Zenodo
+record (DOI to be added on publication). `zenodo/README_DATA.md` describes the
+record; `zenodo/deposit_spec.json` lists its archives. It supports two tiers:
+
+- **figures**: the intermediates every paper figure and table reads, so each
+  one redraws in minutes.
+- **inputs**: the SatGen halo catalogs, the frozen published SHMR weight draw,
+  the Fermi-LAT data and a DwarfJeansAnalysis results snapshot, from which the
+  pipeline recomputes the paper results.
+
+```bash
+python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # or inputs, all
+export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"
+```
+
+`scripts/zenodo_pack.py` builds the archives and `MANIFEST.json` (it refuses
+to build if any recorded figure input is missing from the deposit);
+`scripts/zenodo_upload.py` uploads them to a draft, and never publishes.
 
 ### Reproducibility caveats
 
-Three stages are not bit-reproducible, and it matters which numbers you take
-from them:
-
-- **The SHMR-conditioned weights are one realization.** `halo_weights.py`
-  applies each relation's intrinsic scatter through the global NumPy RNG.
-  `compute_weights.py` now seeds it deterministically per (version, dwarf), so
-  a rerun reproduces the tree shipped here — but quantities conditioned on
-  stellar mass still differ between *differently seeded* runs. Those
-  conditioned on the half-light mass (`mhalf_weights`) do not draw from the RNG
-  and are bit-reproducible either way.
-- **The Fermi Monte Carlo ensemble cannot be regenerated exactly**, only
-  reproduced statistically: it is seeded from `hash()` of a string, which
-  Python randomizes per process unless `PYTHONHASHSEED` is pinned.
+- **The paper uses two SHMR weight realizations.** The SHMR contours and the
+  Fermi recast were built from an unseeded draw migrated from the original
+  analysis (`data/halo_weights_published/`), which cannot be regenerated; it
+  is deposited as a frozen input, and the contour, quantile and Fermi stages
+  read it with `--weights-source published` (the default for the contour and
+  Fermi stages), reproducing those products bit for bit. The stellar-mass
+  quantiles, tables and the figures built on them use the seeded weights
+  `compute_weights.py` regenerates exactly. Quantities conditioned on the
+  half-light mass draw no random numbers and are identical in both.
+- **The Fermi Monte Carlo bands** were drawn with a per-process `hash()` seed
+  and reproduce only statistically. The code now seeds them deterministically
+  (`fermi_funcs.mc_seed`), so reruns from here on are reproducible.
+- **The `mass_floor_7` prior contours** in the ρ₁₅₀–M_peak figures were built
+  with an LMC-analog host selection that the current code does not apply.
 - **The power-law posteriors need pinned package versions** as well as their
   seed, because PyMC compiles the log-density; see `docs/pymc-environment.md`.
 

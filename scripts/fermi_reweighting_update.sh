@@ -3,7 +3,7 @@
 # throughout the drafts): one array task per dwarf.
 #
 #   sbatch scripts/fermi_reweighting_update.sh                    # all variants
-#   sbatch --export=ALL,VARIANTS=mhalf,F18,K24 scripts/fermi_reweighting_update.sh
+#   VARIANTS=mhalf,F18,K24 sbatch scripts/fermi_reweighting_update.sh
 #
 # --legacy-version update is passed explicitly below -- python/fermi_reweighting.py's
 # own default stays 'legacy' (see that module's docstring); this launcher, not
