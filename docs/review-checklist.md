@@ -1490,3 +1490,31 @@ not contain the rule, and "does the cited file exist" still passes.
 new target for the specific rule or quoted section title; treat a
 co-citation ("X/memory", "X and Y") as a sign the rule lives elsewhere;
 flag citations to untracked or gitignored files.
+
+## Overwrite-safety fix that covers regular files only
+
+**Where:** extractors, copiers and installers hardened against writing
+through hard links or clobbering identical files, especially when one
+sibling script is hardened and another is ported from it.
+
+**What goes wrong:** the fix is verified on regular files, so a symlink at
+the target is still written through, a directory gives a raw traceback after
+the download has started, and a force flag silently reopens the hole.
+
+**What to flag:** an unlink or skip guarded by "is a regular file" with no
+separate refusal of other types; a force flag not documented as leaving type
+conflicts refused; a fix applied to one sibling script but not the other.
+Probe symlink, dangling-symlink and directory targets.
+
+## Clean-error contract covering only part of the call path
+
+**Where:** download or unpack drivers that wrap errors in the extraction
+step but run pre-checks (hashing, stat, listing) outside it.
+
+**What goes wrong:** an unreadable file met in a pre-check produces a raw
+traceback instead of the documented clean refusal, and tests miss it because
+they only break the last step.
+
+**What to flag:** a documented "clean ERROR" contract with no top-level
+handler for the whole path; require each documented failure to be injected
+at every phase.
