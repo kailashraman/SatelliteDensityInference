@@ -1314,3 +1314,35 @@ the code picks by a different criterion; any prose summary of a mask that does
 not restate its literal rule (thresholds, the property ranked, what happens to
 groups with zero or several matches). Ask for a count of groups where the
 intent and the rule disagree.
+
+## Recompute recipe with no closure check
+
+**Where:** data-deposit READMEs and tier specs that list "minimal inputs" and
+a stage order, separately from any tier derived from figure manifests.
+
+**What goes wrong:** the inputs archives and the stage list are written by
+hand and never checked against what each stage reads and writes. Launcher
+defaults (one version, one array shape) silently stand in for the sweep the
+figures need. The deposit packs and fetches cleanly, and the gap shows only
+when an outside user's figure driver fails or a stage writes a product
+missing some of its fields.
+
+**What to flag:** a recompute tier with no check that each stage's reads are
+covered by git, the tier's archives or an earlier stage's writes; recipe steps
+that name a launcher but not the versions or index set the figures consume; a
+per-version or per-object subset of a deposited input with no matching
+restricted run in the recipe.
+
+## Control-file read missing from a figure manifest
+
+**Where:** figure drivers that read metadata or routing files (`audit.json`,
+run logs, configs) or a sibling repository's code next to the data arrays
+they record as inputs.
+
+**What goes wrong:** a deposit built from the manifests ships the arrays but
+not the files that route or validate them, so redrawing fails off-site even
+though the coverage check passes.
+
+**What to flag:** a `json.load`/`read_text()` in a figure driver whose path is
+not passed to the figure manifest; a sibling-repository path derived by
+walking `.parent` up from a data-directory override.
