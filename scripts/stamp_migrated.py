@@ -170,7 +170,7 @@ stamper mirrors that attribution rather than assuming one version tree-wide:
   nothing in the migrated .npz itself records which. This stamper resolves it
   the same way the producing scripts do: calling
   `obs.Dwarf(name).get_Jeans_results()` live against this repository's
-  current `DJA_RESULTS_DIR` (a live dependency per CLAUDE.md) and reading
+  current `DJA_RESULTS_DIR` (a live dependency per docs/claude.development.md) and reading
   off `Jeans_J_quantiles`. `Jeans_mhalf_err` shares this same fallback
   determination for its `dja_prior`/`jeans_source` fields (its own version is
   fixed at `'Diemer'`, and its `jeans_sigma_source` is always `'mhalf_error'`

@@ -2,7 +2,7 @@
 
 This is deliberately NOT a port: `jeans_corner.pdf` is produced by
 DwarfJeansAnalysis's own `scripts/plot_posteriors.py`, reading a completed
-production posterior under `config.DJA_RESULTS_DIR`. Per CLAUDE.md's
+production posterior under `config.DJA_RESULTS_DIR`. Per docs/claude.development.md's
 "reproducibility contract", that pipeline is a tracked, reproducible repo we
 invoke, not one we reimplement here. This script:
 

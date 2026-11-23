@@ -11,7 +11,8 @@ with one alpha-0.2 fill over white, not two overlapping fills.
 Fails against the pre-fix source, which left a second `fill_between` call in
 `build_intro` and drew two PolyCollection artists in the SatGen median's
 color instead of one. The commented-out state of the source notebook cell is
-not the oracle here (per CLAUDE.md/memory, comment state is post-run
+not the oracle here (per docs/review-checklist.md, "Comment state read as the figure
+specification", comment state is post-run
 residue) -- this asserts on the RENDERED artist count instead.
 
 Requires the J_calc environment: plot_vcirc_satellites_all imports

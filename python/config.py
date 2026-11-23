@@ -6,7 +6,7 @@ directory it is invoked from -- unlike the SatGen_Dwarf tree it was migrated
 from, where relative reads assumed cwd == python/.
 
 Two paths point outside the repository. Both are declared upstream dependencies
-(see CLAUDE.md, "The reproducibility contract"), and both are overridable by
+(see docs/claude.development.md, "The reproducibility contract"), and both are overridable by
 environment variable so tests can point them at fixtures:
 
     TREES_DIR        SatGen merger trees and satellite catalogs   $SDI_TREES_DIR

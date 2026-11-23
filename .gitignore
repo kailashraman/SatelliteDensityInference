@@ -62,3 +62,6 @@ drafts_temp/
 # docs/migration-notes.md or docs/review-checklist.md instead.
 docs/internal/
 .zenodo_fetch_*/
+
+# Personal Claude Code instructions (see docs/claude.development.md)
+CLAUDE.local.md

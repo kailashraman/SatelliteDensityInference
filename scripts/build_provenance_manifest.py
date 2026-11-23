@@ -10,7 +10,7 @@ globs, `.ipynb_checkpoints` excluded the same way) and, for each:
 
   - requires a `<file>.prov.json` sidecar to exist. A figure with no sidecar
     means "we don't know what produced it" -- exactly the silent-mixing
-    failure mode CLAUDE.md calls the worst one here, so this is fatal: the
+    failure mode docs/claude.development.md calls the worst one here, so this is fatal: the
     script prints every offender and exits non-zero rather than writing a
     manifest with holes in it.
   - flags any INPUT recorded with null provenance -- but only for inputs
@@ -18,7 +18,7 @@ globs, `.ipynb_checkpoints` excluded the same way) and, for each:
   - flags any figure whose own `satgen_version` disagrees with its siblings
     in the same family (family = the immediate subdirectory of plots/, e.g.
     `rmax_vmax`, `panels`, `tables` -- this mirrors the "one subdirectory per
-    figure family" convention in the CLAUDE.md architecture section).
+    figure family" convention in the docs/claude.development.md architecture section).
 
 Distinguishing "not applicable" from "unknown" turned out to need TWO rules,
 not the one originally anticipated -- the second was found empirically by
@@ -39,7 +39,7 @@ running this script, not designed in advance:
      {mhalf,Jeans_<prior>}.npz` intermediates (a real gap -- see the printed
      report), but the rest were `data/literature/*.csv`, `data/lvdb/
      dwarf_all.csv`, and `data/symphony/{SymphonyMilkyWay,MWest}` -- raw,
-     committed source data under config.DATA_DIR (see CLAUDE.md, "data/
+     committed source data under config.DATA_DIR (see docs/claude.development.md, "data/
      holds observational and literature inputs"), which provenance.py never
      stamps by design (its docstring: "every product THIS REPOSITORY WRITES
      carries a stamp" -- these are read, not written). Flagging committed

@@ -184,7 +184,7 @@ def _input_record(path):
     One hop names each input's producing script and version, which is all
     `assert_single_version` reads. Walking further back is still possible, but
     by opening the input's own sidecar -- so it depends on the intermediate
-    still being on disk. That is the arrangement CLAUDE.md's "cache
+    still being on disk. That is the arrangement docs/claude.development.md's "cache
     intermediates, not just figures" rule assumes; a pruned `results/` tree
     would truncate the audit trail.
     """

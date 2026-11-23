@@ -1,166 +1,130 @@
 # CLAUDE.md
 
-Guidance for Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when helping someone use this repository: redraw the
+paper figures, or recompute the paper results from the deposited inputs.
+`README.md` is the overview; `zenodo/README_DATA.md` describes the data record
+and the full recompute recipe. Read those before giving instructions.
 
-## Behavioral Guidelines
+## What the repository is
 
-### Think before coding
-- State assumptions explicitly; ask if uncertain.
-- If multiple interpretations exist, present them — don't pick silently.
-- Push back when a simpler approach exists.
-- Surface semantic fallbacks and scope decisions before shipping. Mapping prior A → prior B in a code path with no analog, leaving a hardcoded list untouched on grounds it "looks scoped to something else", deciding which files an enum sweep covers — these are choices, not implementation details. Name them in the response or the plan; don't make them silently.
-### Simplicity first
-- No features, abstractions, or error handling beyond what was asked.
-- If 200 lines could be 50, rewrite it.
-### Surgical changes
-- Match existing style. Don't refactor or "improve" adjacent code.
-- Remove imports/variables your changes made unused; leave pre-existing dead code alone (mention it, don't delete it).
-- Every changed line should trace to the user's request.
-- Extend existing scripts; don't clone them. If a pipeline script already produces the needed output, run it — a broader run beats a parallel copy that duplicates logic and drifts. To narrow what it does (e.g. recompute only one output type), add a flag to that script; don't copy its logic into a new file.
-### Goal-driven execution
-- Transform tasks into verifiable goals with success criteria.
-- For multi-step work, state a brief plan with verification checks.
-- Loop until verified — don't declare success without checking.
-- When a change touches code called >10⁵ times per run (likelihoods, `prior_transform`, integrands, inner integrators), the plan must include a runtime/complexity bullet — table-lookups vs. scipy.stats overhead, vectorisation, allocation in the inner loop. Don't add it only when prompted.
-- After fixing a bug, the fix lands with a regression test that fails on the pre-fix code and passes after. "Manually reran and the symptom is gone" is not verification — the test suite did not catch the bug, so a new test is needed to keep it caught.
-
-### Shared compute
-Never submit jobs to SLURM or any cluster scheduler. Prepare the script, surface its parameters, and stop. The user runs it.
-
-## Working style and routing
-
-Default to the main session for small edits, tight back-and-forth, and final judgment. Delegate to subagents when output would be verbose, work is parallelizable, or a task is self-contained.
-
-Subagents:
-
-- **worker** (Sonnet): implements specified changes after the approach is decided.
-- **reviewer** (Sonnet): default review pass after non-trivial worker output.
-- **deep-reviewer** (Opus): numerical methods, the inference pipeline, calibration claims, `.tex`-vs-code drift, or anything flagged critical (see "Adversarial review" for the routing rule).
-- **analyst** (Opus): fresh-context reasoning when the main thread is noisy or the question is orthogonal. Read-only.
-- **test-runner** (Haiku): runs tests, returns only failures.
-- **researcher** (Haiku): external docs, library APIs, web lookup.
-- **Explore** (built-in, Haiku): read-only codebase lookup. Used automatically.
-
-Rules:
-
-1. After non-trivial worker output, invoke reviewer (or deep-reviewer for high-stakes code) before declaring done.
-2. After worker completes, invoke test-runner unless the change is purely cosmetic.
-3. Fan out parallel subagents for independent investigations across multiple files.
-4. Never run tests inline — delegate to test-runner so logs stay out of context.
-5. Resolve ambiguity, wide design space, or subagent questions in the main session before (re-)dispatching. Worker does not make architectural decisions.
-
-## Adversarial review
-
-After any non-trivial code change or numerical result the user is likely to act on, run an **adversarial code review**. Assume there is a bug; hunt for sign errors, off-by-ones, unit/coordinate slips, boundary handling, silent fallbacks, and biased defaults. Report findings before declaring final.
-
-Routing: **reviewer** for routine passes; **deep-reviewer** when the change touches the analysis pipeline, numerical methods, calibration, or anything where a subtle bug propagates into results. Concretely: deep-reviewer for anything that changes a number, curve, or contour appearing in a paper figure, anything on the reweighting / quantile / J-factor / Fermi-limit path, and any edit that reconciles a figure against the `.tex` claims. Reviewer for plotting cosmetics, data-ingest adapters, and provenance bookkeeping. **analyst** is read-only fresh-context reasoning — use it for orthogonal investigations or to classify failure modes, not as a substitute for reviewer. Do all of the above *unprompted* whenever the cost of being wrong exceeds a few minutes of agent time. Skip only for trivial edits (typo, rename, doc).
-
-Reviewers consult `docs/review-checklist.md` for recurring bug classes in this repo. **Only the main session writes to this file**. When a reviewer (or any subagent) catches a bug whose class isn't already listed, it must surface the proposed class in its findings — a one-line class name, where the bug typically appears, what goes wrong when it slips through, and what reviewers should flag going forward — and leave the file edit to the main session. Serializing writes through the main session keeps framing consistent and entries general enough to catch near-misses, not just the exact bug that triggered them.
-
-Entries describe the class, not the instance: name the failure mode, its consequences, the symptoms, and the review-time signals. Do not put the triggering file:line in the "what to flag" body.
-
-When you delegate a verification or review task, never assert the expected current state in the brief ("X is staged but not yet run," "Y still exists"): state drifts between when you frame the task and when the agent runs it — especially for user-gated actions and long background jobs — so a stale premise reads as authoritative and produces a false PASS. Hand the agent the artifacts and have it derive current state itself (`ls`/`git log`/dry-run), and ask it to flag any contradiction with your assumptions rather than confirm them.
-
-### When the gate fires
-
-The gate fires **before each commit** that touches non-trivial code — three commits = three reviewer dispatches. The diff under review is the diff being committed.
-
-### What does NOT substitute for a reviewer pass
-
-- **Parity gates / regression numbers / unit tests passing.** These verify what they were aimed at; a reviewer finds what you didn't think to check. Parity can't catch bugs shared by both paths or in code outside the comparison surface.
-- **"Framework-only, no calibration."** Import order, registry dispatch, docstring claims, and silent fallbacks are reviewable even when no numerics change.
-- **"The figure looks the same as the published one."** Visual agreement hides sign and unit errors that cancel at plot resolution. Compare the underlying arrays.
-- **The user already pointed out a bug.** That raises the prior of more bugs; the fix itself needs scrutiny for edge cases and adjacent interactions.
-- **"Small extension of already-reviewed code."** Non-trivial new code gets its own pass.
-
-### Gold-standard rule
-
-**Mock data is the gold standard for testing analysis pipelines.** Unit tests check the math; mocks check the *whole pipeline* end-to-end. For any calibration claim ("recovers X to within Y"), generate synthetic input at known truth, run the pipeline, and report bias and dispersion across multiple realizations. Single-step checks and single runs on real data hide systematics.
-
-Delegate mock runs: **worker** to set up and execute, **test-runner** for the runs, **deep-reviewer** to audit the bias/dispersion claim before it is reported to the user or lands in a figure.
-
-## Version control
-
-- Commit logically separable changes as distinct commits; don't bundle unrelated work.
-- Never force-push to shared branches. Never commit secrets or large data files — they live locally under `data/` and `results/`, gitignored. See "Datasets are self-contained".
-- Commit messages explain *why*, not just *what*.
-- Never `git push`. Stage and commit locally, then surface that the branch is ready to push — the user runs `git push`.
-- **Before each commit on non-cosmetic code** (this is a gate, not a suggestion):
-  1. reviewer / deep-reviewer dispatched on this diff (route by the rule under "Adversarial review");
-  2. test-runner green on the affected tests at the tier the change touches (`--rundata` for anything on the pipeline), plus the intermediate → figure step rerun and its output arrays diffed against the previous version;
-  3. any figure the diff changes has been regenerated, not left stale.
-
-## Project purpose
-
-Plots and reproduction code for a two-part paper series (Raman, Folsom, Kaplinghat, Lisanti, Safdi) on Milky Way dwarf spheroidal DM halos. **Part I** conditions a SatGen subhalo population on stellar mass (SHMR) or stellar kinematics to infer ρ₁₅₀, peak masses, r_max/v_max, and the V_circ–r_{1/2} relation. **Part II** turns those posteriors into J-factors for 39 dwarfs, compares Jeans-analysis J-factors under a prior ladder, and recasts Fermi-LAT ⟨σv⟩ limits.
-
-**`drafts_temp/` is read-only and is not part of this repository** — a local snapshot of the paper sources, which are versioned elsewhere. It is the *specification*: it defines what each figure must show and which numbers are claimed. Never edit it, including to match code or fix typos. When code and prose disagree, surface it and stop — fixing the code or refreshing the snapshot is the user's call. Cite by `\label` or section title, never line number.
-
-## The reproducibility contract
-
-**Everything in the papers reproduces from this repo alone, with one exception: generation of the SatGen trees and satellite catalogs**, which live under `config.TREES_DIR` (`TREES_*`, `SAT_*`, one per cosmology/resolution variant; overridable via `SDI_TREES_DIR`) and are fixed upstream input. Everything downstream — J-factors, reweighting, quantiles, contours, Jeans posteriors, Fermi recasting, figures — belongs here.
-
-- **Full reproduction is infeasible as a test** (SLURM array over ~10⁵–10⁶ halos per dwarf). Verify at the level one task or a cached intermediate supports, and say which level you reached.
-- **Cache intermediates, not just figures.** Every figure regenerates from an `.npz`/`.h5` via a script that lives here, and each intermediate (under `results/`, or the halo-level products under `data/`, see "Datasets are self-contained") records its SatGen variant, catalog snapshot, and producing script — silent version mixing is invisible in the figures and is the worst failure mode here.
-- Migrating a figure from `SatGen_Dwarf` means porting the *code path*, not the PDF.
-- The Jeans-side figures depend on `../DwarfJeansAnalysis`, which is itself a tracked, reproducible repo — so the chain stays intact without duplicating its pipeline here. Record which of its `results/` a figure consumed.
-
-## External sources (read freely; edit only when asked)
-
-- `../SatGen_Dwarf` — the pre-migration source tree this code was ported from. Not public, not tracked, and not part of the reproducibility chain: it is a source to **migrate from**, never to read at runtime.
-- `../DwarfJeansAnalysis` — tracked repo, and a **live dependency**: the Jeans-analysis figures in Part II (`jeans_corner.pdf`, `multipanel_jeans_priors.pdf`, the prior ladder, the Jeans J-factor comparisons) consume its `results/` directly. Read those outputs; don't vendor its `src/`. See its `ARCHITECTURE.md`.
-- `config.TREES_DIR` — SatGen trees and catalogs.
-
-The two paths a script may legitimately point outside the repo are `config.TREES_DIR` and `config.DJA_RESULTS_DIR`; each comes from a single configurable constant, never hardcoded at the call site, and a figure built from either records which snapshot it used.
-
-## Repository architecture
-
-This section is the **where things go and why** — the equivalent of an `ARCHITECTURE.md`, kept inline while the repo is small. Naming mirrors `SatGen_Dwarf` so ported code moves with minimal edits; most directories are scaffolding to fill as code is ported.
+Code for a two-part paper series (Raman, Folsom, Kaplinghat, Lisanti, Safdi)
+on Milky Way dwarf spheroidal dark-matter halos. Part I infers ρ₁₅₀, peak
+masses and related quantities from a SatGen subhalo population conditioned on
+stellar mass or kinematics; Part II turns them into J-factors and recasts
+Fermi-LAT ⟨σv⟩ limits.
 
 ```
-python/       computation source code — importable modules + analysis entry points
-scripts/      run harness — SLURM launchers and plot-production drivers
-data/         all input datasets and SatGen halo catalogs/weights, self-contained (see below)
-results/      derived intermediates (.npz/.h5), one subdirectory per product
-plots/        final paper figures, one subdirectory per figure family
-jupyter/      exploration only
-tests/        pytest suite — three opt-in tiers (see below)
-docs/         review-checklist.md, provenance.md, and any repo-internal notes
-drafts_temp/  read-only .tex snapshot — the specification
+python/   computation and figure code; every entry point takes CLI arguments
+scripts/  SLURM launchers (scripts/<name>.sh wraps python/<name>.py) and the
+          Zenodo fetch/pack/upload tools
+data/     inputs; large files come from the Zenodo record, not git
+results/  derived intermediates (from the Zenodo record or recomputed)
+plots/    the published figures and tables, with .prov.json provenance sidecars
+tests/    pytest suite
 ```
 
-The three that carry real rules:
+## Setting up
 
-- **`python/` is computation, not execution.** Modules import cleanly and are callable without a scheduler; each analysis entry point takes its parameters as CLI args. No SLURM directives and no hardcoded task counts. Figure-making code lives here too (`python/plot_*.py`, following `SatGen_Dwarf`) — "not execution" bars the scheduler and the job parameters, not plotting.
-- **`scripts/` is how things run.** SLURM array launchers *and* the drivers that turn `results/` into `plots/`. Convention: `scripts/<name>.sh` launches `python/<name>.py` with stdout in `scripts/<name>_out/`. Every paper figure has a driver here — a figure with no runnable producer does not satisfy the reproducibility contract. Prepare these; never submit them.
-- **`plots/` mirrors the drafts.** Basenames match what the `.tex` expects.
+- Environment: `conda env create -f environment.yml && conda activate sdi`.
+  LaTeX is not included; every figure needs a `latex` binary, found through
+  `SDI_TEXLIVE_BIN` (the directory holding `latex`). The default in
+  `python/config.py` is the authors' machine, so a figure fails loudly until
+  this is set.
+- Data: git holds only the code and small text inputs; the rest comes from
+  the Zenodo record (next section).
 
-Update this section in the same change that adds a top-level directory, moves a responsibility between `python/` and `scripts/`, or alters a repo-wide convention (units, output paths, dataset layout). Routine edits inside an existing module do not require an update — if you find yourself adding function-level detail here, it belongs in a docstring. Promote this section to a standalone `ARCHITECTURE.md` once the layout outgrows a screen.
+## The Zenodo record
 
-### Datasets are self-contained
+All large data lives in one Zenodo record (`zenodo/README_DATA.md` is its
+README; the DOI and record ID are in `README.md` once published). Nothing
+in the repository runs past a few unit tests without it. It has two tiers:
 
-**Every dataset the pipeline reads lives under `data/` in this repository**, except the two declared upstream dependencies: `config.TREES_DIR` and `config.DJA_RESULTS_DIR`. No runtime reads from `../SatGen_Dwarf/data/`, from `$HOME`, or from any other absolute path outside the repo. Migrating an analysis means migrating the data it consumes, not pointing at where it currently sits.
+- **`figures`** (about 27 GB download): the intermediates every paper figure
+  and table reads. With it, each figure redraws in minutes, no cluster needed.
+  `jeans_corner.pdf` cannot be redrawn from it (it is drawn by the
+  DwarfJeansAnalysis repository). The supplementary rmax/vmax figures can be
+  redrawn only after recomputing from `inputs`; the supplementary
+  ρ₁₅₀–M_peak figures for all dwarfs except Draco, Hydrus I and Segue 1
+  cannot be reproduced from the record. Use the published PDFs in `plots/`.
+- **`inputs`** (about 22 GB download, 33 GB unpacked; `all` is about 40 GB
+  download): the SatGen halo catalogs, the frozen published
+  SHMR weight draw, the Fermi-LAT data and a DwarfJeansAnalysis results
+  snapshot, from which the pipeline recomputes the paper results on a
+  cluster.
 
-The split is **local, not committed**: data lives in the working tree so the repo is self-contained on this machine; git tracks the code that reads and produces it. Large files under `data/` and `results/` are gitignored — self-containment on GitHub means the recipe is in-repo, not the bytes. Never resolve a size problem by moving a file outside the repo.
+Fetch from the repository root:
 
-`data/` holds observational and literature inputs — dwarf catalogs, stellar kinematics, published limit curves, SHMR tables — one subdirectory per source. Small text inputs are committed; they are the provenance-critical layer, where a silent catalog swap changes every downstream number.
+```bash
+python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # or inputs, all
+export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"
+```
 
-`data/` also holds the halo-level products built from the trees, because they are the pipeline's entry point when the trees are not available:
+The fetch unpacks into the checkout (`--dest` to change), verifies every
+archive against Zenodo's md5 and `MANIFEST.json`'s sha256 (`--files-from`
+checks only the latter), and refuses to overwrite a differing local file
+unless given `--force`. A network fetch needs `requests`; both need a Python with `tarfile.data_filter` (both satisfied by `environment.yml`),
+and stages archives under `--dest` (or `--tmp DIR`), so allow about 10 GB
+extra. `--files-from DIR` (DIR holding `MANIFEST.json` and the archives under
+their record names) unpacks without the network.
+`SDI_DJA_RESULTS_DIR` must be exported in every shell that runs the code;
+without it the Jeans products are looked for in a sibling
+`../DwarfJeansAnalysis` checkout.
 
-- `satgen_catalogs/`: per-version `.h5` halo catalogs (`make_h5.py`) and the per-halo `<version>_{rho30,M30,rho150,Mvir200}.npz` arrays beside them (`compute_mhalf.py --globals`).
-- `mhalf/<version>/`: per-dwarf half-light masses (`compute_mhalf.py`).
-- `halo_weights/<version>/`: per-dwarf conditioning weights (`compute_weights.py`, seeded).
-- `halo_weights_published/<version>/`: the weights migrated from `SatGen_Dwarf`. Their SHMR weights are a single draw from an unseeded RNG that cannot be reproduced, so this is the only way back to the published SHMR numbers. Nothing regenerates it. It is read (never written) by `compute_quantiles`, `save_contours`, `fermi_reweighting` and `fermi_expected_limits` when run with `--weights-source published`, which the contour and Fermi launchers pass (`compute_quantiles.sh` takes it as `WEIGHTS_SOURCE=published`); `compute_quantiles` then writes `results/paper_quantiles/galactocentric_published/`. `compute_quantiles` defaults to seeded (its seeded and published outputs go to separate trees); `save_contours`, `fermi_reweighting` and `fermi_expected_limits` write the same product tree either way, so they default to `published` and `seeded` raises unless `SDI_RESULTS_DIR` is redirected away from `<repo>/results`. The paper draws on both realizations: the SHMR contours and Fermi products come from the published draw, while the figure drivers and tables that read `halo_weights/` or `paper_quantiles/galactocentric/` (`plot_number_functions`, `plot_powerlaw`, `make_tables`, `plot_jfactor_panels`, `plot_multipanel_*`, `plot_scaling_relations`, `plot_vcirc_satellites_all`) use the seeded one. The contour and Fermi launchers overwrite the migrated products in `results/` in place; back them up first if you need them as a parity reference.
+`MANIFEST.json` lists every archive member with its sha256, and
+`sdi_git_commit`, the public commit the record was packed from; checking it
+out gives an exact match, though later commits normally change only
+documentation. Provenance sidecars (`*.prov.json`) record the authors'
+machine paths and `git_commit` values from unpublished history, which mostly will not resolve (none in the deposited
+sidecars); `MANIFEST.json`'s `path_remap` table (data only, nothing applies
+it) maps the paths to the deposited layout.
+`scripts/zenodo_pack.py` and `scripts/zenodo_upload.py` are the authors'
+packing and upload tools; a user does not need them.
 
-`SDI_RESULTS_DIR` does not redirect these writers. Back up the affected subtree by hand before rerunning any of them for a parity check.
+## Running things
 
-`results/` holds the other derived intermediates (the halo products above live under `data/`), gitignored. Each product records the SatGen variant, input catalog snapshot, and producing script, and rebuilds from `data/` plus the trees via a script in `scripts/`.
+- **The `scripts/*.sh` launchers are specific to the authors' SLURM cluster**
+  (account, partitions, a `J_calc` environment). Don't run them as they stand
+  elsewhere, and don't submit cluster jobs without the user's say-so. Run
+  `python/<name>.py` directly with the arguments the launcher's last line
+  passes, including the environment variables it reads (`VERSION`,
+  `WEIGHTS_SOURCE`, `VARIANTS`). For most array stages the task index is the dwarf index (0–42);
+  `Jdwarf`, `Jhalopos`, `massProfile` and `vcirc_scatter_300pc` use other
+  index spaces and argument orders, documented in each header. Leave the
+  `--array` line of `vcirc_scatter_300pc.sh` unchanged: the Python reads it.
+- **Figure drivers** (`python/plot_*.py`, `python/make_tables.py`) run in
+  minutes from the `figures` tier and write into `plots/`, overwriting the
+  published PDFs there. `git checkout plots/` restores them.
+- **Pipeline stages** are array jobs over 10⁵–10⁶ halos per dwarf. Follow the
+  stage order in `zenodo/README_DATA.md` ("Recomputing from `inputs`").
+  Recompute in a separate clone fetched with `--tier inputs` only, not in a
+  `figures` or `all` checkout: several stages overwrite the deposited
+  products in `data/` and `results/` in place.
 
-## Things that will bite you
+## Things that will bite
 
-- **SatGen comes from the conda-forge `satgen` package** (0.1.0, upstream SatGen, pinned in `environment.yml`; installed in the `J_calc` conda env), not vendored. It is not the folsomde fork, which generated the trees. `Green` / `Dekel` / `NFW` imports fail outside it.
-- **`<version>` is an argument, not a tag** — it selects the SatGen realization/cosmology (`Diemer`, `Zhao`, `Correa`, …). Mixing versions corrupts results silently.
-- **Dwarf names contain spaces** (`Ursa Major II`, `Segue 1`) and appear verbatim in filenames the `.tex` references. Quote paths; don't sanitize names. The `SatGen_take2/` prefix in `\includegraphics` is the paper build tree, not a directory here — match the basenames.
-- **Part I and Part II share upstream intermediates.** A reweighting or catalog change moves figures in both; check both drafts before calling a change scoped.
-- **`tests/` has three tiers, and the default run covers none of the pipeline.** `pytest` alone runs unit tests only — seconds, no data, no network. `pytest --rundata` adds stage-parity checks against the migrated `results/` tree; `pytest --runslow` adds the mock-pipeline calibration run. A green default run says nothing about the pipeline; say which tier you reached.
-- **"Verified" still means arrays, not PDFs.** For any figure change, diff the produced arrays against the previous version — visual agreement hides sign and unit errors that cancel at plot resolution.
+- **`<version>` is an argument that selects the SatGen catalog** (`Diemer`,
+  `Zhao`, `m2e12`, `Diemer_0p12`, `mass_floor_7`, and reweighting variants such
+  as `lmc`). Mixing versions corrupts results silently.
+- **Dwarf names contain spaces** (`Ursa Major II`, `Segue 1`) and appear
+  verbatim in filenames. Quote paths; don't sanitize names.
+- **Two SHMR weight realizations.** `data/halo_weights_published/` is an
+  unseeded draw that cannot be regenerated; the SHMR contours and Fermi
+  products use it (`--weights-source published`). The quantiles, tables and
+  most other figures use the seeded `data/halo_weights/`, which
+  `compute_weights.py` regenerates exactly.
+- **Not everything reproduces bit for bit**: the Fermi Monte Carlo bands, the
+  halo-position J-factors and the scatter in two scaling-relation figures are
+  statistical. `zenodo/README_DATA.md` ("Reproducibility notes") lists what
+  does and doesn't, and which supplementary figures can be redrawn.
+- **SatGen is the conda-forge `satgen` package**, not the fork that generated
+  the trees. Regenerating the SatGen trees is outside this repository;
+  `make_h5.py` builds catalogs from them (via `SDI_TREES_DIR`), except
+  `mass_floor_7`, which cannot be rebuilt.
+
+## Tests
+
+`pytest` runs fast unit tests with no data. `pytest --rundata` checks stage
+parity against the authors' full `data/` and `results/` trees (hundreds of
+GB); the Zenodo tiers carry only a subset, so some of those tests fail until
+the corresponding stages are recomputed. Don't read those failures as a bad
+download. (`--runslow` selects no tests yet.) Say which tier was run.

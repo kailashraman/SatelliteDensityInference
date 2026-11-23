@@ -30,7 +30,7 @@ and Jeans overlay are otherwise character-identical to upstream:
     plotted; the first assignment and everything computed from it
     (`jval_grid`, `cV_grid`, `rho150_grid` itself) is dead -- computed, never
     read again. Dropping it changes no plotted array. Flagged here per
-    CLAUDE.md rather than silently trimmed.
+    docs/claude.development.md rather than silently trimmed.
   * `mhalf_grid_list`, a `(len(paper_selection), ny, nx)` array upstream
     built to loop over a `paper_selection` list that always held exactly one
     dwarf name, is a plain 2-D `mhalf_grid` here -- this module is already

@@ -12,8 +12,8 @@ produce:
     satellites_vcirc_intro.pdf
 
 The upstream script already carried a `make_plot(which)` toggle for the first
-two; `intro` is added as a third branch on that same toggle (CLAUDE.md:
-"extend, don't clone") rather than a second module. `intro`'s series
+two; `intro` is added as a third branch on that same toggle (docs/claude.development.md:
+"Extend existing scripts; don't clone them.") rather than a second module. `intro`'s series
 (measured-only errorbars, SatGen median with 68%/95% bands, a reference NFW
 halo curve) differ from fattahi18/kim24's (measured + one SHMR-inferred
 errorbar series, unbanded median) but the two share the same LMC-analog mask,
@@ -29,7 +29,7 @@ single gray 68% band around the SatGen median (quantiles_arr indices 2/4,
 i.e. the 16th/84th percentile columns), a single green NFW curve+band, and no
 SHMR-inferred points -- i.e. an EARLIER run of this cell, before the
 Fattahi18/Kim24 experimentation visible in the current source was added
-(per CLAUDE.md/memory: comment state is post-run residue, the rendered PDF is
+(per docs/review-checklist.md, "Comment state read as the figure specification": comment state is post-run residue, the rendered PDF is
 the spec). Confirmed by flat-fill RGB decomposition of the rendered PDF at
 200 dpi: it shows a single gray level (204,204,204), consistent with one
 alpha-0.2 fill over white, not two overlapping fills (an earlier version of
