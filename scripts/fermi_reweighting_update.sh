@@ -9,14 +9,23 @@
 # own default stays 'legacy' (see that module's docstring); this launcher, not
 # a buried default, is what makes 'update' the variant actually run.
 #
-# Requires the paper_quantiles/galactocentric/{Diemer,mhalf_scatter} trees
-# (scripts/compute_quantiles.sh) and, for the Jeans_satgen* variants,
+# The paper's products were built from the unseeded SHMR weight draw migrated
+# to data/halo_weights_published/<version>/, not the seeded regeneration in
+# data/halo_weights/, so this launcher passes `--weights-source published`
+# explicitly (the python default for this stage is also published; seeded
+# raises unless SDI_RESULTS_DIR is redirected).
+#
+# Requires the paper_quantiles/galactocentric_published/{Diemer,mhalf_scatter}
+# trees (scripts/compute_quantiles.sh with WEIGHTS_SOURCE=published; bit-exact
+# for Diemer, verified on Segue 1, but mhalf_scatter differs from the migrated
+# reference by up to ~1e-3 in J, built from an older paper_Js, so the migrated
+# tree is the one to use for it) and, for the Jeans_satgen* variants,
 # DwarfJeansAnalysis posteriors under config.DJA_RESULTS_DIR (override:
 # $SDI_DJA_RESULTS_DIR) for the dwarfs/priors being requested. Only the dwarfs
 # in Jdata.DJA_SKIP_KEYS skip the Jeans_satgen*
 # variants; for any other dwarf a missing posterior fails the task.
 #
-# mcdaniel is NOT buildable here: paper_quantiles/galactocentric/mcdaniel was
+# mcdaniel is NOT buildable here: paper_quantiles/galactocentric{,_published}/mcdaniel was
 # deliberately not migrated (its weights are 17 GB and excluded; no in-repo
 # producer -- see docs/migration-notes.md). The default variant set (no
 # VARIANTS override) excludes mhalf_mcdaniel for this reason; requesting it
@@ -77,7 +86,7 @@ conda activate J_calc
 set -euo pipefail
 cd "${REPO}"
 
-ARGS=("${SLURM_ARRAY_TASK_ID}" --legacy-version update)
+ARGS=("${SLURM_ARRAY_TASK_ID}" --legacy-version update --weights-source published)
 if [[ -n "${VARIANTS:-}" ]]; then
   ARGS+=(--variants "${VARIANTS}")
 fi

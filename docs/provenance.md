@@ -62,6 +62,23 @@ mstar_evolution   the infall -> z=0 stellar-mass convention evolved_Mstar used,
                   vanish the next time that quantiles product is itself
                   embedded as an input -- e.g. in a figure manifest -- because
                   that embedding strips quantiles' `inputs[]` wholesale.
+weights_source    'seeded' | 'published' -- which conditioning weights fed the
+                  product (`--weights-source`). 'published' is the unseeded
+                  data/halo_weights_published/ draw behind the paper's SHMR
+                  products. Stamped by compute_quantiles.py and
+                  save_contours.py (galactocentric and rho150_mpeak groups)
+                  and by the Fermi stages on products reading quantiles.
+                  Absent on older products = seeded/unknown. A published
+                  compute_quantiles product stamps `mstar_evolution` =
+                  'published_unseeded' (the migrated weights sidecar carries
+                  none and the draw cannot be regenerated), so the mix guard
+                  flags combining it with seeded quantiles, naming the
+                  weights source.
+weights_dir       the weights directory actually read (compute_quantiles.py,
+                  save_contours.py)
+quantiles_tree    'galactocentric' | 'galactocentric_published' -- the
+                  paper_quantiles subtree a Fermi product read
+                  (fermi_reweighting.py, fermi_expected_limits.py)
 ```
 
 `inputs` embeds each input's stamp but not *its* inputs. Part II's aggregation

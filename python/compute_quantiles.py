@@ -72,6 +72,17 @@ col_co = co.setCosmology('SatGen')
 dwarf_names = obs.dwarf_names
 dsph_idx = int(sys.argv[1])
 version = sys.argv[2]
+# Optional trailing `--weights-source {seeded,published}` (default seeded).
+# Parsed before any data read; any other extra token is rejected.
+_extra = sys.argv[3:]
+weights_source = 'seeded'
+if _extra and _extra[0] == '--weights-source':
+    if len(_extra) < 2 or _extra[1] not in ('seeded', 'published'):
+        raise ValueError("--weights-source requires 'seeded' or 'published'")
+    weights_source = _extra[1]
+    _extra = _extra[2:]
+if _extra:
+    raise ValueError(f'unrecognized arguments: {_extra}')
 # if version == 'Geha':
 #     dwarf_names = obs.geha_names
 #     use_geha = True
@@ -80,7 +91,29 @@ version = sys.argv[2]
 dwarf = dwarf_names[dsph_idx]
 print(dwarf)
 
-save_dir = config.PAPER_QUANTILES_DIR / 'galactocentric' / version
+# published weights (data/halo_weights_published/, the unseeded draw behind the
+# paper's SHMR products) write to their own tree so they never mix with the
+# seeded one. Reproduction from the published weights is bit-exact for Diemer,
+# Zhao and mass_floor_7 (verified on Segue 1); the alias versions (mhalf_scatter,
+# lmc, lvdb) differ by up to ~1e-3 relative in J_quantiles because the migrated
+# references were built from an older paper_Js. Hence an existing output whose
+# sidecar has migrated_from set is a reference, not ours to overwrite.
+if weights_source == 'published':
+    save_dir = config.PAPER_QUANTILES_DIR / 'galactocentric_published' / version
+    _existing = save_dir / (dwarf + '.npz')
+    _prior = provenance.read(_existing) if _existing.exists() else None
+    if _existing.exists() and _prior is None:
+        raise RuntimeError(
+            f'{_existing} exists with no provenance record, so it cannot be '
+            'told apart from a migrated reference; refusing to overwrite it. '
+            'Redirect SDI_RESULTS_DIR to a scratch directory, or remove it by hand.')
+    if _prior is not None and _prior.get('migrated_from'):
+        raise RuntimeError(
+            f'{_existing} is a migrated reference (migrated_from='
+            f'{_prior["migrated_from"]!r}); refusing to overwrite it. Redirect '
+            'SDI_RESULTS_DIR to a scratch directory for a published-weights run.')
+else:
+    save_dir = config.PAPER_QUANTILES_DIR / 'galactocentric' / version
 
 # if version == 'Geha':
 #     sim_version = 'Diemer'
@@ -107,7 +140,8 @@ else:
     print('No J-factor file at ' + str(J_factor_file) + ' -- skipping J quantiles')
 
 print(dwarf)
-weights_dir = config.WEIGHTS_DIR / version
+weights_dir = (config.WEIGHTS_PUBLISHED_DIR if weights_source == 'published'
+               else config.WEIGHTS_DIR) / version
 SHMR_names = ['Behroozi13', 'Moster13', 'RodriguezPuebla17', 'Fattahi18', 'Moster18', 'Behroozi19', 'Munshi21', 'Danieli23_const', 'Danieli23_grow', 'Kim24']
 weights_file = np.load(weights_dir / (dwarf + '.npz'))
 weights_list = []
@@ -280,12 +314,21 @@ for j in range(n_lists):
 # this record's inputs[] -- and provenance._input_record strips inputs[] when
 # embedding, so a figure manifest built from this file would otherwise lose
 # the field entirely and read as "unknown" for a product that is fine.
-mstar_evolution = provenance.read(
-    weights_dir / (dwarf + '.npz')).get('mstar_evolution')
+# For weights_source='published' the migrated weights sidecar carries no
+# mstar_evolution; stamp an explicit 'published_unseeded' instead of None so the
+# mix guard still flags combining these quantiles with seeded ones, without
+# claiming a regeneration is possible (nothing regenerates the published draw).
+if weights_source == 'published':
+    mstar_evolution = 'published_unseeded'
+else:
+    mstar_evolution = provenance.read(
+        weights_dir / (dwarf + '.npz')).get('mstar_evolution')
 
 record = provenance.stamp('python/compute_quantiles.py', version=version, argv=sys.argv[1:],
                           inputs=provenance_inputs, dwarf=dwarf,
-                          mstar_evolution=mstar_evolution)
+                          mstar_evolution=mstar_evolution,
+                          weights_source=weights_source,
+                          weights_dir=str(weights_dir))
 if has_J:
     provenance.savez(save_dir / dwarf, record, rho150_infall_quantiles=rho150_infall_quantiles, cV_infall_quantiles=cV_infall_quantiles, rho150_quantiles=rho150_quantiles, cV_quantiles=cV_quantiles, J_quantiles=J_quantiles, theta95_quantiles=theta95_quantiles, Mvir_quantiles=Mvir_quantiles, Mpeak_quantiles=Mpeak_quantiles, Mloss_quantiles=Mloss_quantiles, rmax_quantiles=rmax_quantiles, vmax_quantiles=vmax_quantiles, Mhalf_quantiles=Mhalf_quantiles, dispersion_quantiles=dispersion_quantiles)
 else:

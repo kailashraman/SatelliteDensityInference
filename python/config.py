@@ -52,6 +52,10 @@ if _results_override is not None and not _results_override.strip():
         f'{REPO_ROOT / "results"}, or set it to an absolute path')
 RESULTS_DIR = (Path(_results_override).expanduser().resolve()
                if _results_override else REPO_ROOT / 'results')
+# True when RESULTS_DIR is the repo's own results/ (no redirect, or one that
+# resolves to it). Stages whose seeded and published runs write the same product
+# tree use this to refuse a seeded run that would overwrite published-draw products.
+RESULTS_DIR_IS_DEFAULT = RESULTS_DIR.resolve() == (REPO_ROOT / 'results').resolve()
 PLOTS_DIR = REPO_ROOT / 'plots'
 DOCS_DIR = REPO_ROOT / 'docs'
 # The paper sources are not part of this repository; figure_registry parses
@@ -70,6 +74,7 @@ DRAFTS_DIR = (Path(_drafts_override).expanduser().resolve()
 # Halo-level products under data/, renamed from upstream SatGen_Dwarf's
 # additional/ (satgen_catalogs, mhalf, halo_weights <- additional/weights_gc,
 # halo_weights_published <- additional/weights_gc_published).
+# WEIGHTS_PUBLISHED_DIR is read (never written) by compute_quantiles, save_contours, fermi_reweighting and fermi_expected_limits under `--weights-source published`.
 SATGEN_CATALOGS_DIR = DATA_DIR / 'satgen_catalogs'
 WEIGHTS_DIR = DATA_DIR / 'halo_weights'
 WEIGHTS_PUBLISHED_DIR = DATA_DIR / 'halo_weights_published'

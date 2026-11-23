@@ -322,6 +322,11 @@ def stamp_existing(path, record):
     return _write_sidecar(path, record)
 
 
+# `mstar_evolution` value stamped by compute_quantiles.py --weights-source
+# published: the migrated weights carry no field and their realization is
+# unregenerable, so it is its own class (never equal to 'per_halo_tidal').
+PUBLISHED_UNSEEDED = 'published_unseeded'
+
 # Stages whose products carry an infall -> z=0 stellar-mass convention, i.e.
 # those downstream of ResampleMstar.evolved_Mstar. Anything else legitimately
 # has no `mstar_evolution` field and is exempt from that comparison.
@@ -431,6 +436,15 @@ def assert_single_version(paths, expected=None):
             f'  {convention!r}: {len(files)} file(s), e.g. {files[0]}'
             for convention, files in sorted(
                 conventions.items(), key=lambda kv: str(kv[0])))
+        if PUBLISHED_UNSEEDED in conventions:
+            raise ValueError(
+                'inputs mix published-weights products with others '
+                f'(mstar_evolution):\n{detail}\n'
+                "'published_unseeded' marks products built with "
+                '--weights-source published (the unseeded SHMR draw in '
+                'data/halo_weights_published/, which cannot be regenerated); '
+                'the others come from other weights. Use one weights source '
+                'throughout: all --weights-source published, or all seeded.')
         raise ValueError(
             'inputs mix infall -> z=0 stellar-mass conventions '
             f'(mstar_evolution):\n{detail}\n'

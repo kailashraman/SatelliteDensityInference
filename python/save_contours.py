@@ -7,7 +7,16 @@ _compute_contour_level now live in contour_io.py (see that module's
 docstring for why); this is the entry point, taking its parameters as CLI
 args exactly as upstream did, in the same order:
 
-    python save_contours.py <dsph_idx> <version> <redshift>
+    python save_contours.py <dsph_idx> <version> <redshift> [--weights-source {seeded,published}]
+
+--weights-source (default published) selects the conditioning weights read:
+    published  -> config.WEIGHTS_PUBLISHED_DIR / version (the unseeded draw
+                  that built the paper's SHMR contours; verified bit-exact on
+                  Segue 1, Diemer, z0, all 8 products)
+    seeded     -> config.WEIGHTS_DIR / version. Output paths are the same
+                  either way and results/ holds the published-draw products,
+                  so seeded raises unless SDI_RESULTS_DIR redirects away from
+                  <repo>/results.
 
 Path/import/provenance edits only -- the grid construction, KDE/histogram
 settings, contour levels, the weights indices used, and the redshift
@@ -26,7 +35,7 @@ module this script actually uses, so the star import's namespace pollution
 is gone.
 
 The four hardcoded absolute SatGen_Dwarf paths become config-derived:
-    weights_dir            -> config.WEIGHTS_DIR / version
+    weights_dir            -> config.WEIGHTS_PUBLISHED_DIR / version (config.WEIGHTS_DIR with --weights-source seeded)
     save_dir                -> config.PAPER_CONTOURS_DIR / 'galactocentric' / redshift / version
     rho150_mpeak_save_dir    -> config.PAPER_CONTOURS_DIR / 'rho150_mpeak' / version
     jeans_base                -> config.PAPER_CONTOURS_DIR
@@ -107,6 +116,23 @@ dwarf_names = obs.dwarf_names
 dsph_idx = int(sys.argv[1])
 version = sys.argv[2]
 redshift = sys.argv[3]
+# Optional trailing `--weights-source {seeded,published}` (default published:
+# this stage writes the same product tree either way, and results/ holds the
+# published-draw products). Parsed before any data read; any other extra token
+# (including a repeated flag) is rejected.
+_extra = sys.argv[4:]
+weights_source = 'published'
+if _extra and _extra[0] == '--weights-source':
+    if len(_extra) < 2 or _extra[1] not in ('seeded', 'published'):
+        raise ValueError("--weights-source requires 'seeded' or 'published'")
+    weights_source = _extra[1]
+    _extra = _extra[2:]
+if _extra:
+    raise ValueError(f'unrecognized arguments: {_extra}')
+if weights_source == 'seeded' and config.RESULTS_DIR_IS_DEFAULT:
+    raise ValueError(
+        'results/ holds the published-draw products; seeded runs of this stage '
+        'must write to a redirected SDI_RESULTS_DIR')
 
 # Validated FIRST, before any directory is built from it: the only branch
 # that actually reads `redshift` (below, choosing xvals/yvals) is an
@@ -119,7 +145,8 @@ if redshift not in ('z0', 'infall'):
     raise ValueError(
         f"unknown redshift {redshift!r}; must be one of ('z0', 'infall')")
 
-weights_dir = str(config.WEIGHTS_DIR / version) + '/'
+weights_dir = str((config.WEIGHTS_PUBLISHED_DIR if weights_source == 'published'
+                   else config.WEIGHTS_DIR) / version) + '/'
 save_dir = str(config.PAPER_CONTOURS_DIR / 'galactocentric' / redshift / version) + '/'
 rho150_mpeak_save_dir = str(config.PAPER_CONTOURS_DIR / 'rho150_mpeak' / version) + '/'
 jeans_priors = ['loguniform', 'satgen', 'satgen_box',
@@ -196,7 +223,8 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
     # save_contour at each write instead of stamped afterward in a batch.
     galactocentric_record = provenance.stamp(
         'python/save_contours.py', version=version, argv=sys.argv[1:],
-        inputs=provenance_inputs, dwarf=dwarf, redshift=redshift)
+        inputs=provenance_inputs, dwarf=dwarf, redshift=redshift,
+        weights_source=weights_source, weights_dir=weights_dir)
 
     save_contour(np.log10(xvals), np.log10(yvals), mhalf_weights, dwarf + '_mhalf', save_dir, galactocentric_record, level=0.68, kde_bw=kde_bw)
     save_contour(np.log10(xvals), np.log10(yvals), RP17_weights, dwarf + '_RP17', save_dir, galactocentric_record, level=0.68, kde_bw=kde_bw)
@@ -249,7 +277,8 @@ with ResampleMstar(version = version, mass_floor=mass_floor, cut='distance') as 
     # not keyed by it).
     rho150_mpeak_record = provenance.stamp(
         'python/save_contours.py', version=version, argv=sys.argv[1:],
-        inputs=provenance_inputs, dwarf=dwarf)
+        inputs=provenance_inputs, dwarf=dwarf,
+        weights_source=weights_source, weights_dir=weights_dir)
 
     xvals = 10**logrho150
     yvals = 10**logMpeak

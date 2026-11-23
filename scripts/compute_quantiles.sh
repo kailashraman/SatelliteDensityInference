@@ -3,10 +3,22 @@
 #
 #   sbatch scripts/compute_quantiles.sh                        # Diemer
 #   sbatch --export=ALL,VERSION=Zhao scripts/compute_quantiles.sh
+#   sbatch --export=ALL,WEIGHTS_SOURCE=published scripts/compute_quantiles.sh
+#
+# WEIGHTS_SOURCE (default seeded) picks the conditioning weights. `published`
+# reads data/halo_weights_published/<version>/ (the unseeded draw behind the
+# paper's SHMR products) and writes
+# results/paper_quantiles/galactocentric_published/<version>/ instead of
+# .../galactocentric/<version>/, so the two never mix. An empty WEIGHTS_SOURCE
+# is passed through and rejected by python. Reproduction from the published
+# weights is bit-exact for Diemer, Zhao and mass_floor_7 (verified on Segue 1);
+# the alias versions (mhalf_scatter, lmc, lvdb) differ by up to ~1e-3 in J
+# (the migrated references were built from an older paper_Js). The stage refuses
+# to overwrite a migrated reference: redirect SDI_RESULTS_DIR for such runs.
 #
 # Requires, for this version, scripts/compute_mhalf.sh (both passes),
-# scripts/compute_weights.sh, and scripts/Jdwarf.sh + scripts/concat_Js.sh (for
-# the J-factor quantiles; a dwarf missing halo_Js.npz still gets the
+# scripts/compute_weights.sh (seeded only), and scripts/Jdwarf.sh +
+# scripts/concat_Js.sh (for the J-factor quantiles; a dwarf missing halo_Js.npz still gets the
 # non-J quantiles, with a printed warning -- see compute_quantiles.py's
 # `has_J` guard).
 #
@@ -73,4 +85,4 @@ conda activate J_calc
 set -euo pipefail
 cd "${REPO}"
 
-exec python -u "${REPO}/python/compute_quantiles.py" "${SLURM_ARRAY_TASK_ID}" "${VERSION:-Diemer}"
+exec python -u "${REPO}/python/compute_quantiles.py" "${SLURM_ARRAY_TASK_ID}" "${VERSION:-Diemer}" --weights-source "${WEIGHTS_SOURCE-seeded}"

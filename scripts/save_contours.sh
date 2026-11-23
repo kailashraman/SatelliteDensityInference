@@ -5,8 +5,14 @@
 #   sbatch scripts/save_contours.sh                                    # Diemer, z0
 #   sbatch --export=ALL,VERSION=Zhao,REDSHIFT=infall scripts/save_contours.sh
 #
-# Requires scripts/compute_weights.sh to have already completed for this
-# version (reads data/halo_weights/<version>/<dwarf>.npz) and
+# The paper's products were built from the unseeded SHMR weight draw migrated
+# to data/halo_weights_published/<version>/, not the seeded regeneration in
+# data/halo_weights/, so this launcher passes `--weights-source published`
+# explicitly (the python default for this stage is also published; seeded
+# raises unless SDI_RESULTS_DIR is redirected).
+#
+# Requires data/halo_weights_published/<version>/<dwarf>.npz (migrated; nothing
+# regenerates it) and
 # scripts/compute_mhalf.sh's pass 2 for this version's rho150 file
 # (data/satgen_catalogs/<version>_rho150.npz):
 #
@@ -69,4 +75,4 @@ conda activate J_calc
 set -euo pipefail
 cd "${REPO}"
 
-exec python -u "${REPO}/python/save_contours.py" "${SLURM_ARRAY_TASK_ID}" "${VERSION:-Diemer}" "${REDSHIFT:-z0}"
+exec python -u "${REPO}/python/save_contours.py" "${SLURM_ARRAY_TASK_ID}" "${VERSION:-Diemer}" "${REDSHIFT:-z0}" --weights-source published

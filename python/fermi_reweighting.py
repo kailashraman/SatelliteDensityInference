@@ -28,6 +28,20 @@ Usage, unchanged from upstream:
     python fermi_reweighting.py <dsph_idx>
     python fermi_reweighting.py <dsph_idx> --variants name1,name2,...
     python fermi_reweighting.py <dsph_idx> --legacy-version {legacy,update}
+    python fermi_reweighting.py <dsph_idx> --weights-source {seeded,published}
+
+--weights-source (default published) picks the quantiles tree read:
+paper_quantiles/galactocentric_published (published: the unseeded SHMR draw that
+built the paper's mhalf/F18/K24 products) or paper_quantiles/galactocentric
+(seeded). The output tree is the same either way and results/ holds the
+published-draw products, so seeded raises unless SDI_RESULTS_DIR redirects away
+from <repo>/results. With --legacy-version update, the mhalf/F18/K24 products
+in results/fermi_reweighting_update reproduce bit-exactly from
+galactocentric_published/Diemer (verified for Draco and Antlia II). The stored
+legacy tree results/fermi_reweighting does not: it differs by 1.7138e-4 in TS
+(see docs/migration-notes.md) and is superseded. There is no published mcdaniel
+tree, so mhalf_mcdaniel with published raises FileNotFoundError naming
+galactocentric_published/mcdaniel, with no fallback to the seeded tree.
 
 --legacy-version keeps upstream's default ('legacy'): the drafts cite
 Circiello:2026inp and the production launcher (fermi_reweighting_update.sh)
@@ -58,8 +72,10 @@ Path/provenance changes:
     is new (see config.py) since nothing already named the update results
     tree.
   - Every '../results/paper_quantiles/galactocentric/<version>/<name>.npz'
-    read is config.PAPER_QUANTILES_DIR / 'galactocentric' / version / f'{name}.npz'
-    (config.PAPER_QUANTILES_DIR already existed).
+    read is config.PAPER_QUANTILES_DIR / QUANTILES_TREE / version / f'{name}.npz'
+    (config.PAPER_QUANTILES_DIR already existed), where QUANTILES_TREE is
+    'galactocentric_published' (default) or 'galactocentric' (see
+    --weights-source below).
 
 Every output .npz is stamped with provenance, following massProfile.py's
 provenance.savez pattern rather than save_contours.py's raw-np.savez +
@@ -122,7 +138,8 @@ ALL_VARIANTS = (
 
 # mhalf weighted with McDaniel 2023 sigma_los. Excluded from ALL_VARIANTS (and
 # so from a default, no-flag run): results/paper_quantiles/galactocentric/
-# holds nine versions and 'mcdaniel' is not among them -- its weights (17 GB)
+# holds nine versions and 'mcdaniel' is not among them (nor is it in
+# galactocentric_published) -- its weights (17 GB)
 # were deliberately not migrated, and there is no in-repo producer for the
 # quantiles this variant reads. See docs/migration-notes.md, "Products removed
 # as stale or orphaned rather than migrated". Reachable only via an explicit
@@ -155,6 +172,37 @@ if '--legacy-version' in rest:
         raise ValueError(f"unknown --legacy-version {legacy_version!r}; choose 'legacy' or 'update'")
 else:
     legacy_version = 'legacy'
+
+# --weights-source selects which quantiles tree is read: published (default) ->
+# paper_quantiles/galactocentric_published (built from
+# data/halo_weights_published/ by compute_quantiles.py --weights-source
+# published), seeded -> paper_quantiles/galactocentric. Every token must be a
+# known flag or that flag's value, and --weights-source may appear once, so a
+# typo cannot silently run with the wrong source. Parsed before any data read.
+KNOWN_FLAGS = ('--variants', '--legacy-version', '--weights-source')
+_i = 0
+while _i < len(rest):
+    _t = rest[_i]
+    _i += 1
+    if _t not in KNOWN_FLAGS:
+        raise ValueError(f'unrecognized argument {_t!r}; known flags: {KNOWN_FLAGS}')
+    _i += 1  # the flag's value (validated where it is parsed)
+if rest.count('--weights-source') > 1:
+    raise ValueError('--weights-source given more than once')
+if '--weights-source' in rest:
+    wi = rest.index('--weights-source')
+    if wi + 1 >= len(rest):
+        raise ValueError("--weights-source requires 'seeded' or 'published'")
+    weights_source = rest[wi + 1]
+    if weights_source not in ('seeded', 'published'):
+        raise ValueError(f"unknown --weights-source {weights_source!r}; choose 'seeded' or 'published'")
+else:
+    weights_source = 'published'
+if weights_source == 'seeded' and config.RESULTS_DIR_IS_DEFAULT:
+    raise ValueError(
+        'results/ holds the published-draw products; seeded runs of this stage '
+        'must write to a redirected SDI_RESULTS_DIR')
+QUANTILES_TREE = 'galactocentric_published' if weights_source == 'published' else 'galactocentric'
 
 dwarf_names = obs.dwarf_names
 if legacy_version == 'update':
@@ -208,7 +256,7 @@ needs_dwarf = needs_loguniform_jeans or needs_satgen_priors
 # get J factors
 version = 'Diemer'
 if needs_quantiles:
-    quantiles_path = config.PAPER_QUANTILES_DIR / 'galactocentric' / version / f'{name}.npz'
+    quantiles_path = config.PAPER_QUANTILES_DIR / QUANTILES_TREE / version / f'{name}.npz'
     provenance.assert_single_version([quantiles_path], expected=version)
     quantiles_file = np.load(quantiles_path)
     # assert_single_version's alias check only fires when the raw
@@ -232,6 +280,7 @@ if needs_quantiles:
     diemer_record = provenance.stamp(
         'python/fermi_reweighting.py', version=version, argv=sys.argv[1:],
         inputs=[quantiles_path], dwarf=name, legacy_version=legacy_version,
+        weights_source=weights_source, quantiles_tree=QUANTILES_TREE,
         array_job_id=array_job_id, array_task_id=array_task_id)
 
 idcs = np.array([0, 4, 10])
@@ -240,7 +289,7 @@ weight_names = np.array(['mhalf', 'F18', 'K24'])
 # mhalf_scatter version J-factors (separate quantiles file; same base Diemer
 # sim). Column 0 = mhalf weights, column 21 = mdyn_errani weights.
 if needs_scatter:
-    scatter_path = config.PAPER_QUANTILES_DIR / 'galactocentric' / 'mhalf_scatter' / f'{name}.npz'
+    scatter_path = config.PAPER_QUANTILES_DIR / QUANTILES_TREE / 'mhalf_scatter' / f'{name}.npz'
     provenance.assert_single_version([scatter_path], expected='mhalf_scatter')
     scatter_file = np.load(scatter_path)
     # Same rationale as the Diemer check above: mhalf_scatter quantiles carry
@@ -262,6 +311,7 @@ if needs_scatter:
     scatter_record = provenance.stamp(
         'python/fermi_reweighting.py', version='mhalf_scatter', argv=sys.argv[1:],
         inputs=[scatter_path], dwarf=name, legacy_version=legacy_version,
+        weights_source=weights_source, quantiles_tree=QUANTILES_TREE,
         array_job_id=array_job_id, array_task_id=array_task_id)
 
 if needs_dwarf:
@@ -322,6 +372,7 @@ if 'Jeans_mhalf_err' in variants:
     record = provenance.stamp(
         'python/fermi_reweighting.py', version=version, argv=sys.argv[1:],
         inputs=[quantiles_path], dwarf=name, legacy_version=legacy_version,
+        weights_source=weights_source, quantiles_tree=QUANTILES_TREE,
         dja_prior=(config.DJA_PRIOR if jeans_source == 'dja_posterior' else None),
         jeans_source=jeans_source, jeans_sigma_source='mhalf_error',
         array_job_id=array_job_id, array_task_id=array_task_id)
@@ -473,10 +524,10 @@ if needs_mc:
 # mhalf-weighted TS array using McDaniel 2023 sigma_los
 # ============================================================
 if needs_mcdaniel:
-    mcdaniel_path = config.PAPER_QUANTILES_DIR / 'galactocentric' / 'mcdaniel' / f'{name}.npz'
+    mcdaniel_path = config.PAPER_QUANTILES_DIR / QUANTILES_TREE / 'mcdaniel' / f'{name}.npz'
     if not mcdaniel_path.exists():
         raise FileNotFoundError(
-            f'{mcdaniel_path} does not exist: paper_quantiles/galactocentric/mcdaniel '
+            f'{mcdaniel_path} does not exist: paper_quantiles/{QUANTILES_TREE}/mcdaniel '
             "was deliberately not migrated (its 17 GB of weights were excluded; "
             'no in-repo producer) -- see docs/migration-notes.md, "Products '
             'removed as stale or orphaned rather than migrated". '
@@ -494,6 +545,7 @@ if needs_mcdaniel:
     record = provenance.stamp(
         'python/fermi_reweighting.py', version='mcdaniel', argv=sys.argv[1:],
         inputs=[mcdaniel_path], dwarf=name, legacy_version=legacy_version,
+        weights_source=weights_source, quantiles_tree=QUANTILES_TREE,
         array_job_id=array_job_id, array_task_id=array_task_id)
     provenance.savez(f'{save_dir}mhalf_mcdaniel', record,
                      mass_vec=mass_vec, sigmav_vec=sigmav_vec, TS_array=TS_array)

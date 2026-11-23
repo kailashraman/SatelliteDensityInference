@@ -25,6 +25,14 @@ Usage, unchanged from upstream:
     python fermi_expected_limits.py <dsph_idx>
     python fermi_expected_limits.py <dsph_idx> --timing-test [N]
     python fermi_expected_limits.py <dsph_idx> --variants mhalf,Jeans,F18,satgen_shmr_fattahi18
+    python fermi_expected_limits.py <dsph_idx> --weights-source {seeded,published}
+
+--weights-source (default published) picks the quantiles tree read for mhalf/F18:
+paper_quantiles/galactocentric_published (published: the unseeded SHMR draw
+behind the paper's products) or paper_quantiles/galactocentric (seeded). The
+output tree is the same either way and results/ holds the published-draw
+products, so seeded raises unless SDI_RESULTS_DIR redirects away from
+<repo>/results.
 
 No --legacy-version flag: unlike fermi_reweighting.py, this script never reads
 the dwarf's own SED (legacy vs update), only the blank-field null-distribution
@@ -44,8 +52,10 @@ Path/provenance changes:
     owns this path layout and is covered by tests/test_fermi_paths.py, so the
     constant belongs there rather than being rebuilt here by string join.
   - Every '../results/paper_quantiles/galactocentric/<version>/<name>.npz'
-    read is config.PAPER_QUANTILES_DIR / 'galactocentric' / version / f'{name}.npz'
-    (config.PAPER_QUANTILES_DIR already existed).
+    read is config.PAPER_QUANTILES_DIR / QUANTILES_TREE / version / f'{name}.npz'
+    (config.PAPER_QUANTILES_DIR already existed), where QUANTILES_TREE is
+    'galactocentric_published' (default) or 'galactocentric' (see
+    --weights-source below).
   - save_dir is config.FERMI_EXPECTED_LIMITS_DIR / name instead of upstream's
     relative '../results/fermi_expected_limits/<dwarf>/'
     (config.FERMI_EXPECTED_LIMITS_DIR already existed).
@@ -95,6 +105,42 @@ if '--variants' in rest:
 else:
     variants = ALL_VARIANTS
 
+# --weights-source selects which quantiles tree is read: published (default) ->
+# paper_quantiles/galactocentric_published (built from
+# data/halo_weights_published/ by compute_quantiles.py --weights-source
+# published), seeded -> paper_quantiles/galactocentric. Every token must be a
+# known flag or that flag's value, and --weights-source may appear once, so a
+# typo cannot silently run with the wrong source. Parsed before any data read.
+KNOWN_FLAGS = ('--timing-test', '--variants', '--weights-source')
+_i = 0
+while _i < len(rest):
+    _t = rest[_i]
+    _i += 1
+    if _t not in KNOWN_FLAGS:
+        raise ValueError(f'unrecognized argument {_t!r}; known flags: {KNOWN_FLAGS}')
+    if _t == '--timing-test':
+        # its N is optional
+        if _i < len(rest) and not rest[_i].startswith('--'):
+            _i += 1
+    else:
+        _i += 1  # the flag's value (validated where it is parsed)
+if rest.count('--weights-source') > 1:
+    raise ValueError('--weights-source given more than once')
+if '--weights-source' in rest:
+    wi = rest.index('--weights-source')
+    if wi + 1 >= len(rest):
+        raise ValueError("--weights-source requires 'seeded' or 'published'")
+    weights_source = rest[wi + 1]
+    if weights_source not in ('seeded', 'published'):
+        raise ValueError(f"unknown --weights-source {weights_source!r}; choose 'seeded' or 'published'")
+else:
+    weights_source = 'published'
+if weights_source == 'seeded' and config.RESULTS_DIR_IS_DEFAULT:
+    raise ValueError(
+        'results/ holds the published-draw products; seeded runs of this stage '
+        'must write to a redirected SDI_RESULTS_DIR')
+QUANTILES_TREE = 'galactocentric_published' if weights_source == 'published' else 'galactocentric'
+
 name = obs.dwarf_names[dsph_idx]
 
 # A run-scoped token, matching vcirc_scatter_300pc.py's stamp fields exactly.
@@ -119,7 +165,7 @@ dwarf = obs.Dwarf(name)
 needs_quantiles = any(v in variants for v in ('mhalf', 'F18'))
 if needs_quantiles:
     # mhalf / F18 J-factor — same extraction as fermi_reweighting.py.
-    quantiles_path = config.PAPER_QUANTILES_DIR / 'galactocentric' / version / f'{name}.npz'
+    quantiles_path = config.PAPER_QUANTILES_DIR / QUANTILES_TREE / version / f'{name}.npz'
     provenance.assert_single_version([quantiles_path], expected=version)
     quantiles_file = np.load(quantiles_path)
     # assert_single_version's alias check only fires when the raw
@@ -149,6 +195,7 @@ if needs_quantiles:
     diemer_record = provenance.stamp(
         'python/fermi_expected_limits.py', version=version, argv=sys.argv[1:],
         inputs=[quantiles_path], dwarf=name, sed_tree=SED_TREE,
+        weights_source=weights_source, quantiles_tree=QUANTILES_TREE,
         array_job_id=array_job_id, array_task_id=array_task_id)
 
 if 'Jeans' in variants:

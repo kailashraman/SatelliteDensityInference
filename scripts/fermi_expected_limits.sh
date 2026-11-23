@@ -10,7 +10,14 @@
 # no _update counterpart (see python/fermi_expected_limits.py's docstring).
 # results/fermi_expected_limits/ therefore does not carry a version suffix.
 #
-# Requires the paper_quantiles/galactocentric/Diemer tree (for mhalf/F18) and,
+# The paper's products were built from the unseeded SHMR weight draw migrated
+# to data/halo_weights_published/<version>/, not the seeded regeneration in
+# data/halo_weights/, so this launcher passes `--weights-source published`
+# explicitly (the python default for this stage is also published; seeded
+# raises unless SDI_RESULTS_DIR is redirected).
+#
+# Requires the paper_quantiles/galactocentric_published/Diemer tree (for
+# mhalf/F18; scripts/compute_quantiles.sh with WEIGHTS_SOURCE=published) and,
 # for Jeans/satgen_shmr_fattahi18, DwarfJeansAnalysis posteriors under
 # config.DJA_RESULTS_DIR (override: $SDI_DJA_RESULTS_DIR). The
 # satgen_shmr_fattahi18 variant is skipped only for the dwarfs in
@@ -69,7 +76,7 @@ conda activate J_calc
 set -euo pipefail
 cd "${REPO}"
 
-ARGS=("${SLURM_ARRAY_TASK_ID}")
+ARGS=("${SLURM_ARRAY_TASK_ID}" --weights-source published)
 if [[ -n "${VARIANTS:-}" ]]; then
   ARGS+=(--variants "${VARIANTS}")
 fi

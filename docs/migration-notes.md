@@ -302,15 +302,25 @@ bytes.** Every sidecar under it records `migrated_from: null` and
 `mstar_evolution: per_halo_tidal`, so the tree is reproducible by rerunning
 `compute_weights.py` at the same (version, dwarf) — but it is *not* the
 realization behind the reference SHMR numbers. That realization survives only
-as the migrated copy in `data/halo_weights_published/`, which no stage writes
-and none can regenerate. Any value drawn from `mstar_weights` or
-`joint_weights` is this repository's realization.
+as the migrated copy in `data/halo_weights_published/`. Nothing regenerates the
+published draw, but four stages read it (`--weights-source published`). A value
+drawn from `mstar_weights` or `joint_weights` in `data/halo_weights/` is this
+repository's seeded realization; the published tree holds the reference one.
 
 The contour stage inherits
 the same split, measured on one task (`Segue 1`, `Diemer`, `z0`): `_unweighted`
 and `_mhalf` exact on all eight arrays; `_F18`, `_K24`, `_joint_F18` exact in
 `X_hist`/`Y_hist`/`X_kde`/`Y_kde` while `hist_hist`/`hist_kde` differ 3–11% and
 contour levels 3e-3 to 1.2e-2.
+Running `save_contours.py ... --weights-source published` (which
+`scripts/save_contours.sh` passes) reads `data/halo_weights_published/` instead
+and reproduces the stored contours bit-exactly on all arrays of the products
+verified: Segue 1, Diemer, z0 (8 products), plus the Draco mass_floor_7 weighted
+products. Other dwarfs/versions have not been checked. For this stage (and
+`fermi_reweighting`, `fermi_expected_limits`) `published` is the default, and
+`--weights-source seeded` raises unless `SDI_RESULTS_DIR` is redirected, because
+seeded and published runs write the same tree and `results/` holds the
+published-draw products.
 
 **Seeded from here on.** `compute_weights.py` seeds the global RNG once, after the
 version dispatch and before any draw, from `zlib.crc32(f'{version}:{dsph_idx}')` —
@@ -479,6 +489,20 @@ evidence: the Fermi input data, the low-side interpolation clamp (reverting is
 bit-identical), `Jdata.py`'s `vmax_min` cut (it touches only `Jeans*` variants),
 the weights, and the regenerated `paper_quantiles` — re-running against the
 byte-identical `galactocentric_published` tree gave the *identical* 1.7138e-04.
+
+`--weights-source published` (the default for the Fermi stages; passed by
+`scripts/fermi_reweighting_update.sh` and `scripts/fermi_expected_limits.sh`)
+reads the `galactocentric_published` quantiles tree. In the update tree
+(`results/fermi_reweighting_update`) the mhalf/F18/K24 products reproduce
+bit-exactly from `galactocentric_published/Diemer` (verified for Draco and
+Antlia II). The 1.7138e-4 TS delta above is for the legacy
+`results/fermi_reweighting` tree, which is superseded.
+`compute_quantiles.py --weights-source published` regenerates the quantiles from
+`data/halo_weights_published/` bit-exactly for Diemer, Zhao and mass_floor_7
+(verified on Segue 1); the alias versions (mhalf_scatter, lmc, lvdb) differ by
+up to ~1e-3 relative in `J_quantiles`, because the migrated references were
+built from an older `paper_Js`. It refuses to overwrite an output whose sidecar
+has `migrated_from` set; redirect `SDI_RESULTS_DIR` for such runs.
 
 Separately unresolved: `paper_quantiles/galactocentric` regenerated here differs
 from `galactocentric_published` by up to 4.5e-2 relative (`cV_quantiles` 4.5e-2,
