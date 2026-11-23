@@ -9,9 +9,21 @@ archives of the requested tier into a temporary directory under --dest (or
 --tmp; never $TMPDIR, the archives are large), verifies the Zenodo md5 of
 MANIFEST.json and of each archive (a missing record checksum is an error) and
 the MANIFEST sha256/md5 of each archive, then extracts under --dest (default:
-this repo). Extraction rejects absolute and '..' member paths. Before anything
-is extracted, every selected archive is checked against existing files: one
-whose content differs from the MANIFEST sha256 aborts the run unless --force.
+this repo). Before an archive is extracted its members are validated: each must
+be a regular file listed in MANIFEST for that archive, and absolute or '..'
+paths are rejected. Before anything is extracted, every selected archive is
+checked against existing files: one whose content differs from the MANIFEST
+sha256 aborts the run unless --force, and an existing non-file (directory,
+symlink, dangling symlink) at a target path always aborts, even with --force.
+An existing file already holding the MANIFEST sha256 is left untouched (not
+rewritten or re-mtimed); a differing one is unlinked before extraction, so a
+hardlinked file is never rewritten through the link (replacing a file needs
+write permission on its directory). Each extracted file's sha256 is verified
+against the MANIFEST.
+Extraction is not transactional: if it fails part-way (corrupt archive, sha256
+mismatch, OSError such as a read-only directory or full disk), the files
+extracted before the failure stay in --dest (only --tmp is cleaned up); fix the
+cause and rerun with --force.
 Extracted files get an mtime of the extraction time (the archives carry mtime
 0, which would otherwise date every file 1970). A corrupt or unsafe archive
 (tarfile errors) is reported as ERROR with a nonzero exit.
@@ -74,22 +86,41 @@ def check_member_name(name):
         raise FetchError(f'unsafe path in archive: {name!r}')
 
 
-def validate_archive_names(path):
+def validate_archive(path, members):
+    """Raise FetchError unless every tar member is a regular file with a safe
+    name that is listed in members {path: sha256}."""
     with tarfile.open(path, 'r|*') as tar:
         for m in tar:
             check_member_name(m.name)
+            if not m.isreg():
+                raise FetchError(f'archive member {m.name!r} is not a regular file')
+            if m.name not in members:
+                raise FetchError(f'archive member {m.name!r} is not listed in '
+                                 'MANIFEST.json for this archive')
 
 
-def extract(archive, dest):
+def extract(archive, dest, members):
+    """Validate, then extract, verifying each file's sha256 against members
+    {path: sha256}. An identical existing file stays untouched; a differing one
+    is unlinked first, so a hardlinked file is never rewritten through the link
+    (needs write permission on its directory). Not transactional: files
+    extracted before a failure remain."""
     try:
-        validate_archive_names(archive)
+        validate_archive(archive, members)
         now = time.time()
         with tarfile.open(archive, 'r|*') as tar:
             for m in tar:
+                target = Path(dest) / m.name
+                if target.is_file() and not target.is_symlink():
+                    if file_digests(target)[0] == members[m.name]:
+                        continue                # identical: leave untouched
+                    target.unlink()             # never write through a hardlink
                 tar.extract(m, path=dest, filter='data')
-                if m.isfile():
-                    os.utime(Path(dest) / m.name, (now, now))
-    except (tarfile.TarError, EOFError) as e:
+                if file_digests(target)[0] != members[m.name]:
+                    raise FetchError(f'{m.name}: sha256 differs from MANIFEST.json '
+                                     '(extraction stopped)')
+                os.utime(target, (now, now))
+    except (tarfile.TarError, EOFError, OSError) as e:
         raise FetchError(f'{Path(archive).name}: cannot extract '
                          f'({type(e).__name__}: {e})') from e
 
@@ -101,9 +132,18 @@ def check_conflicts(dest, by_arch, names):
     for name in names:
         for rel, sha in by_arch.get(name, {}).items():
             target = Path(dest) / rel
-            if target.is_file() and file_digests(target)[0] != sha:
+            if target.is_file() and not target.is_symlink() \
+                    and file_digests(target)[0] != sha:
                 conflicts.append(rel)
     return conflicts
+
+
+def check_nonfiles(dest, by_arch, names):
+    """Target paths occupied by something other than a regular file (directory,
+    symlink, dangling symlink), over all the selected archives; --force does not
+    override these."""
+    return [rel for name in names for rel in by_arch.get(name, {})
+            if (t := Path(dest) / rel).is_symlink() or (t.exists() and not t.is_file())]
 
 
 def fetch(record=None, base='https://zenodo.org', tier='all', dest=None,
@@ -149,6 +189,10 @@ def fetch(record=None, base='https://zenodo.org', tier='all', dest=None,
         for name in want:
             for rel in by_arch.get(name, {}):
                 check_member_name(rel)
+        nonfiles = check_nonfiles(dest, by_arch, want)
+        if nonfiles:
+            raise FetchError(f'{len(nonfiles)} target path(s) exist but are not regular '
+                             f'files (first: {nonfiles[0]}); remove them and rerun')
         if not force:
             conflicts = check_conflicts(dest, by_arch, want)
             if conflicts:
@@ -162,7 +206,7 @@ def fetch(record=None, base='https://zenodo.org', tier='all', dest=None,
             sha, md5 = file_digests(path)
             if md5 != rec['md5'] or sha != rec['sha256']:
                 raise FetchError(f'{name}: checksum differs from MANIFEST.json')
-            extract(path, dest)
+            extract(path, dest, by_arch.get(name, {}))
             if not files_from:
                 path.unlink()
             print(f'  extracted {name}')
@@ -192,7 +236,7 @@ def main(argv=None):
     try:
         fetch(args.record, base, args.tier, args.dest, args.files_from, args.force,
               tmp=args.tmp)
-    except FetchError as e:
+    except (FetchError, OSError) as e:
         print(f'ERROR: {e}', file=sys.stderr)
         return 1
     return 0

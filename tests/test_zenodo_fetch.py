@@ -274,3 +274,210 @@ def test_extracted_mtime_is_extraction_time(tmp_path):
     t0 = time.time()
     zf.fetch(files_from=tmp_path / 'rec', dest=tmp_path / 'dest')
     assert (tmp_path / 'dest/data/x/f.txt').stat().st_mtime >= t0 - 1
+
+
+def test_force_does_not_write_through_hardlink(tmp_path):
+    import os
+    make_record(tmp_path / 'rec')
+    target = tmp_path / 'dest/data/x/f.txt'
+    target.parent.mkdir(parents=True)
+    target.write_bytes(b'local edit')
+    other = tmp_path / 'other_tree_link'
+    os.link(target, other)
+    zf.fetch(files_from=tmp_path / 'rec', dest=tmp_path / 'dest', force=True)
+    assert target.read_bytes() == b'hello'
+    assert other.read_bytes() == b'local edit'          # the other link is untouched
+    assert target.stat().st_nlink == 1
+
+
+def test_identical_readonly_existing_file_left_untouched(tmp_path):
+    import os
+    make_record(tmp_path / 'rec')
+    target = tmp_path / 'dest/data/x/f.txt'
+    target.parent.mkdir(parents=True)
+    target.write_bytes(b'hello')
+    os.utime(target, (1000, 1000))
+    target.chmod(0o444)
+    ino = target.stat().st_ino
+    for force in (False, True):
+        zf.fetch(files_from=tmp_path / 'rec', dest=tmp_path / 'dest', force=force)
+        st = target.stat()
+        assert (st.st_mtime, st.st_ino) == (1000, ino)
+
+
+def _dir_target(t):
+    t.mkdir(parents=True)
+
+
+def _live_symlink(t):
+    t.parent.mkdir(parents=True)
+    real = t.parent.parent / 'real.txt'
+    real.write_bytes(b'hello')
+    t.symlink_to(real)
+
+
+def _dangling_symlink(t):
+    t.parent.mkdir(parents=True)
+    t.symlink_to(t.parent.parent / 'nowhere.txt')
+
+
+@pytest.mark.parametrize('force', [False, True])
+@pytest.mark.parametrize('setup', [_dir_target, _live_symlink, _dangling_symlink])
+def test_nonfile_target_refused(tmp_path, setup, force):
+    make_record(tmp_path / 'rec')
+    target = tmp_path / 'dest/data/x/f.txt'
+    setup(target)
+    before = (target.is_symlink(), target.is_dir(),
+              target.resolve().read_bytes() if target.is_file() else None)
+    with pytest.raises(zf.FetchError, match='not regular'):
+        zf.fetch(files_from=tmp_path / 'rec', dest=tmp_path / 'dest', force=force)
+    after = (target.is_symlink(), target.is_dir(),
+             target.resolve().read_bytes() if target.is_file() else None)
+    assert before == after
+    assert not (tmp_path / 'dest/data/real.txt').exists() or \
+        (tmp_path / 'dest/data/real.txt').read_bytes() == b'hello'
+
+
+def test_nonfile_check_covers_all_archives_before_extracting(tmp_path):
+    d = tmp_path / 'rec'
+    d.mkdir()
+    man = {'archives': {}, 'members': []}
+    for name, mem in {'a.tar': {'data/one.txt': b'1'}, 'b.tar': {'data/two.txt': b'2'}}.items():
+        make_tar(d / name, mem)
+        sha, md5 = digests(d / name)
+        man['archives'][name] = {'size': 1, 'sha256': sha, 'md5': md5, 'tiers': ['figures']}
+        man['members'] += [{'archive': name, 'path': k, 'size': 1,
+                            'sha256': hashlib.sha256(v).hexdigest()} for k, v in mem.items()]
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+    dest = tmp_path / 'dest'
+    (dest / 'data/two.txt').mkdir(parents=True)
+    with pytest.raises(zf.FetchError, match='not regular'):
+        zf.fetch(files_from=d, dest=dest, force=True)
+    assert not (dest / 'data/one.txt').exists()
+
+
+def test_readonly_parent_is_clean_error(tmp_path, capsys):
+    import os
+    if os.geteuid() == 0:
+        pytest.skip('root ignores directory permissions')
+    d = tmp_path / 'rec'
+    make_record(d)
+    target = tmp_path / 'dest/data/x/f.txt'
+    target.parent.mkdir(parents=True)
+    target.write_bytes(b'local edit')
+    target.parent.chmod(0o555)
+    try:
+        with pytest.raises(zf.FetchError, match='f.txt'):
+            zf.fetch(files_from=d, dest=tmp_path / 'dest', force=True)
+        assert zf.main(['--files-from', str(d), '--dest', str(tmp_path / 'dest'),
+                        '--force']) == 1
+        assert 'ERROR:' in capsys.readouterr().err
+    finally:
+        target.parent.chmod(0o755)
+
+
+def test_member_not_in_manifest_refused(tmp_path):
+    d = tmp_path / 'rec'
+    man = make_record(d, {'data/x/f.txt': b'hello', 'data/x/extra.txt': b'new'})
+    man['members'] = [m for m in man['members'] if m['path'] != 'data/x/extra.txt']
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+    dest = tmp_path / 'dest'
+    unlisted = dest / 'data/x/extra.txt'
+    unlisted.parent.mkdir(parents=True)
+    unlisted.write_bytes(b'local edit')               # no --force: must not be replaced
+    with pytest.raises(zf.FetchError, match='not listed in MANIFEST'):
+        zf.fetch(files_from=d, dest=dest)
+    assert unlisted.read_bytes() == b'local edit'
+    assert not (dest / 'data/x/f.txt').exists()
+
+
+def test_non_regular_member_refused(tmp_path):
+    d = tmp_path / 'rec'
+    man = make_record(d)
+    with tarfile.open(d / 'a.tar', 'w') as t:
+        ti = tarfile.TarInfo('data/x/f.txt')
+        ti.type = tarfile.SYMTYPE
+        ti.linkname = '/etc/passwd'
+        t.addfile(ti)
+    sha, md5 = digests(d / 'a.tar')
+    man['archives']['a.tar'].update(sha256=sha, md5=md5)
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+    with pytest.raises(zf.FetchError, match='not a regular file'):
+        zf.fetch(files_from=d, dest=tmp_path / 'dest')
+    assert not (tmp_path / 'dest/data').exists()
+
+
+def test_post_extract_sha_mismatch_detected(tmp_path):
+    d = tmp_path / 'rec'
+    man = make_record(d)
+    man['members'][0]['sha256'] = '0' * 64              # archive digests stay consistent
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+    with pytest.raises(zf.FetchError, match='sha256 differs'):
+        zf.fetch(files_from=d, dest=tmp_path / 'dest')
+
+
+def test_real_manifest_layout_multi_archive_prefixes(tmp_path):
+    d = tmp_path / 'rec'
+    d.mkdir()
+    members = {'a.tar': {'data/x/f.txt': b'1', 'results/p/g.npz': b'2'},
+               'b.tar': {'data/dja_results/k/h.npz': b'3', 'results/q/i.npz': b'4'}}
+    man = {'archives': {}, 'members': []}
+    for name, mem in members.items():
+        make_tar(d / name, mem)
+        sha, md5 = digests(d / name)
+        man['archives'][name] = {'size': 1, 'sha256': sha, 'md5': md5,
+                                 'tiers': ['figures', 'inputs']}
+        man['members'] += [{'archive': name, 'path': k, 'size': 1,
+                            'sha256': hashlib.sha256(v).hexdigest()} for k, v in mem.items()]
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+    zf.fetch(files_from=d, dest=tmp_path / 'dest')
+    zf.fetch(files_from=d, dest=tmp_path / 'dest')          # rerun: identical, no error
+    for mem in members.values():
+        for k, v in mem.items():
+            assert (tmp_path / 'dest' / k).read_bytes() == v
+
+
+def test_unreadable_existing_file_is_clean_error(tmp_path, capsys):
+    import os
+    if os.geteuid() == 0:
+        pytest.skip('root ignores file permissions')
+    d = tmp_path / 'rec'
+    make_record(d)
+    target = tmp_path / 'dest/data/x/f.txt'
+    target.parent.mkdir(parents=True)
+    target.write_bytes(b'local edit')
+    target.chmod(0o000)
+    try:
+        assert zf.main(['--files-from', str(d), '--dest', str(tmp_path / 'dest')]) == 1
+        assert 'ERROR:' in capsys.readouterr().err
+    finally:
+        target.chmod(0o644)
+
+
+def _two_tier_record(d):
+    d.mkdir()
+    man = {'archives': {}, 'members': []}
+    for name, tier, mem in (('a.tar', 'figures', {'data/one.txt': b'1'}),
+                            ('b.tar', 'inputs', {'data/two.txt': b'2', 'data/three.txt': b'3'})):
+        make_tar(d / name, mem)
+        sha, md5 = digests(d / name)
+        man['archives'][name] = {'size': 1, 'sha256': sha, 'md5': md5, 'tiers': [tier]}
+        man['members'] += [{'archive': name, 'path': k, 'size': 1,
+                            'sha256': hashlib.sha256(v).hexdigest()} for k, v in mem.items()]
+    (d / 'MANIFEST.json').write_text(json.dumps(man))
+
+
+def test_unselected_archive_targets_not_checked(tmp_path):
+    d = tmp_path / 'rec'
+    _two_tier_record(d)
+    dest = tmp_path / 'dest'
+    (dest / 'data/two.txt').mkdir(parents=True)             # b.tar target: directory
+    (dest / 'data/three.txt').write_bytes(b'local edit')    # b.tar target: differing file
+    with pytest.raises(zf.FetchError, match='not regular'):
+        zf.fetch(files_from=d, tier='inputs', dest=dest)
+    with pytest.raises(zf.FetchError, match='not regular'):
+        zf.fetch(files_from=d, tier='inputs', dest=dest, force=True)
+    zf.fetch(files_from=d, tier='figures', dest=dest)
+    assert (dest / 'data/one.txt').read_bytes() == b'1'
+    assert (dest / 'data/two.txt').is_dir()
+    assert (dest / 'data/three.txt').read_bytes() == b'local edit'

@@ -40,8 +40,16 @@ export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"                   # printed b
 ```
 
 A network fetch checks `MANIFEST.json` and every archive against Zenodo's
-md5, and each archive against `MANIFEST.json`'s sha256, before unpacking it;
-it refuses to overwrite a differing local file unless given `--force`.
+md5, and each archive against `MANIFEST.json`'s sha256, before unpacking it.
+It refuses any archive member that is not a regular file listed in
+`MANIFEST.json` for that archive, and checks each extracted file's sha256
+against `MANIFEST.json`. Before unpacking anything it checks every selected
+archive's target paths: a file whose content differs from `MANIFEST.json`
+aborts the run unless `--force` is given, and a directory or symlink at a
+target path always aborts. A file that already matches is left untouched; a
+differing one is replaced (unlinked first, so hard links are not written
+through). A symlinked parent directory (e.g. `data/` linked elsewhere) is not
+supported.
 Archives are verified and unpacked one at a time, so a later failure leaves
 earlier archives unpacked. `--files-from DIR` reads `MANIFEST.json` and the
 archives (under their record names) from a local directory instead, with
