@@ -1393,3 +1393,100 @@ a reproduction check built on the manifests tests the wrong invocation.
 argparse default differs from its launcher's argument and that does not stamp
 the parsed value; reproduction tooling that falls back to an empty argument
 list when `argv` is missing.
+
+## Unmeasured "close" claim for a substitute product
+
+**Where:** deposit READMEs and recompute recipes that offer a regenerated
+substitute (a seeded draw, a newer code path) for an input that cannot be
+rebuilt.
+
+**What goes wrong:** the substitute differs from the original by a convention
+change as well as by sampling noise, but the text calls it "close but not
+identical". Readers redraw published figures from it and read systematic
+shifts as noise. The recipe often also omits the redirect variables the
+consuming stage needs, or lets that stage overwrite tracked published
+outputs.
+
+**What to flag:** any "close", "approximately" or "statistically equivalent"
+claim about a substitute with no measured number behind it; check the
+migration notes for convention changes between the substitute's code path
+and the original's. Require the recipe to name every redirect it needs in
+both the producing and consuming stage, and to say whether it overwrites
+tracked artifacts.
+
+## Overview doc that drops the detailed doc's qualifiers
+
+**Where:** top-level READMEs and quick-starts that summarise a data README,
+migration notes or docstrings.
+
+**What goes wrong:** "reproduced wherever compared" becomes "bit for bit",
+"deposited for one version and three dwarfs" becomes "deposited", "every
+figure except one" becomes "every figure". The short doc is the one readers
+act on.
+
+**What to flag:** any absolute ("every", "all", "bit for bit", "deposited")
+in a summary whose source document states a scope; require the scope to come
+along, or a pointer to it.
+
+## Opt-in test tier or marker with no members
+
+**Where:** conftest options and the README's test section.
+
+**What goes wrong:** the flag selects zero tests and passes green, so readers
+believe the advertised check (a calibration run, a data tier) exists.
+
+**What to flag:** any documented marker or flag with no test carrying it;
+ask for a collection count (`pytest <flag> --co -m <marker>`).
+
+## Prose inventory count not derived from the tree
+
+**Where:** README lines of the form "N figures / N launchers / N dwarfs".
+
+**What goes wrong:** counts go stale as files are added or split, and a
+reader who spots one wrong count stops trusting the others.
+
+**What to flag:** a spelled-out count with no test or command behind it;
+recount with `git ls-files` at review.
+
+## Example that invokes a site-specific wrapper
+
+**Where:** quick-starts that call a launcher which activates its own
+environment (`conda deactivate; conda activate <site env>`) before strict
+mode.
+
+**What goes wrong:** off-site the reader's pinned environment is dropped,
+the failed activation does not stop the script, and it runs under the wrong
+Python or fails on import.
+
+**What to flag:** a doc example that calls a launcher the same doc calls
+non-portable; an environment switch with no check that it succeeded.
+
+## Parity claim over a product built with an optional input absent
+
+**Where:** verification runs of stages that degrade gracefully when an
+upstream product is missing (a guard that warns and skips a block of
+outputs), and the prose summarising those runs.
+
+**What goes wrong:** the check runs before the upstream stage, writes a
+reduced product, compares only the keys both files share, and is reported as
+"reproduced bit for bit". The skipped arrays are often the ones downstream
+stages and tables depend on.
+
+**What to flag:** a reproduction claim with no assertion that the key sets
+are equal; verification logs containing the stage's skip warning; a stage
+verified out of recipe order.
+
+## Citation repointed along with a renamed or split document
+
+**Where:** comments, docstrings and READMEs that cite "per <file>" for a
+rule, after a guidance file is renamed or split.
+
+**What goes wrong:** a bulk find-and-replace swaps the filename in every
+citation, including ones that were already loose ("X/memory") or that cite a
+rule living in a different document. The comment then names a file that does
+not contain the rule, and "does the cited file exist" still passes.
+
+**What to flag:** after any rename or split, grep each repointed citation's
+new target for the specific rule or quoted section title; treat a
+co-citation ("X/memory", "X and Y") as a sign the rule lives elsewhere;
+flag citations to untracked or gitignored files.
