@@ -14,7 +14,9 @@ DwarfJeansAnalysis at packing time.
 
 **`figures` — redraw every paper figure and table** from the intermediates
 the figures were made from. Minutes per figure; needs the Python environment
-and a LaTeX installation, not a cluster.
+and a LaTeX installation, not a cluster. It covers the figures and tables in
+the papers, not the repository's `plots/supplementary/` figures for the other
+dwarfs, whose inputs are not deposited.
 
 **`inputs` — recompute the paper results** from the minimal inputs: halo
 catalogs, the frozen SHMR weight draw, Fermi-LAT data and the Jeans-analysis
@@ -154,6 +156,10 @@ code elsewhere"):
   per-process random seed. The code now seeds them deterministically, so a
   rerun reproduces the published bands statistically, not bit for bit. The
   deposited `results/` products are the published draws.
+- **`L_vs_Mpeak.pdf` and `L_vs_rho150.pdf`** draw their Fattahi+18 and
+  Kim+24 bands with unseeded random scatter (about 0.02 dex), so a redraw
+  differs slightly from the published figure, as much as two redraws differ
+  from each other.
 - **The halo-position J-factors** (`Jhalopos`) use an unseeded VEGAS
   integration, so they reproduce only statistically.
 - **`jeans_corner.pdf` cannot be redrawn from this record.** It is drawn by
@@ -173,6 +179,24 @@ code elsewhere"):
   that each deposited file is the one a figure recorded compares sizes only.
 - Archive members carry no timestamps; the fetch stamps extracted files with
   the extraction time.
+
+## How this record was checked
+
+Before publication, from a fresh clone of the repository holding only this
+record's archives (unpacked with `zenodo_fetch.py`) and an environment built
+from `environment.yml`. The figure drivers ran under `strace`, which found no
+read from the authors' own data, checkouts or environment:
+
+- `figures`: every paper figure and table driver ran. 33 of the 35 outputs
+  are pixel-identical to the published ones at 100 dpi; the other two are the
+  scaling-relation figures noted above. `jeans_corner.pdf` was not redrawn
+  (see above).
+- `inputs`, for Segue 1 and `Diemer`: `compute_mhalf`, `compute_weights`
+  and `compute_quantiles` reproduced the deposited half-light masses, seeded
+  weights and quantile arrays bit for bit, and one of Segue 1's twenty
+  `Jdwarf` groups (121,608 halos) reproduced the deposited J-factors bit for
+  bit.
+- The full unit-test suite passes in that environment.
 
 ## Licence
 
