@@ -1534,3 +1534,20 @@ record is published.
 across code, scripts, every test marker, the recompute recipe and the docs;
 tests that loop over a hard-coded tuple of product names; recipe text that
 skips a stage whose output is now only partly deposited.
+
+## Executor context manager that holds back an interrupt or early exit
+
+**Where:** `with ThreadPoolExecutor(...)` (or a process pool) whose workers do
+long blocking I/O (network transfers, subprocesses), paired with an interrupt
+handler, `os._exit`, or a fail-fast claim in the caller.
+
+**What goes wrong:** `__exit__` calls `shutdown(wait=True)`, so an exception
+leaving the block (Ctrl-c, a worker failure) waits for every in-flight worker
+before it reaches the handler. Ctrl-c appears to do nothing for hours, and a
+failure is reported only after the sibling jobs end. Mock workers return
+instantly, so tests pass.
+
+**What to flag:** an interrupt or fail-fast handler outside the `with`; no
+`shutdown(wait=False, cancel_futures=True)` on the exception path; worker
+failures collected but printed only after the pool joins; no test whose fake
+worker blocks while the interrupt or failure is injected, with the exit timed.
