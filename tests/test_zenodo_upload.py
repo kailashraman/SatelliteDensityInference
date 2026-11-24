@@ -41,6 +41,9 @@ class FakeSession:
                     'links': {'bucket': f'{BASE}/api/files/b', 'html': 'https://x/7'},
                     'metadata': {'prereserve_doi': {'doi': '10.5072/zenodo.7'}}}
 
+    def mount(self, prefix, adapter):
+        pass
+
     def post(self, url, **kw):
         self.calls.append(('POST', url))
         self.kwargs.append(kw)
@@ -51,7 +54,9 @@ class FakeSession:
         self.calls.append(('GET', url))
         self.kwargs.append(kw)
         if url.endswith('/files'):
-            return Resp([{'filename': k, 'checksum': v} for k, v in self.existing.items()])
+            files = dict(self.existing)
+            files.update({k: f'md5:{hashlib.md5(v).hexdigest()}' for k, v in self.puts.items()})
+            return Resp([{'filename': k, 'checksum': v} for k, v in files.items()])
         return Resp(self.dep)
 
     def put(self, url, data=None, **kw):
@@ -280,3 +285,159 @@ def test_dirty_or_unknown_build_refused(build, where, key, val):
     with pytest.raises(zu.UploadError, match='allow-dirty-build'):
         zu.verify_build(build)
     assert set(zu.verify_build(build, allow_dirty_build=True)) >= {'a.tar'}
+
+
+def test_manifest_and_readme_go_last_after_every_archive(build):
+    order = []
+    s = FakeSession()
+    put = s.put
+    s.put = lambda url, data=None, **kw: (order.append(url.rsplit('/', 1)[1]),
+                                          put(url, data=data, **kw))[1]
+    zu.upload(build, BASE, 'tok', session=s, jobs=8)
+    assert set(order[:2]) == {'a.tar', 'b.tar.gz'}
+    assert order[2:] == ['MANIFEST.json', 'README_DATA.md']
+
+
+def test_archives_upload_concurrently(build):
+    """Both archive PUTs must be in flight at once (a barrier that only a
+    second concurrent PUT can release); serial uploads would time out."""
+    import threading
+    barrier = threading.Barrier(2, timeout=10)
+    s = FakeSession()
+    put = s.put
+
+    def gated(url, data=None, **kw):
+        if not url.endswith(('MANIFEST.json', 'README_DATA.md')):
+            barrier.wait()
+        return put(url, data=data, **kw)
+    s.put = gated
+    zu.upload(build, BASE, 'tok', session=s, jobs=2)
+    assert set(s.puts) == {'a.tar', 'b.tar.gz', 'MANIFEST.json', 'README_DATA.md'}
+
+
+def test_failed_archive_blocks_manifest_and_prints_resume(build, capsys):
+    s = FakeSession()
+    put = s.put
+
+    def failing(url, data=None, **kw):
+        if url.endswith('b.tar.gz'):
+            return Resp({}, status=500, text='boom')
+        return put(url, data=data, **kw)
+    s.put = failing
+    with pytest.raises(zu.UploadError, match='b.tar.gz'):
+        zu.upload(build, BASE, 'tok', session=s)
+    assert 'MANIFEST.json' not in s.puts and 'README_DATA.md' not in s.puts
+    assert 'resume with --deposition 7' in capsys.readouterr().err
+
+
+def test_resume_accepts_md5_prefixed_checksum(build):
+    s = FakeSession(existing={'a.tar': 'md5:' + hashlib.md5(b'AAA').hexdigest()})
+    zu.upload(build, BASE, 'tok', deposition='7', session=s)
+    assert 'a.tar' not in s.puts
+
+
+def _blocking_session(release, started, fail_name=None):
+    """PUTs of archives block until `release` is set (after signalling
+    `started`); `fail_name` fails at once instead."""
+    s = FakeSession()
+    put = s.put
+
+    def blocking(url, data=None, **kw):
+        name = url.rsplit('/', 1)[1]
+        if name == fail_name:
+            return Resp({}, status=500, text='boom')
+        if name not in ('MANIFEST.json', 'README_DATA.md'):
+            started.release()
+            release.wait(30)
+        return put(url, data=data, **kw)
+    s.put = blocking
+    return s
+
+
+def test_interrupt_is_not_held_by_inflight_uploads(build, capsys, monkeypatch):
+    """Ctrl-c while archive PUTs are blocked must leave upload() promptly
+    (a `with ThreadPoolExecutor` would join the workers first), print the
+    draft id, and not start MANIFEST/README."""
+    import threading
+    import time as _t
+    release, started = threading.Event(), threading.Semaphore(0)
+    s = _blocking_session(release, started)
+    real = zu.as_completed
+
+    def interrupting(fs):
+        started.acquire(timeout=10)
+        raise KeyboardInterrupt
+    monkeypatch.setattr(zu, 'as_completed', interrupting)
+    t0 = _t.monotonic()
+    try:
+        with pytest.raises(KeyboardInterrupt):
+            zu.upload(build, BASE, 'tok', session=s)
+        assert _t.monotonic() - t0 < 5
+    finally:
+        release.set()
+    assert 'resume with --deposition 7' in capsys.readouterr().err
+    assert 'MANIFEST.json' not in s.puts
+    monkeypatch.setattr(zu, 'as_completed', real)
+
+
+def test_archive_failure_reported_while_sibling_in_flight(build, capsys):
+    """A failed archive is printed as soon as it fails, not after the other
+    uploads end; MANIFEST/README are then withheld. (Guards the early print
+    only; the executor-join hazard is guarded by the interrupt test.)"""
+    import threading
+    release, started = threading.Event(), threading.Semaphore(0)
+    s = _blocking_session(release, started, fail_name='b.tar.gz')
+    seen = threading.Event()
+
+    def watch():
+        started.acquire(timeout=10)
+        for _ in range(100):
+            if 'FAILED b.tar.gz' in capsys.readouterr().err:
+                seen.set()
+                break
+            threading.Event().wait(0.05)
+        release.set()
+    w = threading.Thread(target=watch)
+    w.start()
+    with pytest.raises(zu.UploadError, match='b.tar.gz'):
+        zu.upload(build, BASE, 'tok', session=s)
+    w.join()
+    assert seen.is_set()
+    assert 'MANIFEST.json' not in s.puts
+
+
+def test_jobs_below_one_rejected_before_network(build):
+    s = FakeSession()
+    with pytest.raises(zu.UploadError, match='jobs'):
+        zu.upload(build, BASE, 'tok', session=s, jobs=0)
+    assert s.calls == []
+
+
+def test_post_upload_reconciliation_catches_missing_file(build):
+    s = FakeSession()
+    get = s.get
+
+    def lossy(url, **kw):
+        r = get(url, **kw)
+        if url.endswith('/files'):
+            r._js = [f for f in r._js if f['filename'] != 'a.tar']
+        return r
+    s.get = lossy
+    with pytest.raises(zu.UploadError, match='a.tar'):
+        zu.upload(build, BASE, 'tok', session=s)
+
+
+def test_failure_cancels_queued_archives(build):
+    """With one worker, a failure on the first (largest) archive must stop the
+    queued one from starting."""
+    s = FakeSession()
+    put = s.put
+
+    def failing(url, data=None, **kw):
+        if url.endswith('b.tar.gz'):               # largest, so uploaded first
+            return Resp({}, status=500, text='boom')
+        return put(url, data=data, **kw)
+    s.put = failing
+    with pytest.raises(zu.UploadError, match='b.tar.gz'):
+        zu.upload(build, BASE, 'tok', session=s, jobs=1)
+    assert 'a.tar' not in s.puts
