@@ -1518,3 +1518,19 @@ they only break the last step.
 **What to flag:** a documented "clean ERROR" contract with no top-level
 handler for the whole path; require each documented failure to be injected
 at every phase.
+
+## Deposit narrowed without sweeping readers of the dropped files
+
+**Where:** archive specs (include globs, tier lists) tightened to drop files
+judged unused.
+
+**What goes wrong:** the search for readers covers runtime code but misses
+opt-in parity tests, recipe steps that say a product is "already deposited",
+and docs that list the members. Packing and fetching still succeed; the gap
+shows up as a missing-file error in a data tier or recompute stage after the
+record is published.
+
+**What to flag:** a narrowed include without a grep of the dropped names
+across code, scripts, every test marker, the recompute recipe and the docs;
+tests that loop over a hard-coded tuple of product names; recipe text that
+skips a stage whose output is now only partly deposited.

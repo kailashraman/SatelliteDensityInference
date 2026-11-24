@@ -93,7 +93,7 @@ there, so build strings may differ. It does not include LaTeX or GNU
 
 | Archive | Contents | Tier |
 |---|---|---|
-| `sdi_satgen_catalogs.tar` | `data/satgen_catalogs/`: per-version SatGen halo catalogs (`.h5`) and per-halo summary arrays | figures, inputs |
+| `sdi_satgen_catalogs.tar` | `data/satgen_catalogs/`: the SatGen halo catalogs (`.h5`), their per-halo ρ₁₅₀ and M200c arrays, and two reduced N-body catalogs (Symphony, Milky Way-est); see "Catalogs" below | figures, inputs |
 | `sdi_halo_weights_seeded.tar.gz` | `data/halo_weights/Diemer/`: seeded per-dwarf conditioning weights, read directly by four figures (`plot_number_functions.py`, `plot_powerlaw.py`) | figures |
 | `sdi_halo_weights_published.tar.gz` | `data/halo_weights_published/`: the unseeded SHMR weight draw the published contours and Fermi results were built from (Diemer, all dwarfs; mass_floor_7 for Draco, Hydrus I and Segue 1) | inputs |
 | `sdi_fermi_legacy.tar.gz` | `data/fermi_legacy/`: Fermi-LAT dwarf and blank-field SEDs and TS profiles (McDaniel et al. 2024), and the PPPC4DM spectra. The blank fields, most of the volume, are read only by `fermi_expected_limits.py`, which no paper figure needs | inputs |
@@ -104,6 +104,53 @@ there, so build strings may differ. It does not include LaTeX or GNU
 Not included: the SatGen merger trees (the pipeline's upstream input; only
 `make_h5.py` reads them), and the full seeded weight trees for other SatGen
 versions, which `compute_weights.py` regenerates deterministically.
+
+## Catalogs
+
+Every SatGen catalog shares the setup of Paper I, section "Semi-Analytic
+Satellite Generation" (`sec:model`): a 10¹² M☉ host with a Miyamoto–Nagai disk,
+extended Press–Schechter merger trees, Green et al. tidal stripping, and the
+cosmology given there. For `Diemer`, `Diemer_0p12`, `Zhao` and `m2e12`,
+`make_h5.py build` keeps satellites inside the host's virial radius that retain
+more than 1% of their peak mass; `mass_floor_7` was cut the same way by an
+earlier notebook (at r < 259 kpc, on its first 2000 hosts), and `splashback`
+is uncut. Each file varies one choice from the fiducial run. The five SatGen
+runs are listed in Paper I's `tab:simulations`; the last column below names
+the section that discusses each file.
+
+| File | Version name (`<version>` argument) | What it varies | Paper I |
+|---|---|---|---|
+| `m12res8_10k_Diemer+scatter_sim.h5` | `Diemer` (fiducial); also the base of the reweighting variants `lmc`, `lmc_50`, `lvdb`, `mhalf_scatter` | fiducial: Diemer c–M relation with 0.16 dex scatter, M_peak > 10⁸ M☉, 10⁴ hosts | `sec:model` |
+| `m12res8_0p12dex_Diemer.h5` | `Diemer_0p12` | Diemer c–M scatter of 0.12 dex | `app:concmass` |
+| `m12res8_z30zhao.h5` | `Zhao` | Zhao c–M relation with its intrinsic scatter | `app:concmass` |
+| `m12res8_2e12_Diemer.h5` | `m2e12` | host mass 2×10¹² M☉ | `app:host_mass` |
+| `26-02-Diemer_mass_floor_7_updated.h5` | `mass_floor_7` | M_peak > 10⁷ M☉, 2×10³ hosts | `app:mass_floor` |
+| `m12res8_10k_Diemer+scatter_sim_all.h5` | `splashback` | the fiducial run without the radius and 1% cuts; read only by `tidal_stripping.pdf` (the SatGen band and the fraction disrupted) | `app:tidal_stripping` |
+| `SymphonyMilkyWay.h5` | `Symphony` | 45 Milky Way-mass hosts from the Symphony N-body suite | `app:simulations` |
+| `MWest.h5` | `MWest` | 20 hosts from the Milky Way-est N-body suite | `app:simulations` |
+
+The reweighting variants reuse the `Diemer` catalog and change only the
+conditioning in `compute_weights.py`: `lmc` and `lmc_50` keep hosts with an
+LMC analog (M_peak > 10¹¹ M☉) within 100 or 50 kpc, and remove each such
+host's most massive satellite by M_peak, which is usually but not always that
+analog (`app:lmc_selection`); `lvdb` uses Local Volume Database velocity
+dispersions (`app:lvdb_keckdeimos`); `mhalf_scatter` adds the Wolf estimator's
+23% scatter and also writes the Errani-estimator weights
+(`app:mass_estimators`).
+
+`<version>_rho150.npz` and `<version>_Mvir200.npz` (for `Diemer`,
+`Diemer_0p12`, `Zhao`, `m2e12`, `mass_floor_7`) hold, per catalog row, the
+z = 0 dark-matter density at 150 pc (M☉ kpc⁻³) and M200c at infall (the peak
+virial mass and concentration converted at the infall redshift); `compute_mhalf.py --globals <version>` rebuilds them.
+
+`SymphonyMilkyWay.h5` and `MWest.h5` are reductions of the public halo catalogs
+of those suites, built by `make_h5.py sims` from the per-host files under
+`data/symphony/` (tracked in git). See "Licence" for their credits.
+
+`mass_floor_7` and `splashback` were copied from the authors' earlier
+analysis tree. `make_h5.py` cannot rebuild `mass_floor_7` (its 80 GB parent
+catalog is not deposited); it can build `splashback`, but that rebuild has
+not been compared with the deposited file.
 
 ## Recomputing from `inputs`
 
@@ -122,8 +169,9 @@ documents the arguments of the `python/<stage>.py` it wraps (see "Running the
 code elsewhere"):
 
 1. `compute_mhalf.sh`, pass 1 (per-dwarf half-light masses), for each catalog
-   version. Its pass 2, the per-version global arrays, is already in
-   `sdi_satgen_catalogs.tar`.
+   version. Its pass 2 writes the per-version global arrays; the two the
+   pipeline reads (`rho150`, `Mvir200`) are already in
+   `sdi_satgen_catalogs.tar`, so skip it.
 2. `compute_weights.sh` (seeded conditioning weights) for all nine versions.
 3. For `Diemer` only: `Jdwarf.sh` then `concat_Js.sh Diemer`; `Jhalopos.sh`
    then `python python/concat_Js.py halo_position Diemer`; `massProfile.sh`
@@ -262,4 +310,21 @@ Circiello et al. releases under CC BY 4.0); cite the original works:
 - **PPPC 4 DM ID** (Cirelli et al. 2011, JCAP 03, 051, arXiv:1012.4515;
   electroweak corrections from Ciafaloni et al. 2011, JCAP 03, 019,
   arXiv:1009.0224): the annihilation spectra under `data/fermi_legacy/PPPC4DM/`.
+
+`SymphonyMilkyWay.h5` and `MWest.h5` are reduced from the Symphony and
+Milky Way-est simulation suites (data hosted at
+http://web.stanford.edu/group/gfc/gfcsims). They are not covered by our CC BY 4.0
+licence (the suites' pages state no licence, only the citation and
+acknowledgement requests below); cite the original works if you use them:
+
+- **Symphony**: Nadler et al. 2023, ApJ 945, 159 (arXiv:2209.02675). Its
+  Milky Way hosts are resimulations from Mao, Williamson & Wechsler 2015
+  (arXiv:1503.02637), which the suite asks users to cite as well.
+- **Milky Way-est**: Buch et al. 2024, ApJ 971, 79 (arXiv:2404.08043).
+
+Both suites also ask for an acknowledgement sentence naming the data host
+and its funding (KIPAC at Stanford, SLAC, and the U.S. Department of Energy);
+copy the current wording from their credits pages:
+https://web.stanford.edu/group/gfc/gfcsims/build/html/symphony_credits.html and
+https://web.stanford.edu/group/gfc/gfcsims/build/html/mwest_credits.html.
 

@@ -216,6 +216,18 @@ The Fermi-LAT analysis builds on the dwarf-spheroidal legacy analysis:
 The McDaniel et al. and Circiello et al. releases are licensed CC BY 4.0.
 Please cite these works alongside ours if you use the Fermi products.
 
+The N-body comparison catalogs (`data/symphony/` in git, and
+`SymphonyMilkyWay.h5` and `MWest.h5` in the Zenodo record) are reduced from
+two simulation suites hosted at http://web.stanford.edu/group/gfc/gfcsims:
+
+- **Symphony**: Nadler et al. 2023, ApJ 945, 159 (arXiv:2209.02675), with
+  its Milky Way hosts from Mao, Williamson & Wechsler 2015 (arXiv:1503.02637).
+- **Milky Way-est**: Buch et al. 2024, ApJ 971, 79 (arXiv:2404.08043).
+
+These files are not covered by the repository's MIT licence. Please cite
+these works if you use them, and include the acknowledgement each suite's
+credits page requests (`zenodo/README_DATA.md` links both).
+
 ## Citation
 
 ```bibtex
