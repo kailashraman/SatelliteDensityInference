@@ -70,6 +70,9 @@ export SDI_TEXLIVE_BIN=/path/to/texlive/bin  # directory holding `latex`
 python python/plot_rmax_vmax.py "Segue 1"   # one figure
 ```
 
+Figure drivers write into `plots/`, overwriting the published PDFs there;
+`git checkout plots/` restores them.
+
 Most launchers are `scripts/<name>.sh` wrapping `python/<name>.py`
 (`fermi_reweighting_update.sh` wraps `fermi_reweighting.py`); a few drivers
 fix the SatGen version internally. Figure drivers run in minutes on cached
@@ -230,6 +233,10 @@ these works if you use them, and include the acknowledgement each suite's
 credits page requests (`zenodo/README_DATA.md` links both).
 
 ## Citation
+
+If you use the data, cite the Zenodo record,
+[doi:10.5281/zenodo.24511712](https://doi.org/10.5281/zenodo.24511712), as
+well as the papers:
 
 ```bibtex
 @article{Raman:2026mky,

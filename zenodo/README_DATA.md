@@ -32,13 +32,25 @@ catalogs, the frozen SHMR weight draw, Fermi-LAT data and the Jeans-analysis
 results. The pipeline stages are SLURM array jobs over 10⁵–10⁶ halos per
 dwarf (hundreds of CPU-hours in total).
 
+| tier | download | unpacked |
+|---|---|---|
+| `figures` | about 27 GB | about 27 GB |
+| `inputs` | about 22 GB | about 33 GB |
+| `all` (the fetch's default) | about 40 GB | about 51 GB |
+
+The fetch stages one archive at a time under `--dest` (or `--tmp DIR`), so
+allow about 10 GB more than the unpacked size.
+
 ```bash
 git clone https://github.com/kailashraman/SatelliteDensityInference
 cd SatelliteDensityInference
-git checkout <sdi_git_commit from MANIFEST.json>                       # optional, exact match
 python scripts/zenodo_fetch.py --record 24511712 --tier figures   # or inputs, or all
 export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"                   # printed by the fetch
 ```
+
+The record was packed from commit `53ab7a9` (`sdi_git_commit` in the record's
+`MANIFEST.json`); `git checkout 53ab7a9` gives an exact match (optional; later
+commits normally change only documentation and tooling).
 
 A network fetch checks `MANIFEST.json` and every archive against Zenodo's
 md5, and each archive against `MANIFEST.json`'s sha256, before unpacking it.
@@ -330,3 +342,4 @@ copy the current wording from their credits pages:
 https://web.stanford.edu/group/gfc/gfcsims/build/html/symphony_credits.html and
 https://web.stanford.edu/group/gfc/gfcsims/build/html/mwest_credits.html.
 
+Cite the two papers above and this record, doi:10.5281/zenodo.24511712.
