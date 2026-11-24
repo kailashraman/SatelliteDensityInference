@@ -36,7 +36,7 @@ tests/    pytest suite
 ## The Zenodo record
 
 All large data lives in one Zenodo record (`zenodo/README_DATA.md` is its
-README; the DOI and record ID are in `README.md` once published). Nothing
+README; DOI 10.5281/zenodo.24511712, record ID 24511712). Nothing
 in the repository runs past a few unit tests without it. It has two tiers:
 
 - **`figures`** (about 27 GB download): the intermediates every paper figure
@@ -56,7 +56,7 @@ in the repository runs past a few unit tests without it. It has two tiers:
 Fetch from the repository root:
 
 ```bash
-python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # or inputs, all
+python scripts/zenodo_fetch.py --record 24511712 --tier figures   # or inputs, all
 export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"
 ```
 

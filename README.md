@@ -64,7 +64,7 @@ from; the code here imports upstream SatGen from conda-forge.
 
 ```bash
 conda env create -f environment.yml && conda activate sdi
-python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # see "Data"
+python scripts/zenodo_fetch.py --record 24511712 --tier figures   # see "Data"
 export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"
 export SDI_TEXLIVE_BIN=/path/to/texlive/bin  # directory holding `latex`
 python python/plot_rmax_vmax.py "Segue 1"   # one figure
@@ -129,9 +129,10 @@ and the published SHMR weight draw.
 
 ### Zenodo deposition
 
-The data needed to reproduce both papers is packaged for a single Zenodo
-record (DOI to be added on publication). `zenodo/README_DATA.md` describes the
-record; `zenodo/deposit_spec.json` lists its archives. It supports two tiers:
+The data needed to reproduce both papers is in a single Zenodo record,
+[doi:10.5281/zenodo.24511712](https://doi.org/10.5281/zenodo.24511712)
+(record 24511712). `zenodo/README_DATA.md` describes the record;
+`zenodo/deposit_spec.json` lists its archives. It supports two tiers:
 
 - **figures**: the intermediates every paper figure and table reads (except
   `jeans_corner.pdf`, see above), so each one redraws in minutes.
@@ -140,7 +141,7 @@ record; `zenodo/deposit_spec.json` lists its archives. It supports two tiers:
   pipeline recomputes the paper results.
 
 ```bash
-python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # or inputs, all
+python scripts/zenodo_fetch.py --record 24511712 --tier figures   # or inputs, all
 export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"
 ```
 

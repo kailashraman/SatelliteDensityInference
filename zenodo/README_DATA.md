@@ -3,6 +3,7 @@
 Raman, Folsom, Kaplinghat, Lisanti & Safdi.
 Part I: arXiv:2607.27316. Part II: arXiv:2607.27326.
 Code: https://github.com/kailashraman/SatelliteDensityInference
+This record: https://doi.org/10.5281/zenodo.24511712
 
 This record holds the data the SatelliteDensityInference repository needs to
 reproduce both papers. Every archive stores paths relative to the repository
@@ -35,7 +36,7 @@ dwarf (hundreds of CPU-hours in total).
 git clone https://github.com/kailashraman/SatelliteDensityInference
 cd SatelliteDensityInference
 git checkout <sdi_git_commit from MANIFEST.json>                       # optional, exact match
-python scripts/zenodo_fetch.py --record <RECORD_ID> --tier figures   # or inputs, or all
+python scripts/zenodo_fetch.py --record 24511712 --tier figures   # or inputs, or all
 export SDI_DJA_RESULTS_DIR="$PWD/data/dja_results"                   # printed by the fetch
 ```
 
@@ -255,8 +256,9 @@ code elsewhere"):
   `scripts/plot_posteriors.py` draws it
   (https://github.com/kailashraman/DwarfJeansAnalysis), and also needs the
   run's `audit.json` and that repository's star catalogs, neither of them in
-  this record. To redraw it, fetch the DwarfJeansAnalysis Zenodo record into
-  a DwarfJeansAnalysis checkout (see its `zenodo/README_DATA.md`), set
+  this record. To redraw it, fetch the DwarfJeansAnalysis Zenodo record
+  (https://doi.org/10.5281/zenodo.24508809) into a DwarfJeansAnalysis
+  checkout (see its `zenodo/README_DATA.md`), set
   `SDI_DJA_RESULTS_DIR` to that checkout's `results/production`, and run
   `python python/fetch_jeans_corner.py` in the `DwarfJeans` environment. This
   overwrites `plots/jeans/jeans_corner.pdf`; `git checkout plots/jeans/`
