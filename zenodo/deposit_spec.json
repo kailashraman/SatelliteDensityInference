@@ -5,7 +5,7 @@
       "name": "sdi_satgen_catalogs.tar",
       "compression": "none",
       "tiers": ["figures", "inputs"],
-      "include": ["data/satgen_catalogs/**"]
+      "include": ["data/satgen_catalogs/*.h5", "data/satgen_catalogs/*_{rho150,Mvir200}.npz"]
     },
     {
       "name": "sdi_halo_weights_seeded.tar.gz",

@@ -236,6 +236,10 @@ def test_matches_migrated_products_on_real_catalog_slice(tmp_path, monkeypatch):
     _run_mhalf(str(dwarf_idx), version)
 
     for name in GLOBAL_NAMES:
+        # rho30/M30 have no reader and are not in the Zenodo record; compare
+        # them only where the authors' full tree still holds them.
+        if name in ('rho30', 'M30') and not (real_catalogs_dir / f'Diemer_{name}.npz').exists():
+            continue
         with np.load(catalogs_dir / f'{version}_{name}.npz') as computed, \
              np.load(real_catalogs_dir / f'Diemer_{name}.npz') as migrated:
             assert np.array_equal(computed[name], migrated[name][:n]), \
