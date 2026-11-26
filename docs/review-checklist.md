@@ -1551,3 +1551,45 @@ instantly, so tests pass.
 `shutdown(wait=False, cancel_futures=True)` on the exception path; worker
 failures collected but printed only after the pool joins; no test whose fake
 worker blocks while the interrupt or failure is injected, with the exit timed.
+
+## Provenance stamp keyed on a downstream artifact's name
+
+**Where:** an upstream producer (one that builds the inputs of a registered
+catalog) that calls the shared stamp helper with a `version` or catalog key.
+
+**What goes wrong:** the helper looks the key up in the catalog registry and
+attaches that catalog's file name and fingerprint, so the input records the
+catalog built from it as its own source. The record is circular but looks
+complete, and nothing checks it.
+
+**What to flag:** a stamp call in a script whose output feeds the registry
+rather than reads from it; catalog-file fields in the sidecar of a product no
+catalog produced; a producer test that never asserts those fields are absent.
+
+## Library version recorded through `__version__`
+
+**Where:** provenance stamps or logs that record a third-party package version.
+
+**What goes wrong:** many packages define no `__version__`, so
+`getattr(lib, '__version__', None)` is always null and the record only looks
+documented. A test using a fake module that defines the attribute hides it.
+
+**What to flag:** `getattr(..., '__version__', ...)`; prefer
+`importlib.metadata.version`, with a test that the field is non-null for the
+installed package.
+
+## Test tolerance looser than the constant or per-instance property it pins
+
+**Where:** tests of ported formulas with hard-coded numerical constants, and
+fixtures that build several instances (hosts, dwarfs, cosmologies).
+
+**What goes wrong:** the test compares against a rounded value at rtol 1e-3 or
+1e-4, so changing the pinned constant at that level passes; a fixture that
+gives every instance the same cosmology, dtype or snapshot values cannot fail
+when the code reads the wrong instance or the wrong snapshot.
+
+**What to flag:** an rtol larger than the precision of the constant under
+test; physical constants hard-coded in the test instead of taken from the
+library the code uses; fixtures whose per-instance or per-snapshot values are
+identical; output fields asserted only by shape. Mutate the code to check a
+test can fail.
