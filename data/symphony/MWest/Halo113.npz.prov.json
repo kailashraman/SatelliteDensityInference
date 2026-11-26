@@ -1,0 +1,55 @@
+{
+  "argv": [
+    "reduce",
+    "MWest",
+    "--force"
+  ],
+  "astropy_version": "6.1.3",
+  "colossus_version": "1.3.6",
+  "dja_snapshot": null,
+  "git_commit": "f6a551dd40346f3f612cca5801f5e4649dd2fd00",
+  "git_dirty": false,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [
+    {
+      "mtime": 1755899196,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/MWest/Halo113/halos/cores_fid4.dat",
+      "provenance": null,
+      "size": 7407856
+    },
+    {
+      "mtime": 1755899208,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/MWest/Halo113/halos/infall_cores.dat",
+      "provenance": null,
+      "size": 56336
+    },
+    {
+      "mtime": 1755899209,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/MWest/Halo113/halos/snap_scale.dat",
+      "provenance": null,
+      "size": 1960
+    },
+    {
+      "mtime": 1755899202,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/MWest/Halo113/halos/subhalos.dat",
+      "provenance": null,
+      "size": 4296168
+    },
+    {
+      "mtime": 1755899205,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/MWest/Halo113/halos/tree_header.dat",
+      "provenance": null,
+      "size": 2135427
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "n_halos": 281,
+  "satgen_version": null,
+  "script": "python/reduce_symphony.py",
+  "sim_version": null,
+  "suite": "MWest",
+  "symlib_version": "1.4.25",
+  "written_utc": "2026-11-26T20:05:21+00:00"
+}
