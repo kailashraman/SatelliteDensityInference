@@ -8,8 +8,8 @@ spheroidals:
 - **Part I — Comparison to Ultra-faint Dwarf Kinematics**
   ([arXiv:2607.27316](https://arxiv.org/abs/2607.27316)). Conditions a SatGen
   subhalo population on either stellar mass (via ten stellar-mass–halo-mass
-  relations) or stellar kinematics, and infers ρ₁₅₀, peak masses, r_max/v_max
-  and the V_circ–r₁ᐟ₂ relation for 39 dwarfs.
+  relations) or stellar kinematics, and infers ρ₁₅₀, peak masses, r<sub>max</sub>/v<sub>max</sub>
+  and the V<sub>circ</sub>–r<sub>1/2</sub> relation for 39 dwarfs.
 - **Part II — Implications for Dark Matter Indirect Detection Constraints**
   ([arXiv:2607.27326](https://arxiv.org/abs/2607.27326)).
   Turns those posteriors into J-factors, compares them against Jeans-analysis
@@ -25,9 +25,7 @@ and committed here under `plots/jeans/`.
 |---|---|
 | This repository | https://github.com/kailashraman/SatelliteDensityInference |
 | SatGen fork used for our runs | https://github.com/folsomde/SatGen |
-| SatGen upstream (Jiang et al.) | https://github.com/JiangFangzhou/SatGen |
 | Jeans-analysis posteriors | https://github.com/kailashraman/DwarfJeansAnalysis |
-| Local Volume Database (dwarf catalog) | https://github.com/apace7/local_volume_database |
 
 The Jeans repository is a live dependency, not a historical reference: the
 prior-ladder figures in Part II read its `results/` directly, and each figure
@@ -222,7 +220,9 @@ Please cite these works alongside ours if you use the Fermi products.
 
 The N-body comparison catalogs (`data/symphony/` in git, and
 `SymphonyMilkyWay.h5` and `MWest.h5` in the Zenodo record) are reduced from
-two simulation suites hosted at http://web.stanford.edu/group/gfc/gfcsims:
+two simulation suites hosted at http://web.stanford.edu/group/gfc/gfcsims
+(`python/reduce_symphony.py` downloads the halo catalogs with symlib and
+rebuilds `data/symphony/`):
 
 - **Symphony**: Nadler et al. 2023, ApJ 945, 159 (arXiv:2209.02675), with
   its Milky Way hosts from Mao, Williamson & Wechsler 2015 (arXiv:1503.02637).
