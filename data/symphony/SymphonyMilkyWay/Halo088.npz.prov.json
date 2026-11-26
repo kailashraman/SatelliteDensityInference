@@ -1,0 +1,55 @@
+{
+  "argv": [
+    "reduce",
+    "Symphony",
+    "--force"
+  ],
+  "astropy_version": "6.1.3",
+  "colossus_version": "1.3.6",
+  "dja_snapshot": null,
+  "git_commit": "c9f57daef7f640a785499ae0321fdb878a6ce3b8",
+  "git_dirty": false,
+  "h5_file": null,
+  "h5_fingerprint": null,
+  "inputs": [
+    {
+      "mtime": 1683511363,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/SymphonyMilkyWay/Halo088/halos/cores_fid3.dat",
+      "provenance": null,
+      "size": 9737848
+    },
+    {
+      "mtime": 1682944778,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/SymphonyMilkyWay/Halo088/halos/infall_cores.dat",
+      "provenance": null,
+      "size": 76560
+    },
+    {
+      "mtime": 1668464024,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/SymphonyMilkyWay/Halo088/halos/snap_scale.dat",
+      "provenance": null,
+      "size": 1896
+    },
+    {
+      "mtime": 1682915171,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/SymphonyMilkyWay/Halo088/halos/subhalos.dat",
+      "provenance": null,
+      "size": 5647520
+    },
+    {
+      "mtime": 1674258295,
+      "path": "/global/scratch/projects/pc_heptheory/kraman/Symphony/data/SymphonyMilkyWay/Halo088/halos/tree_header.dat",
+      "provenance": null,
+      "size": 5730882
+    }
+  ],
+  "lvdb_version": "v1.0.5",
+  "migrated_from": null,
+  "n_halos": 445,
+  "satgen_version": null,
+  "script": "python/reduce_symphony.py",
+  "sim_version": null,
+  "suite": "Symphony",
+  "symlib_version": "1.4.25",
+  "written_utc": "2026-11-26T20:04:13+00:00"
+}
