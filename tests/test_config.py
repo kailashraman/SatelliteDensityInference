@@ -122,6 +122,39 @@ def test_external_paths_are_overridable():
     assert lines[1] == '/tmp/fake-dja'
 
 
+def test_symphony_raw_dir_is_overridable():
+    env = dict(os.environ, SDI_SYMPHONY_RAW_DIR='/tmp/fake-symphony-raw')
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config; '
+         'print(config.SYMPHONY_RAW_DIR)' % str(REPO_ROOT / 'python')],
+        capture_output=True, text=True, env=env)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == '/tmp/fake-symphony-raw'
+
+
+def test_empty_symphony_raw_override_is_rejected():
+    env = dict(os.environ, SDI_SYMPHONY_RAW_DIR='')
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config'
+         % str(REPO_ROOT / 'python')],
+        capture_output=True, text=True, env=env)
+    assert result.returncode != 0
+    assert 'SDI_SYMPHONY_RAW_DIR is set but empty' in result.stderr
+
+
+def test_relative_symphony_raw_override_is_resolved(tmp_path):
+    env = dict(os.environ, SDI_SYMPHONY_RAW_DIR='rel/raw')
+    result = subprocess.run(
+        [sys.executable, '-c',
+         'import sys; sys.path.insert(0, %r); import config; '
+         'print(config.SYMPHONY_RAW_DIR)' % str(REPO_ROOT / 'python')],
+        cwd=str(tmp_path), capture_output=True, text=True, env=env)
+    assert result.returncode == 0, result.stderr
+    assert Path(result.stdout.strip()) == (tmp_path / 'rel' / 'raw').resolve()
+
+
 def test_dja_default_is_the_sibling_checkout():
     """With SDI_DJA_RESULTS_DIR unset the default is the sibling repo, not an
     absolute path that goes stale when the checkout moves."""

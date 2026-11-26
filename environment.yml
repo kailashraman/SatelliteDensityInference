@@ -34,3 +34,4 @@ dependencies:
   - pip:
       - colossus==1.3.6
       - vegas==6.1.3
+      - symlib==1.4.25

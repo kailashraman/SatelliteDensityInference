@@ -12,6 +12,9 @@ results/
 # They are the *input* to `make_h5.py sims`, not a derived product, and without
 # them a fresh clone cannot rebuild those two catalogs at all.
 !data/symphony/**/*.npz
+# The symlib halo catalogs they are reduced from (~1.1 GB, public download;
+# python/reduce_symphony.py download).
+data/symphony_raw/
 *.npy
 # PPPC4DM annihilation tables: 40 MB of a public literature release, pinned by
 # sha256 in data/fermi_legacy/PPPC4DM/VERSION and checked by

@@ -100,6 +100,18 @@ VCIRC_SCATTER_DIR = RESULTS_DIR / 'vcirc_scatter_300pc'
 # these were read from ../Symphony/results/, an undeclared third external
 # dependency; at ~1.2 MB they belong in the repository instead.
 SYMPHONY_DIR = DATA_DIR / 'symphony'
+# The symlib halo catalogs those reductions are built from (reduce_symphony.py).
+# ~1.1 GB for the two suites, downloaded from the public Symphony server, so
+# gitignored; the recipe is in-repo, the bytes are not. Overridable with
+# $SDI_SYMPHONY_RAW_DIR (e.g. an existing symlib download). Empty is rejected
+# and a relative value resolved against the cwd, as for SDI_DJA_RESULTS_DIR.
+_symphony_raw_override = os.environ.get('SDI_SYMPHONY_RAW_DIR')
+if _symphony_raw_override is not None and not _symphony_raw_override.strip():
+    raise ValueError(
+        'SDI_SYMPHONY_RAW_DIR is set but empty; unset it to use the default '
+        f'{DATA_DIR / "symphony_raw"}, or set it to an absolute path')
+SYMPHONY_RAW_DIR = (Path(_symphony_raw_override).expanduser().resolve()
+                    if _symphony_raw_override else DATA_DIR / 'symphony_raw')
 
 # --------------------------------------------------------------------------
 # Upstream dependency 1: SatGen trees and satellite catalogs (dfolsom).

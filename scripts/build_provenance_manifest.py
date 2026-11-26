@@ -42,7 +42,9 @@ running this script, not designed in advance:
      committed source data under config.DATA_DIR (see docs/claude.development.md, "data/
      holds observational and literature inputs"), which provenance.py never
      stamps by design (its docstring: "every product THIS REPOSITORY WRITES
-     carries a stamp" -- these are read, not written). Flagging committed
+     carries a stamp" -- these are read, not written). The tracked
+     data/symphony files are unstamped; a rebuild via python/reduce_symphony.py
+     does stamp them. Flagging committed
      source data as a provenance gap is noise that would bury the real one.
      So: an input under one of the raw-input subdirectories of DATA_DIR
      listed in RAW_DATA_SUBDIRS (an explicit allow-list) is "not applicable";
